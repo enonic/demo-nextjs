@@ -1,6 +1,6 @@
 const getMainPage = `
 query {
-  guillotine {
+  guillotine(siteKey: $siteKey, branch: $branch, project: $project) {
     getSite {
       displayName
     }

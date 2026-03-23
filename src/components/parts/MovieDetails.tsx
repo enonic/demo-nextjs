@@ -4,13 +4,13 @@ import Link from 'next/link';
 
 
 export const getMovie = `
-query($path:ID!){
-  guillotine {
-    get(key:$path) {
+query {
+  guillotine(siteKey: $siteKey, branch: $branch, project: $project) {
+    get(key: $path) {
       type
       displayName
       parent {
-        _path(type: siteRelative)
+        _path
       }
       ... on ${APP_NAME_UNDERSCORED}_Movie {
         data {
@@ -30,7 +30,7 @@ query($path:ID!){
             character
             actor {
               ... on ${APP_NAME_UNDERSCORED}_Person {
-                _path(type: siteRelative)
+                _path
                 displayName
                 data {
                   photos {

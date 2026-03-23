@@ -51,5 +51,5 @@ export async function generateMetadata({params}: { params: Promise<PageProps> })
 }
 
 export async function generateStaticParams(props: { params: PageProps }): Promise<any[]> {
-    return await fetchContentPathsForAllLocales('\${site}/');
+    return await fetchContentPathsForAllLocales();
 }

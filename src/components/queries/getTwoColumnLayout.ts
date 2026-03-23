@@ -1,6 +1,6 @@
 const getTwoColumnLayout = `
 query {
-  guillotine {
+  guillotine(siteKey: $siteKey, branch: $branch, project: $project) {
     getSite {
       displayName
       type

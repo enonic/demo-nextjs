@@ -1,4 +1,4 @@
-import {Context, PartProps, VariablesGetterResult} from '@enonic/nextjs-adapter';
+import {Context, PartProps, VariablesGetterResult, GlobalVariables} from '@enonic/nextjs-adapter';
 import Link from 'next/link';
 import React from 'react'
 
@@ -35,16 +35,16 @@ const ChildList = (props: PartProps) => {
 export default ChildList;
 
 export const getChildList = {
-    query: function (path: string, context?: Context, config?: any): string {
-        return `query($path:ID!, $order:String){
-              guillotine {
+    query: function (vars: GlobalVariables, context?: Context, config?: any): string {
+        return `query {
+              guillotine(siteKey: $siteKey, branch: $branch, project: $project) {
                 getSite {
                   displayName
                 }
                 get(key:$path) {
                   displayName
                   children(sort: $order, first: 50) {
-                      _path(type: siteRelative)
+                      _path
                       _id
                       displayName
                       type
@@ -53,9 +53,9 @@ export const getChildList = {
               }
             }`
     },
-    variables: function (path: string, context?: Context, config?: any): VariablesGetterResult {
+    variables: function (vars: GlobalVariables, context?: Context, config?: any): VariablesGetterResult {
         return {
-            path,
+            ...vars,
             order: config?.sorting
         }
     }

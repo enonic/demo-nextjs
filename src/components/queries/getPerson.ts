@@ -1,8 +1,8 @@
 import {APP_NAME_UNDERSCORED} from '@enonic/nextjs-adapter';
 
 const getPerson = () => `
-query($path:ID!){
-  guillotine {
+query {
+  guillotine(siteKey: $siteKey, branch: $branch, project: $project) {
     get(key:$path) {
       displayName
       ... on ${APP_NAME_UNDERSCORED}_Person {
@@ -19,7 +19,7 @@ query($path:ID!){
         }
       }
       parent {
-        _path(type: siteRelative)
+        _path
       }
     }
   }

@@ -1,8 +1,8 @@
 import {APP_NAME_UNDERSCORED, richTextQuery} from '@enonic/nextjs-adapter';
 
 const getPersonWithBio = () => `
-query($path:ID!){
-  guillotine {
+query {
+  guillotine(siteKey: $siteKey, branch: $branch, project: $project) {
     get(key:$path) {
       displayName
       ... on ${APP_NAME_UNDERSCORED}_Person {
@@ -20,7 +20,7 @@ query($path:ID!){
         }
       }
       parent {
-        _path(type: siteRelative)
+        _path
       }
     }
   }
