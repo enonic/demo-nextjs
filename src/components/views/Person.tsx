@@ -22,7 +22,7 @@ const Person = (props: FetchContentResult) => {
                     ))
                 }
             </div>
-            <p><Link href={getUrl(`/${parent._path}`, meta)}>{I18n.localize('back')}</Link></p>
+            <p><Link href={getUrl(parent._path, meta)}>{I18n.localize('back')}</Link></p>
         </>
     )
 }

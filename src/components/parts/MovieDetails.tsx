@@ -65,7 +65,7 @@ const MovieView = (props: PartProps) => {
                 {data?.cast && <Cast cast={data.cast} meta={meta}/>}
             </div>
             <p>
-                <Link href={getUrl(`/${parent._path}`, meta)}>{I18n.localize('back')}</Link>
+                <Link href={getUrl(parent._path, meta)}>{I18n.localize('back')}</Link>
             </p>
         </>
     );

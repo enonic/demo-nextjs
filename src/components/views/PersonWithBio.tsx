@@ -30,7 +30,7 @@ const PersonWithBio = (props: FetchContentResult) => {
                     }
                 </div>
             </div>
-            <p><Link href={getUrl(`/${parent._path}`, meta)}>{I18n.localize('back')}</Link></p>
+            <p><Link href={getUrl(parent._path, meta)}>{I18n.localize('back')}</Link></p>
         </>
     )
 }
