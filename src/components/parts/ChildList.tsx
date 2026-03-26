@@ -10,8 +10,7 @@ const ChildList = (props: PartProps) => {
     if (!children || children.length === 0) {
         return null;
     }
-    const prefix = meta.baseUrl +
-                   (meta.locale && meta.locale !== meta.defaultLocale ? meta.locale + '/' : '');
+
     return (
         <main style={{
             margin: `0 auto`,
@@ -23,7 +22,7 @@ const ChildList = (props: PartProps) => {
                 <ul>{
                     children.map((child: any, i: number) => (
                         <li key={i}>
-                            <Link href={prefix + child._path}>{child.displayName}</Link>
+                            <Link href={child._path}>{child.displayName}</Link>
                         </li>
                     ))
                 }</ul>
@@ -36,12 +35,12 @@ export default ChildList;
 
 export const getChildList = {
     query: function (vars: GlobalVariables, context?: Context, config?: any): string {
-        return `query {
+        return `query($order: String) {
               guillotine(siteKey: $siteKey, branch: $branch, project: $project) {
                 getSite {
                   displayName
                 }
-                get(key:$path) {
+                get(key: $path) {
                   displayName
                   children(sort: $order, first: 50) {
                       _path
