@@ -22,7 +22,7 @@ const ChildList = (props: PartProps) => {
                 <ul>{
                     children.map((child: any, i: number) => (
                         <li key={i}>
-                            <Link href={getUrl(child._path, meta)}>{child.displayName}</Link>
+                            <Link href={getUrl(child._path, meta)} data-content-path={child._path}>{child.displayName}</Link>
                         </li>
                     ))
                 }</ul>

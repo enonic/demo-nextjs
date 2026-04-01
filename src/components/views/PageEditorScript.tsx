@@ -7,14 +7,14 @@ import {useLayoutEffect} from 'react';
 
 const PageEditorScript = function ({mode}: { mode: RENDER_MODE }) {
     useLayoutEffect(() => {
-        if (mode === RENDER_MODE.EDIT) {
-            // TODO: change to static import after jquery is removed (ssr fails now)
-            // because of dynamic import it gets init too late and misses the event from CS
-            import('@enonic/page-editor').then(({PageEditor, EditorEvents}) => {
-                PageEditor.init();
-                console.info('Page editor started.');
-            })
-        }
+        // TODO: change to static import after jquery is removed from page-editor (ssr fails now)
+        // because of dynamic import it gets init too late and misses the event from CS
+        import('@enonic/page-editor').then(({PageEditor, EditorEvents}) => {
+            if (!PageEditor.isInitialized()) {
+                PageEditor.init(mode === RENDER_MODE.EDIT);
+                console.info(`Page editor started in ${mode} mode.`);
+            }
+        })
     })
     return null;
 };
