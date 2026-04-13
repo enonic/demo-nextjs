@@ -4,7 +4,7 @@ import {fetchContent} from '@enonic/nextjs-adapter/server';
 // Register component mappings
 import '../../../components/_mappings';
 import {NextRequest} from 'next/server';
-import {validatePath, validateToken} from '../../../utils';
+import {validatePath, validateBlob} from '../../../utils';
 
 export function HEAD(req: NextRequest) {
     return processRequest(req);
@@ -15,15 +15,15 @@ export function GET(req: NextRequest) {
 }
 
 async function processRequest(req: NextRequest) {
-    const params = req.nextUrl.searchParams;
+    const {searchParams} = req.nextUrl;
 
-    const token = params.get('token');
-    let response = validateToken(token);
+    const blob = searchParams.get('xp');
+    let response = validateBlob(blob);
     if (response !== null) {
         return response;
     }
 
-    const path = params.get('path') || [];
+    const path = searchParams.get('path') || [];
     response = validatePath(path);
     if (response !== null) {
         return response;

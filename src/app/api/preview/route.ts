@@ -1,7 +1,6 @@
 import {NextRequest, NextResponse} from 'next/server';
 import {draftMode} from 'next/headers';
-import {validatePath} from '../../../utils';
-import {decryptParams} from '@enonic/nextjs-adapter';
+import {validatePath, validateBlob} from '../../../utils';
 
 export function HEAD(req: NextRequest) {
     return processRequest(req);
@@ -15,19 +14,13 @@ export async function processRequest(request: NextRequest): Promise<NextResponse
     const {searchParams} = request.nextUrl;
     const xpBlob = searchParams.get('xp');
     const path = searchParams.get('path') || '/';
-    const secret = process.env.ENONIC_API_TOKEN;
 
-    if (!xpBlob || !secret) {
-        return NextResponse.json({message: 'Invalid request'}, {status: 401});
+    let response = validateBlob(xpBlob);
+    if (response !== null) {
+        return response;
     }
 
-    // Decryption success proves the request came from XP (it knows the secret)
-    const params = decryptParams(xpBlob, secret);
-    if (!params) {
-        return NextResponse.json({message: 'Invalid secret'}, {status: 401});
-    }
-
-    let response = validatePath(path);
+    response = validatePath(path);
     if (response !== null) {
         return response;
     }
@@ -38,7 +31,9 @@ export async function processRequest(request: NextRequest): Promise<NextResponse
     // Redirect back to the content page, preserving the encrypted blob
     // so the middleware can decrypt it on the second pass.
     const redirectUrl = new URL(path, request.nextUrl.origin);
-    redirectUrl.searchParams.set('xp', xpBlob);
+    if (xpBlob) {
+        redirectUrl.searchParams.set('xp', xpBlob);
+    }
 
     response = NextResponse.redirect(redirectUrl);
 
