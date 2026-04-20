@@ -37,7 +37,7 @@ Run this simple query that retrieves the ID and displayName of some movies:
 [source,graphql]
 ----
 {
-    guillotine {
+    guillotine(project: "intro") {
         queryDsl(
           query: {
             boolean: {
@@ -59,7 +59,7 @@ Run this simple query that retrieves the ID and displayName of some movies:
 }
 ----
 +
-NOTE: `tutorial.nxp` refers to the name of the application you created in the previous chapter. `movie` is a specific content type within the app.
+NOTE: `intro` is the name of the project. `tutorial.nxp` refers to the name of the application you created in the previous chapter. `movie` is a specific content type within the app.
 +
 . **View the Result**
 +
@@ -76,7 +76,7 @@ Query variables enable you to re-use the same query, but for instance fetch diff
 [source,graphql]
 ----
 query($path:ID!){               // <1>
-  guillotine {
+  guillotine(project: "intro") {
     get(key:$path) {            // <2>
       type
       _id
@@ -90,7 +90,7 @@ query($path:ID!){               // <1>
 +
 . **Add query Variables**. In the bottom left of Query Playground, you will find a the `Query variables`tab. Add the following JSON to the field.
 +
-NOTE: Tthe `path` field in the JSON corresponds to the `$path` in the query string above:
+NOTE: The `path` field in the JSON corresponds to the `$path` in the query string above:
 +
 [source,JSON]
 ----
@@ -127,7 +127,7 @@ Paste this query into the GraphQL Playground:
 [source,graphql]
 ----
 query($path:ID!){
-  guillotine {
+  guillotine(project: "intro") {
     get(key:$path) {
       type
       displayName

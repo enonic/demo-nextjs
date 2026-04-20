@@ -25,39 +25,26 @@ TIP: Remember to stop your existing Next.js dev instance before you continue.
 +
 This will take a while longer as when compared to dev mode.
 
-. **Verify** by pointing your browser to http://localhost:4242[http://localhost:4242^], you should now see the published items, just like in dev mode. Only this time, they will be much faster. **Sweet!**
+. **Verify** by pointing your incognito window to http://localhost:3000[http://localhost:3000^], you should now see the published items, just like in dev mode.
+Only this time, they will be much faster. **Sweet!**
 
-
-== Task: Fixing preview
-
-With Next.js now running on a different port, Content Studio preview will stop working.
-
-. Fix the preview by *adding a Next.XP configuration file*, with the following content to your sandbox:
-+
-NOTE: The configuration files are located in your sandbox home directory, which can be found in your users home directory as `.enonic/sandboxes/<your-sandbox>/home/config/`. 
-+
-.add com.enonic.app.nextxp.cfg
-[source,properties]
-----
-nextjs.default.secret=mySecretKey
-nextjs.default.url=http://127.0.0.1:4242
-----
-
-. *Verify that the preview is working* in Content Studio.
-+
-TIP: Content Studio uses Next.js' preview mode, which automatically bypasses static pages - giving you a fresh preview of your draft content.
+NOTE: Since prod mode now runs on the default port 3000 (same as dev mode), Content Studio preview should continue to work without any configuration changes.
+Just remember to stop your dev server before starting prod mode.
 
 == Task: Test page invalidation
 With all pages now being cached as files, Next.js must be instructed to re-generate the pages when a change is published.
 
-*Edit your front-page, and publish the changes*.
-This will trigger a revalidation hook, which is built into the Next.XP app.
+. **Add `Next.js Preview` app to your site**, just like you did with your app in the <<preview#, Content Studio preview>> chapter.
+This will ensure that the revalidation hook is triggered when you publish content.
++
+. *Edit your front-page, and publish the changes*.
+This will trigger a revalidation hook, which is built into the Next.js Preview app.
 
-The page should now get updated at `http://localhost:4242` - more or less instantly.🎉
+The page should now get updated at `http://localhost:3000` - more or less instantly.🎉
 
 === What happened?
 
-In addition to handling previews, the Next.XP app automatically triggers revalidation of all pages when it detects the publishing event.
+In addition to handling previews, the Next.js Preview app automatically triggers revalidation of all pages when it detects the publishing event in the site it is added to.
 
 NOTE: You should also be able to tell from the Next.js log that the revalidation was triggered.
 

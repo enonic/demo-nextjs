@@ -4,7 +4,167 @@
 
 == Guillotine application
 
-IMPORTANT: Guillotine version 7 is required if you need to modify graphql schema in your application.
+IMPORTANT: Guillotine version 8 is required for v5.x.
+
+== Upgrading from v3.x
+
+. *Framework upgrades*: Next.js 16 and React 19 are now required.
++
+See https://nextjs.org/docs/app/building-your-application/upgrading[Next.js upgrade guide] and https://react.dev/blog/2024/12/05/react-19[React 19 migration guide].
+
+. *Guillotine 8 query syntax*: GraphQL queries must use the new `guillotine()` field with explicit parameters:
++
+[source,graphql]
+----
+# Before (v3.x)
+query($path:ID!) {
+  guillotine {
+    get(key: $path) { ... }
+  }
+}
+
+# After (v5.x)
+query {
+  guillotine(siteKey: $siteKey, branch: $branch, project: $project) {
+    get(key: $path) { ... }
+  }
+}
+----
++
+The variables `$siteKey`, `$branch`, `$project`, and `$path` are automatically provided by the adapter.
+You can override them or add custom variables by returning new values from a variables function:
++
+[source,TypeScript]
+----
+import type {GlobalVariables} from '@enonic/nextjs-adapter';
+
+export function commonVariables(vars: GlobalVariables) {
+    return vars;
+}
+----
+
+. *ENONIC_API environment variable*: The API URL now points to the Guillotine GraphQL endpoint directly:
++
+[source,properties]
+----
+# Before
+ENONIC_API=http://127.0.0.1:8080/site
+
+# After
+ENONIC_API=http://127.0.0.1:8080/api/com.enonic.app.guillotine:graphql
+----
+
+. *Middleware replaced by proxy*: `src/middleware.ts` has been replaced by `src/proxy.ts`.
++
+The proxy handles encrypted blob validation for Content Studio requests, locale detection, and draft mode activation.
+If you have a custom middleware, migrate it to the new proxy pattern.
+
+. *Encrypted blob authentication*: API routes now use encrypted blob validation instead of plain token comparison.
++
+[source,TypeScript]
+----
+// Before (v3.x)
+import {validateToken} from '../../../utils';
+
+// After (v5.x)
+import {validateBlob} from '../../../utils';
+import {decryptParams} from '@enonic/nextjs-adapter';
+----
+
+. *Next.js 16 async params*: Route params are now `Promise` and must be awaited:
++
+[source,TypeScript]
+----
+// Before (v3.x)
+export type PageProps = {
+    locale: string,
+    contentPath: string[],
+}
+export default async function Page({params}: { params: PageProps }) {
+    const {locale, contentPath} = params;
+
+// After (v5.x)
+export type PageProps = {
+    locale: string,
+    contentPath?: string[],
+}
+export default async function Page({params}: { params: Promise<PageProps> }) {
+    const resolvedParams = await params;
+----
+
+. *MetaData type changes*:
++
+[source,TypeScript]
+----
+// Removed
+apiUrl: string;
+
+// Added
+branch: string;
+project: string;
+site: string;
+----
+
+. *`@enonic/nextjs-adapter` API changes*:
++
+- `getContentApiUrl()` removed
+- `getContentBranch()` added
+- `BaseMacro` no longer accepts `renderInEditMode` prop
+- `getRenderMode()` context parameter is now optional
+- `JSX.Element` replaced with `ReactElement` in component types
+
+. *ESLint flat config*: Migrate from `.eslintrc` to `eslint.config.mjs`:
++
+[source,javascript]
+----
+import nextVitals from 'eslint-config-next/core-web-vitals'
+import {defineConfig, globalIgnores} from 'eslint/config'
+
+const eslintConfig = defineConfig([
+    ...nextVitals,
+    {
+        rules: {
+            "@next/next/no-img-element": "off",
+            "eol-last": "warn"
+        }
+    },
+    globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts'])
+])
+
+export default eslintConfig
+----
+
+. *next.config.js*: Add turbopack alias and CORS headers configuration:
++
+[source,javascript]
+----
+turbopack: {
+    resolveAlias: {
+        "@phrases": path.resolve(__dirname, "src", "phrases"),
+    }
+},
+----
+
+. *Next.XP app replaced by Next.js Preview*: The `Next.XP` app (`com.enonic.app.nextxp`) has been replaced by the `Next.js Preview` app (`com.enonic.app.preview.nextjs`).
+The new app adds a preview widget that loads pages directly from the Next.js server, instead of proxying requests.
+The `/api/renderable` endpoint is no longer used and can be removed.
+Configuration file is now `com.enonic.app.preview.nextjs.cfg` (same property format).
+
+. *New API route*: Add `/api/mappings` endpoint — used by the Next.js Preview app to resolve content items to Next.js URLs.
+
+. *Page Editor*: The `@enonic/page-editor` package is now required for Content Studio's live page editing (drag-and-drop, inline editing, component selection).
+Add it as a dependency and include `PageEditorScript` in your page rendering:
++
+[source,TypeScript]
+----
+import PageEditorScript from '../../../components/views/PageEditorScript';
+
+// In your page component's return:
+<>
+    <MainView {...data}/>
+    <PageEditorScript mode={data.meta.renderMode}/>
+</>
+----
 
 == Upgrading from v2.x
 

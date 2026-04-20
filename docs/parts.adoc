@@ -11,25 +11,25 @@ We'll start off by adding a simple component that lists child items in the tree 
 
 . **Add the `child-list` part** to the Enonic app
 +
-.src/main/resources/site/parts/child-list/child-list.xml
-[source,xml]
+.src/main/resources/cms/parts/child-list/child-list.yaml
+[source,yaml]
 ----
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<part xmlns="urn:enonic:xp:model:1.0">
-    <display-name>Child list</display-name>
-    <description>Lists children of current item</description>
-    <form>
-        <input name="sorting" type="ComboBox">
-            <label>Sort order</label>
-            <occurrences minimum="0" maximum="1"/>
-            <config>
-                <option value="displayName ASC">Ascending</option>
-                <option value="displayName DESC">Descending</option>
-            </config>
-            <default>displayName ASC</default>
-        </input>
-    </form>
-</part>
+kind: "Part"
+title: "Child list"
+description: "Lists children of current item"
+form:
+- type: "ComboBox"
+  name: "sorting"
+  label: "Sort order"
+  occurrences:
+    min: 0
+    max: 1
+  options:
+    - value: "displayName ASC"
+      label: "Ascending"
+    - value: "displayName DESC"
+      label: "Descending"
+  default: "displayName ASC"
 ----
 +
 NOTE: This component also contains a form, similar to content types.
@@ -95,19 +95,16 @@ For more components to play with, you may add another part:
 +
 This part definition includes a form, with an link:https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types[input field] called `heading`.This makes it possible for editors to override the heading (aka displayName) coming from the content item.
 +
-.src/main/resources/site/parts/heading/heading.xml
-[source,xml]
+.src/main/resources/cms/parts/heading/heading.yaml
+[source,yaml]
 ----
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<part xmlns="urn:enonic:xp:model:1.0">
-    <display-name>Heading</display-name>
-    <description>Demo heading</description>
-    <form>
-        <input type="TextLine" name="heading">
-            <label>Override heading</label>
-        </input>
-    </form>
-</part>
+kind: "Part"
+title: "Heading"
+description: "Demo heading"
+form:
+- type: "TextLine"
+  name: "heading"
+  label: "Override heading"
 ----
 +
 . **Redeploy** the Enonic app and add the part to your page (happens automatically if you started `enonic project dev`).

@@ -23,7 +23,7 @@ ComponentRegistry.addContentType(CATCH_ALL, {
 */
 ----
 +
-. **Verify that pages are no longer rendering** by visiting your site on `http://localhost:3000`.
+. **Verify that pages are no longer rendering json body** by visiting your site on `http://localhost:3000`.
 +
 The same will now apply to Content Studio.
 
@@ -34,18 +34,15 @@ Content types need to exist in Enonic before an editor can create content. Simil
 
 . *Add a page component* to the Enonic app
 +
-.src/main/resources/site/pages/main/main.xml
-[source,xml]
+.src/main/resources/cms/pages/main/main.yaml
+[source,yaml]
 ----
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<page xmlns="urn:enonic:xp:model:1.0">
-  <display-name>Main page</display-name>
-  <description>Will be rendered by front-end</description>
-  <form/>
-  <regions>
-      <region name="main"/>
-  </regions>
-</page>
+kind: "Page"
+title: "Main page"
+description: "Will be rendered by front-end"
+form: []
+regions:
+- "main"
 ----
 +
 NOTE: The definition of the region `main`, allows Content Studio editors to add components to the page, as you will see later.
@@ -104,15 +101,18 @@ image:page-rendered.png[title="Active page controller rendering an empty region 
 
 Content Studio ships with a built-in Text component which can be handy when composing pages.
 
-. From the Insert tab (on the right hand side), drag a Text component into the region. 
-. Text mode will now be activated, and you can use the link:https://developer.enonic.com/docs/content-studio/stable/editor/component-types#text_component[rich-text editor] to write and format text, but also insert images.
+. From the Insert tab (on the right hand side), drag a Text component into the region.
+. Use the link:https://developer.enonic.com/docs/content-studio/stable/editor/component-types#text_component[rich-text editor] to write and format text, as well as insert images or macros.
 +
 image:text-component.png[title="Next.js-rendered text component with an image",width=1440px]
 +
 . You may also click the `Preview` button in Content Studio for a full screen version.
 
 == Task: Publish page
-Your new page is looking good. However, if you visit `http://localhost:3000[http://localhost:3000^]` - you'll get a "404 page not found" error. This is because only published changes are visible from the front end.
+
+Your new page is looking good.
+However, if you visit `http://localhost:3000[http://localhost:3000^]` in an incognito window or different browser - you'll get a "404 page not found" error.
+This is because preview mode is off in incognito window and only published changes are visible from the front end.
 
 Content Studio activates Next.js' preview mode, which in turn uses the drafts API. When accessing the front-end directly, Next.js fetches published content from the master branch.
 
@@ -120,6 +120,6 @@ Content Studio activates Next.js' preview mode, which in turn uses the drafts AP
 +
 image:publish.png[title="Publishing wizard",width=810px]
 +
-. **Verify that your page is live** by visiting `http://localhost:3000[http://localhost:3000^]` once again.
+. **Verify that your page is live** by visiting `http://localhost:3000[http://localhost:3000^]` in incognito window once again.
 
 That concludes the introduction to page rendering, coming up we'll add some <<parts#, configurable page components>> to play with.

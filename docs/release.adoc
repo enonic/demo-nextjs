@@ -1,6 +1,61 @@
 = Release Notes
 :toc: right
 
+== Next.XP Demo 5
+
+=== Framework upgrades
+
+* Next.js 16 and React 19
+* TypeScript 5.9
+* ESLint 9 with flat config (`eslint.config.mjs`)
+
+=== Guillotine 8 query syntax
+
+GraphQL queries now use explicit `siteKey`, `project`, and `branch` parameters passed directly to the `guillotine()` field, instead of relying on the API URL path to determine project and branch.
+
+=== New API URL format
+
+`ENONIC_API` now points to the Guillotine GraphQL endpoint directly (e.g. `http://127.0.0.1:8080/api/com.enonic.app.guillotine:graphql`) instead of the old `/site` path.
+
+=== Proxy replaces middleware
+
+The `src/middleware.ts` file has been replaced by `src/proxy.ts`, which handles Content Studio requests with encrypted blob validation, locale detection, and draft mode activation.
+
+=== Encrypted blob authentication
+
+API routes (`/api/revalidate`, `/api/preview`, `/api/mappings`) now use encrypted blob validation instead of plain token comparison.
+The `decryptParams` and `encryptParams` functions are available from `@enonic/nextjs-adapter`.
+
+=== New `/api/mappings` endpoint
+
+Returns routing mapping configuration to Content Studio, secured with blob validation.
+
+=== Content Studio live editing with `@enonic/page-editor`
+
+The new `@enonic/page-editor` package brings full compatibility with Content Studio's live page editing.
+It enables features like component drag-and-drop, inline text editing, and click-to-select directly within the Next.js-rendered preview.
+
+The `PageEditorScript` client component initializes the page editor on every page and handles communication between Content Studio and the Next.js frontend.
+It is included automatically via the main page handler.
+
+=== MetaData type changes
+
+`MetaData.apiUrl` has been replaced with `branch`, `project`, and `site` fields.
+
+=== Adapter API changes
+
+* `getContentApiUrl()` removed
+* `getContentBranch()` added
+* `BaseMacro` no longer accepts `renderInEditMode` prop
+* `getRenderMode()` context parameter is now optional
+
+=== Other improvements
+
+* Next.js 16 async params: route params are now `Promise` and must be awaited
+* The adapter automatically sets `renderMode` to `EDIT` when Next.js draft mode is enabled
+* CORS headers configured for Content Studio widget support
+* `JSX.Element` replaced with `ReactElement` for more precise TypeScript typing
+
 == Next.XP Demo 3
 
 === App router structure

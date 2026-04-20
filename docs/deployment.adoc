@@ -92,10 +92,10 @@ With the front-end running, you can link it to Content Studio to activate the pr
 
 TIP: To save time, you may export content from your local machine and import it to the server using the https://market.enonic.com/vendors/glenn-ricaud/data-toolbox[Data Toolbox app].
 
-. **Install the Next.XP app** `Solution` -> `Applications` -> `Install` -> Search for `Next.XP`, select it an click install
+. **Install the `Next.js Preview` app** `Solution` -> `Applications` -> `Install` -> Search for `Next.js Preview`, select it and click install
 . **Add configuration**.
 +
-image:console-configure-app.png[title="Configure the Next.XP application in the solution console",width=769px]
+image:console-configure-app.png[title="Configure the Next.js Preview application in the solution console",width=769px]
 +
 .Add the following lines to the app config field to override the default values:
 [source,properties]
@@ -107,7 +107,11 @@ nextjs.default.secret = <yourSecret>
 TIP: Remember, you can also create named configurations if needed.
 +
 NOTE: If you imported content from your local environment, the following two steps can be skipped
-. **Add the Next.XP app to the site** to activate preview.
++
+NOTE: The Next.js Preview app adds a preview widget that works without adding the app to the site.
+However, adding it to the site lets you select a named configuration from the app config file.
++
+. Optionally, **add the Next.js Preview app to the site** to select a named configuration.
 . **Save and verify** that the configuration is working by testing the Content Studio preview.
 
 == Task: Publish a page

@@ -11,15 +11,13 @@ To complete this section, we'll need one final part for listing movie details. T
 
 . **Add the `movie-details` part to Enonic** - same procedure as before...
 +
-.src/main/resources/site/parts/movie-details/movie-details.xml
-[source,xml]
+.src/main/resources/cms/parts/movie-details/movie-details.yaml
+[source,yaml]
 ----
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<part xmlns="urn:enonic:xp:model:1.0">
-    <display-name>Movie Details</display-name>
-    <description>Show details of a movie</description>
-    <form/>
-</part>
+kind: "Part"
+title: "Movie Details"
+description: "Show details of a movie"
+form: []
 ----
 +
 . **Redeploy** the Enonic app (happens automatically if you started `enonic project dev`).

@@ -32,21 +32,23 @@ The following file structure should now exist within your new project folder:
 ----
 .env                                // <1>
 src/
-    proxy.ts                   // <2>
+    proxy.ts                        // <2>
     components/                     // <3>
     phrases/                        // <4>
         en.json
+    styles/                         // <5>
     app/
         [locale]
             [[...contentPath]]/
-                page.tsx            // <5>
-            layout.tsx              // <6>
-            error.tsx               // <7>
-            not-found.tsx           // <8>
-        api/                        // <9>
-            preview/
+                layout.tsx          // <6>
+                page.tsx            // <7>
+            layout.tsx              // <8>
+            error.tsx               // <9>
+            not-found.tsx           // <10>
+        api/                        // <11>
+            mappings/
                 route.tsx
-            renderable/
+            preview/
                 route.tsx
             revalidate/
                 route.tsx
@@ -56,11 +58,13 @@ src/
 <2> Middleware file that routes requests based on locale
 <3> Contains your implementation of CMS components
 <4> Phrase files for multi-language support
-<5> The main rendering file, catching all requests satisfying the pattern `/[locale]/[[...contentPath]]`
-<6> Layout file that wraps all pages and adds common structures (eg. `<Header>`, `<LocaleContextProvider>`, etc.)
-<7> Error page handler
-<8> Not found page handler
-<9> Folder containing API routes
+<5> Global styles for the site
+<6> Layout file for all pages under the locale/content path
+<7> The main rendering file, catching all requests satisfying the pattern `/[locale]/[[...contentPath]]`
+<8> Global layout file that wraps all pages and adds common structures (eg. `<Header>`, `<LocaleContextProvider>`, etc.)
+<9> Error page handler
+<10> Not found page handler
+<11> Folder containing API routes
 
 
 == Task: Configure application
@@ -82,11 +86,11 @@ ENONIC_APP_NAME=tutorial.nxp
 ENONIC_MAPPINGS=en:intro/hmdb <1>
 
 # Absolute URL to Content API
-ENONIC_API=http://127.0.0.1:8080/site <2>
+ENONIC_API=http://127.0.0.1:8080/api/com.enonic.app.guillotine:graphql <2>
 ----
 
 <1> Mapping an XP project (intro) and site (/hmdb) to the Next.js router.
-<2> Base URL of the Guillotine API, but without project and branch.
+<2> URL of the Guillotine GraphQL API endpoint.
 
 TIP: These configuration values can be overridden later when deploying your app to a live server.
 

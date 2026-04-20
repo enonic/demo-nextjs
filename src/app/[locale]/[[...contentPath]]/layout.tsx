@@ -1,4 +1,4 @@
-import {getAsset, I18n, RENDER_MODE, XP_REQUEST_TYPE} from '@enonic/nextjs-adapter';
+import {I18n, RENDER_MODE, XP_REQUEST_TYPE} from '@enonic/nextjs-adapter';
 import {LocaleContextProvider} from '@enonic/nextjs-adapter/client';
 import {fetchContent} from '@enonic/nextjs-adapter/server';
 import StaticContent from '@enonic/nextjs-adapter/views/StaticContent';
@@ -43,7 +43,7 @@ export default async function PageLayout({params, children}: LayoutProps) {
     return (
         <LocaleContextProvider locale={resolvedParams.locale}>
             <StaticContent condition={isEdit}>
-                <Header meta={meta} title={I18n.localize('title')} logoUrl={getAsset('/images/xp-shield.svg', meta)}/>
+                <Header meta={meta} title={I18n.localize('title')} logoUrl="/images/xp-shield.svg"/>
                 <main>{children}</main>
                 <Footer/>
             </StaticContent>

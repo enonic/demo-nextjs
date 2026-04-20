@@ -11,19 +11,16 @@ Adding layouts is more or less identical to pages and parts. Simply follow the s
 
 . **Add the `2-column` layout** to the Enonic app
 +
-.src/main/resources/site/layouts/2-column/2-column.xml
-[source,xml]
+.src/main/resources/cms/layouts/2-column/2-column.yaml
+[source,yaml]
 ----
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<layout xmlns="urn:enonic:xp:model:1.0">
-    <display-name>2 columns</display-name>
-    <description>Provides left and right regions</description>
-    <form/>
-    <regions>
-        <region name="left"/>
-        <region name="right"/>
-    </regions>
-</layout>
+kind: "Layout"
+title: "2 columns"
+description: "Provides left and right regions"
+form: []
+regions:
+- "left"
+- "right"
 ----
 +
 NOTE: Just like a page, layouts may declare named regions.

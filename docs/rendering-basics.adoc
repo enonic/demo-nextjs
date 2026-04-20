@@ -27,8 +27,7 @@ include::{sourcedir}/components/queries/getPerson.ts[]
 +
 This file defines a graphQL query 'getPerson' that will fetch data from the Enonic API.
 +
-TIP: You may validate the query by copying it to the GraphQL playground. Replace `APP_NAME_UNDERSCORED` with `com_example_myproject` and set a query variable, try this for instance:
-  `{"path": "/hmdb/persons/brad-pitt"}`
+NOTE: Query uses variables `siteKey`, `branch`, `project` and `path` that are automatically populated by the Enonic next.js adapter.
 +
 . **Add the following imports** to the component mappings file:
 +
@@ -126,7 +125,6 @@ import {RENDER_MODE, XP_REQUEST_TYPE, I18n} from '@enonic/nextjs-adapter';
 ----
 import Header from '../../../components/views/Header';
 import Footer from '../../../components/views/Footer';
-import {getAsset} from '@enonic/nextjs-adapter';
 ----
 +
 . And at the bottom of the file **replace the entire return function**:
@@ -134,7 +132,7 @@ import {getAsset} from '@enonic/nextjs-adapter';
 [source,TypeScript]
 ----
 return (
-    <LocaleContextProvider locale={params.locale}>
+    <LocaleContextProvider locale={resolvedParams.locale}>
         <StaticContent condition={isEdit}>
             <main>{children}</main>
         </StaticContent>
@@ -147,18 +145,15 @@ With this:
 [source,TypeScript]
 ----
 return (
-    <LocaleContextProvider locale={params.locale}>
+    <LocaleContextProvider locale={resolvedParams.locale}>
         <StaticContent condition={isEdit}>
-            <Header meta={meta} title={I18n.localize('title')} logoUrl={getAsset('/images/xp-shield.svg', meta)}/>
+            <Header meta={meta} title={I18n.localize('title')} logoUrl="/images/xp-shield.svg"/>
             <main>{children}</main>
             <Footer/>
         </StaticContent>
     </LocaleContextProvider>
 )
 ----
-
-NOTE: Pay attention to the `getAsset()` function.
-It ensures that links to assets are working seamlessly in Next.js, as well as in Content Studio preview mode, as you will see later.
 
 Morgan Freeman's page should now look like this
 

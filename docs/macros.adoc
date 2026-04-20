@@ -11,7 +11,8 @@ Occationaly, you may require rich components, even within your rich text. This i
 
 == FactBox macro
 
-In your Enonic project, a `FactBox` macro schema is pre-defined. It is located in `src/main/resources/site/macros/FactBox.xml`
+In your Enonic project, a `FactBox` macro schema is pre-defined.
+It is located in `src/main/resources/cms/macros/factbox/factbox.yaml`
 If you take a closer look at the Léa Seydoux bio, you can see how the [factbox] macro is used.
 
 

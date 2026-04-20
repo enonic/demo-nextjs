@@ -52,17 +52,18 @@ Sweet, you should now have a site with content and a basic tree structure.
 
 == Task: Site contextual queries
 
-In GraphQL queries, you may use a so-called "site context". This is activated by passing an HTTP header along with the query. 
+In GraphQL queries, you may use a so-called "site context".
+This is achieved by adding another parameter to the guillotine query called `siteKey`.
 
-. Specify header
+. Specify `siteKey` parameter
 +
-Back in Query Playground, open the `Request Headers` panel at the bottom, and add the following configuration:
+Back in Query Playground, add the `siteKey` parameter to your previous query, and set it to the path of your site:
 +
-.Configure HTTP headers
-[source,JSON]
+[source,graphql]
 ----
-{
-  "X-Guillotine-SiteKey": "/hmdb"
+query($path:ID!){
+  guillotine(project: "intro", siteKey: "/hmdb") {
+  ...
 }
 ----
 +

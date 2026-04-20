@@ -6,23 +6,16 @@ In this chapter, you'll enable Content Studio to load the preview directly from 
 
 == Task: Enable preview
 
-Install and configure the `Next.XP` app on your site.
+Install the `Next.js Preview` app that adds a new preview widget to Content Studio.
 
-. **Install the NextJS integration app**:
+. **Install the Next.js Preview app**:
 +
-From `XP menu` -> `Applications` -> `Install` and search for `Next.XP`
+From `XP menu` -> `Applications` -> `Install` and search for `Next.js Preview`
 +
-. *Activate the preview*
+The preview widget will work immediately after installation.
+Optionally, you can add the app to the site to select a named configuration (useful for multi front-end setups, covered in the <<i18n#, Multi language>> chapter).
 +
-In Content Studio, select the `HMDB` site and click `Edit`.
-+
-Add the Next.XP app to the site by selecting it in the "Applications" combobox.
-+
-image:content-studio-add-nextxp.png[title="Open app config by pressing pencil icon",width=597px]
-+
-Save the site to make all the features of the app available.
-+
-By default Next.XP preview uses the following values:
+By default Next.js Preview uses the following values:
 +
 * *url*: `http://127.0.0.1:3000`
 * *secret*: `mySecretKey`
@@ -36,27 +29,30 @@ image:morgan-freeman-preview.png[title="Next.js-rendered preview in Content Stud
 
 == How does it work?
 
-There are several aspects that come into play for the preview to work seamlessly and still remain secure.
+The Next.js Preview app adds a preview widget to Content Studio that loads pages directly from the Next.js server.
+When an editor selects a content item, the widget:
 
-The following aspects need to be handled:
+. Fetches URL mapping rules from the Next.js server's `/api/mappings` endpoint
+. Resolves the content item to a Next.js URL using those mappings
+. Encrypts request parameters with the shared secret and sends a request
+. Loads the resolved page in the preview pane
 
-* Next.js preview mode must be activated
-* API queries from Next.js must have access to the draft content
-* Permissions must be limited to the current editorial user
-* Links in the Next.js response must be processed to work properly in Content Studio
+On the Next.js side, the proxy (`src/proxy.ts`) receives the request, authenticates the request by decrypting parameters, enables Next.js draft mode, and renders the page with unpublished content.
 
-image:preview-flowchart.png[title="Flowchart demonstrating the preview execution flow",width=755px]
+== Live page editing
 
-As you can see from the above flowchart, Next.XP acts as a proxy, but it is also helped by the `Enonic Adapter` which exists inside the Next.js project.
+In addition to preview, Content Studio supports live page editing - where editors can drag-and-drop components, edit text inline, and select components directly within the rendered page.
+
+All you need to do as a frontend developer is to add the `PageEditorScript` component to your app, that handles all interaction!
+
+```
+<PageEditorScript mode={data.meta.renderMode}/>
+```
 
 == Link handling
-Content Studio internally uses a set of different relative URLs to handle preview.
-These are: `/preview`, `/inline` and `/edit`.
 
-Next.js on the other hand, will use a single basepath, typically `/` for the site.
-As Next.js does not support dynamically changing the basepath, the `getUrl()` function that was mentioned earlier needs to be used in the Next.js project. This will take care of all links controlled by the developer's code.
+Since the preview widget loads pages directly from the Next.js server, links within the rendered page need to work correctly inside Content Studio's preview pane.
 
-Additionally, Next.js will "hardcode" links to various static assets and code, which getURL cannot handle().
-The Next.XP proxy then automatically processes these remaining URLs before the result can be seen in Content Studio.
+The `getUrl()` function from the Enonic Adapter handles links to media files, basepath resolution, and language prefix — ensuring they work correctly both in standalone mode and in Content Studio preview.
 
 That completes the preview setup; moving forward, we'll look into rendering <<rich-text#, Html Area>> fields.
