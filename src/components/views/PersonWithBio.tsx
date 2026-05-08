@@ -19,7 +19,7 @@ const PersonWithBio = (props: FetchContentResult) => {
                 }
                 <div className={styles.photos}>
                     {
-                        photos.map((photo: any, i: number) => (
+                        photos.filter((p: any) => !!p).map((photo: any, i: number) => (
                             <img key={i}
                                  src={getUrl(photo.imageUrl, meta)}
                                  title={getTitle(photo, displayName)}
