@@ -56,7 +56,8 @@ query {
 const MovieView = (props: PartProps) => {
     const data = props.data?.get.data as MovieInfoProps;
     const meta = props.meta;
-    const {displayName, parent = {}} = props.data.get;
+    const {displayName, parent} = props.data.get;
+    const href = parent?._path && getUrl(parent?._path, meta);
     return (
         <>
             <div>
@@ -64,9 +65,11 @@ const MovieView = (props: PartProps) => {
                 {data && <MovieInfo {...data} meta={meta}/>}
                 {data?.cast && <Cast cast={data.cast} meta={meta}/>}
             </div>
-            <p>
-                <Link href={getUrl(parent._path, meta)}>{I18n.localize('back')}</Link>
+            {href &&
+             <p>
+                 <Link href={href}>{I18n.localize('back')}</Link>
             </p>
+            }
         </>
     );
 };
