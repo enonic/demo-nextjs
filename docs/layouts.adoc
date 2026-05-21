@@ -67,9 +67,7 @@ ComponentRegistry.addLayout(`${APP_NAME}:2-column`, {
 +
 NOTE: this specific layout does not need any additional data - hence no query or processor:
 
-After completing these steps, you should be able to add the layout to a page, and then add components inside the layout. It might look something like this:
-
-image:layout-empty.png[title="Empty layout on the persons page",width=1440px]
+After completing these steps, you should be able to add the layout to a page, and then add components inside the layout.
 
 By combining layout, part and text we are starting to see the potential of the page editor:
 

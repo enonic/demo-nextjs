@@ -28,7 +28,7 @@ Fill in the form, using the following values:
 +
 * *Name*: `Film DB`
 * *Identifier*: `intro-no`
-* *Language*: `norsk (no)`
+* *Default Language*: `norsk (no)`
 * *Access mode*: `Public`
 * Other fields may be skipped
 +
@@ -71,6 +71,11 @@ NOTE: The reason for repeating paths, is that the path may be different in each 
 . Next, add the static texts file for every locale to the `src/phrases` folder.
 The file name should be `<locale>.json`, e.g. `no.json` for Norwegian.
 +
+.src/phrases/no.json
+```[source,json]
+include::{sourcedir}/phrases/no.json[]
+```
++
 . Finally *restart your Next.js server* to pick up the changes to environment variables.
 
 
@@ -97,7 +102,7 @@ image:content-studio-mark-as-ready.png[title="Click tree icon to include all chi
 +
 . **Verify that your front-end is working**
 +
-Finally, by adding `/no` (i.e. `localhost:3000/no`) to the URL of your Next.js server in an incognito window you should now see the published content from the Norwegian project.
+Finally, by adding `/no/hmdb` (i.e. `localhost:3000/no/hmdb`) to the URL of your Next.js server in an *incognito window* you should now see the published content from the Norwegian project.
 
 
 == Multi front-end setup
@@ -115,15 +120,12 @@ NOTE: The sandbox configuration files are located in the sandbox' home directory
 ----
 # uncomment to override default values
 # nextjs.default.secret=yourSecret
-# nextjs.default.url=http://127.0.0.1:3000
+# nextjs.default.url=http://localhost:3000
 #
-# config 'someName'
-nextjs.someName.secret=yourSecret
-nextjs.someName.url=https://your.next-site.com
+# config 'prod'
+nextjs.prod.secret=yourSecret
+nextjs.prod.url=https://your.next-site.com
 #
-# config 'anotherName'
-nextjs.anotherName.secret=yourOtherSecret
-nextjs.anotherName.url=https://your.other-next-site.com
 # ...
 ----
 +
@@ -199,7 +201,7 @@ export default function ClientSideComponent() {
 }
 ----
 
-NOTE: The `useLocaleContext` hook is only available in client-side components.
+NOTE: The `useLocaleContext` hook is only available in *client-side* components.
 
 . In server-side components, you can use `I18n.getLocale()` from `@enonic/nextjs-adapter` to do the same:
 +

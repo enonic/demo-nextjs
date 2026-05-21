@@ -70,7 +70,9 @@ Click btn:[Log In as Guest] to open the XP admin dashboard. You should now see t
 .The XP admin dashboard
 image::xp-dashboard.png[The XP admin dashboard, {image-xl}]
 
-You are now on the admin dashboard. The right hand menu (aka `XP menu`) enables navigation between admin tools. Admin tools may be injected as extensions via applications.
+You are now on the admin dashboard.
+The center menu (aka `XP menu`) enables navigation between admin tools.
+Admin tools may be injected as extensions via applications.
 
 NOTE: If things don't look exactly the same, don't worry. In every new version of XP the background picture gets updated. Also, admin dashboard is automatically localized - based on your browsers preferred language.
 

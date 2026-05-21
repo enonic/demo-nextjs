@@ -18,7 +18,9 @@ image:content-studio-guillotine.png[title="Browsing the Guillotine API using Que
 
 [NOTE]
 ====
-The API can be accessed directly following URL: http://localhost:8080/site/intro[http://localhost:8080/site/intro^].
+The API can be accessed directly following URL: http://localhost:8080/api/com.enonic.app.guillotine:graphql[http://localhost:8080/api/com.enonic.app.guillotine:graphql^].
+
+
 
 `hmdb` is the name of your Content Studio project.
 ====
@@ -59,7 +61,7 @@ Run this simple query that retrieves the ID and displayName of some movies:
 }
 ----
 +
-NOTE: `intro` is the name of the project. `tutorial.nxp` refers to the name of the application you created in the previous chapter. `movie` is a specific content type within the app.
+NOTE: `intro` is the name of the Content Studio project. `tutorial.nxp` refers to the name of the application you created in the previous chapter. `movie` is a specific content type within the app.
 +
 . **View the Result**
 +

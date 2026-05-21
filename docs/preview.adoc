@@ -4,6 +4,21 @@
 
 In this chapter, you'll enable Content Studio to load the preview directly from the Next.js app.
 
+== Task: Allow the Next.js origin in Content Studio
+
+Content Studio ships with a strict Content Security Policy that blocks loading pages from third-party URLs, including `http://localhost:3000`.
+To allow it, add a configuration file for Content Studio in your sandbox' https://developer.enonic.com/docs/xp/stable/deployment/config[config folder^]:
+
+.com.enonic.app.contentstudio.cfg
+[source,properties]
+----
+contentSecurityPolicy.header=default-src 'self' http://localhost:3000; connect-src 'self' ws: wss: http://localhost:3000; script-src 'self' 'unsafe-eval' 'unsafe-inline' http://localhost:3000; object-src 'none'; style-src 'self' 'unsafe-inline' http://localhost:3000; img-src 'self' http://localhost:3000 data:;
+----
+
+The directives whitelist the Next.js dev server (`http://localhost:3000`) as an allowed source for scripts, styles, images, frames, and WebSocket connections (used by Next.js HMR). `'unsafe-eval'` and `'unsafe-inline'` are required by the Next.js dev runtime.
+
+NOTE: When deploying to production, replace `http://localhost:3000` with your live Next.js origin and consider removing `'unsafe-eval'` / `'unsafe-inline'` if your production build does not need them.
+
 == Task: Enable preview
 
 Install the `Next.js Preview` app that adds a new preview widget to Content Studio.
@@ -17,7 +32,7 @@ Optionally, you can add the app to the site to select a named configuration (use
 +
 By default Next.js Preview uses the following values:
 +
-* *url*: `http://127.0.0.1:3000`
+* *url*: `http://localhost:3000`
 * *secret*: `mySecretKey`
 +
 This matches your setup, so everything should work out of the box. We will get back to tuning these values in the <<static#, Static pages>>, and <<deployment#, Deployment>> chapters.
@@ -25,7 +40,6 @@ This matches your setup, so everything should work out of the box. We will get b
 . After applying and saving the changes, you should be able to see the live preview in Content Studio when selecting any content in the "Persons" folder.
 +
 image:morgan-freeman-preview.png[title="Next.js-rendered preview in Content Studio",width=1072px]
-
 
 == How does it work?
 
@@ -45,13 +59,29 @@ In addition to preview, Content Studio supports live page editing - where editor
 
 All you need to do as a frontend developer is to add the `PageEditorScript` component to your app, that handles all interaction!
 
+Add the following import to your page component:
+
+.src/app/[locale]/[[...contentPath]]/page.tsx
+[source,TypeScript]
 ```
-<PageEditorScript mode={data.meta.renderMode}/>
+import PageEditorScript from '../../../components/views/PageEditorScript';
+```
+
+And then *replace the return statement* with the following code:
+
+.src/app/[locale]/[[...contentPath]]/page.tsx
+```
+return (
+    <>
+        <MainView {...data}/>
+        <PageEditorScript mode={data.meta.renderMode}/>
+    </>
+)
 ```
 
 == Link handling
 
-Since the preview widget loads pages directly from the Next.js server, links within the rendered page need to work correctly inside Content Studio's preview pane.
+Since the preview widget loads pages directly from the Next.js server, links within the rendered page need to work correctly inside Content Studio's as well.
 
 The `getUrl()` function from the Enonic Adapter handles links to media files, basepath resolution, and language prefix — ensuring they work correctly both in standalone mode and in Content Studio preview.
 
