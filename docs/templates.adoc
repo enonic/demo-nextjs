@@ -50,17 +50,17 @@ With the new component registered, let's put it to use.
 
 . In Content Studio, select and **edit your favorite movie** (or choose "No time to die" if you have no faviorites).
 +
-. **Activate the page editor** by pressing `Display` icon in the top right screen corner, select the "Main page" descriptor and **add the "Movie details" part** to the page.
+. **Activate the context panel** by pressing its icon in the top right screen corner, select the `Page` extension, then "Main page" descriptor in dropdown and **add the "Movie details" part** to the page.
 +
 image:movie-details.png[title="No time to die, configured with movie-details part",width=1440px]
 +
 We now have a single movie nicely presented, but it would be cumbersome to manually configure each movie like this - page templates to the rescue.
 +
-. In the page editor, **select the page (root) component** (for instance by clicking on the header).
+. In the page tab in the form on the left, **select the page (root) component**.
 +
 image:movie-page.png[title="With page component selected, save as template appears in right hand panel",width=1440px]
 +
-. Click **Save as template** from the right hand panel.
+. Right click it and select **Save as template** from the context menu.
 +
 This will create a new page template content item, and open it in a new tab for editing.
 +

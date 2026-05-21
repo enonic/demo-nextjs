@@ -3,7 +3,8 @@
 :imagesdir: media/
 :sourcedir: ../src
 
-Enonic provides a highly customizable component type called link:https://developer.enonic.com/docs/xp/stable/cms/pages/parts[parts^]. Similar to page components parts must be defined in both Enonic and Next.js in order to fully work.
+Enonic provides a highly customizable component type called link:https://developer.enonic.com/docs/xp/stable/cms/pages/parts[parts^] and you actually have already created one called `Paragraph` in the previous chapter!
+Similar to page components, parts must be defined in both Enonic and Next.js in order to fully work.
 
 
 == Task: Add part to Enonic
@@ -40,8 +41,9 @@ This means editors can configure it - sorting the items Ascending or Descending.
 . **Add parts to the page**
 +
 Back in Content Studio, edit the `/hmdb/persons` folder item.
-Expand the page preview section by clicking display icon in the top right corner and select `Main page` controller in the dropdown in the middle of page.
-Create the page and add a new part to the region (`right-click -> Insert`, or drag-n-drop from the `Insert panel`` on the right hand side).
+Expand the page preview section by clicking `Show Context Panel` icon in the top right corner and select `Page` extension in the dropdown.
+Then choose `Main page` template to create a page.
+Now add a new part to the region (`right-click -> Insert`, or drag-n-drop from the `Insert panel`` on the right hand side).
 Finally select the `Child list` in the part descriptor dropdown.
 +
 TIP: The part will appear without making any changes to the front-end, this is because the Enonic Adapter contains fallback part rendering, as long as Next.js is running in DEV mode.
@@ -129,6 +131,6 @@ ComponentRegistry.addPart(`${APP_NAME}:heading`, {
 });
 ----
 +
-You should now have two configurable parts to play with.
+You should now have three configurable parts to play with.
 
 In the next chapter you will make page composition even more interesting, with the introduction of <<layouts#, layouts>>. 

@@ -31,6 +31,7 @@ NOTE: This will leave the item in `In progress` state, which is ok for now.
 == Add content
 
 To quickly get some content and structure within the site, let's move the Movie DB content into the site.
+Return back to the Content Studio tab, and follow these steps:
 
 . **Select the folders** in the list, and click `Move` from the toolbar. 
 . **Selecting the `HMDB` site** as the target and click `Move` once more.
@@ -41,7 +42,8 @@ image:content-studio-move.png[title="Move the folder into the site", width=1024p
 +
 image:content-studio-mark-as-ready.png[title="Mark as ready", width=1024px]
 +
-. To **publish the entire new tree structure** select the hierarchy icon to the left of the site. This will expand to include all items that have been moved as well. Then click `Publish Now`
+. To **publish the entire new tree structure** select the include child items checkbox, then apply in the notification bar.
+Then click `Publish Now`
 +
 image:content-studio-publish.png[title="Publish entire tree structure", width=1024px]
 

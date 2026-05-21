@@ -81,7 +81,7 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 +
 . *That's it!*
 +
-The resulting page for http://localhost:3000/persons/lea-seydoux[Lea Seydoux] should look like this:
+The resulting page for http://localhost:3000/hmdb/persons/lea-seydoux[Lea Seydoux] should look like this:
 +
 image::rich-text-no-macro.png[title="Person content rendered with rich text",width=1080px]
 
