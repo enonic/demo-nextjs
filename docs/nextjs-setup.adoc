@@ -105,7 +105,7 @@ Start Next.js in  **dev mode** by running the following commands from within you
     npm install
     npm run dev
 
-If Next boots without errors, point your browser to http://localhost:3000/hmdb[http://localhost:3000/hmdb^] to see the glorious result.
+If Next boots without errors, point your browser to http://localhost:3000[http://localhost:3000^] to see the glorious result.
 
 .Application root page, showing debugging details
 [source]
@@ -142,11 +142,11 @@ For more details on booting Next, check out the link:https://nextjs.org/docs/api
 
 == Next URL patterns
 
-The URL structure of your front-end will mirror the structure of the content in the CMS. http://localhost:3000/hmdb[http://localhost:3000/hmdb^] will be mounted to the site root, which in our case has the internal path `/hmdb`.
+The URL structure of your front-end will mirror the structure of the content in the CMS. http://localhost:3000[http://localhost:3000^] will be mounted to the site root, which in our case has the internal path `/hmdb`.
 
 Using the Movie Se7en as an example:
 
-.Result when visiting http://localhost:3000/hmdb/movies/se7en[http://localhost:3000/hmdb/movies/se7en^]
+.Result when visiting http://localhost:3000/movies/se7en[http://localhost:3000/movies/se7en^]
 [source]
 ----
 Page:
@@ -205,9 +205,9 @@ image:se7en-edit.png[title="Editing item in Content Studio - the path /hmdb/movi
 
 Give the default rendering a spin by trying out some other URLs, for example: +
 
-* http://localhost:3000/hmdb/movies[http://localhost:3000/hmdb/movies^] +
-* http://localhost:3000/hmdb/persons[http://localhost:3000/hmdb/persons^] +
-* http://localhost:3000/hmdb/persons/brad-pitt[http://localhost:3000/hmdb/persons/brad-pitt^]
+* http://localhost:3000/movies[http://localhost:3000/movies^] +
+* http://localhost:3000/persons[http://localhost:3000/persons^] +
+* http://localhost:3000/persons/brad-pitt[http://localhost:3000/persons/brad-pitt^]
 
 ...etc.
 
