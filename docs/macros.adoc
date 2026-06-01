@@ -61,7 +61,7 @@ IMPORTANT: Macros must be registered before any other component that uses RichTe
 +
 . *Sweet!*
 +
-You should now see http://localhost:3000/hmdb/persons/lea-seydoux[Lea Seydoux] updated with the `FactBox` macro:
+You should now see http://localhost:3000/persons/lea-seydoux[Lea Seydoux] updated with the `FactBox` macro:
 
 image::rich-text-result.png[title="Person content rendered with rich text and macro",width=1142px]
 

@@ -23,7 +23,7 @@ ComponentRegistry.addContentType(CATCH_ALL, {
 */
 ----
 +
-. **Verify that pages are no longer rendering json body** by visiting your site on `http://localhost:3000/hmdb`.
+. **Verify that pages are no longer rendering json body** by visiting your site on `http://localhost:3000`.
 +
 The same will now apply to Content Studio.
 
@@ -163,7 +163,7 @@ image:paragraph-component.png[title="Next.js-rendered paragraph part with an ima
 == Task: Publish page
 
 Your new page is looking good.
-However, if you visit `http://localhost:3000/hmdb[http://localhost:3000/hmdb^]` in an incognito window or different browser - you'll get a "404 page not found" error.
+However, if you visit `http://localhost:3000[http://localhost:3000^]` in an incognito window or different browser - you'll get a "404 page not found" error.
 This is because preview mode is off in incognito window and only published changes are visible from the front end.
 
 Content Studio activates Next.js' preview mode, which in turn uses the drafts API. When accessing the front-end directly, Next.js fetches published content from the master branch.
@@ -172,6 +172,6 @@ Content Studio activates Next.js' preview mode, which in turn uses the drafts AP
 +
 image:publish.png[title="Publishing wizard",width=810px]
 +
-. **Verify that your page is live** by visiting `http://localhost:3000/hmdb[http://localhost:3000/hmdb^]` in incognito window once again.
+. **Verify that your page is live** by visiting `http://localhost:3000[http://localhost:3000^]` in incognito window once again.
 
 That concludes the introduction to page rendering, coming up we'll add some <<parts#, configurable page components>> to play with.
