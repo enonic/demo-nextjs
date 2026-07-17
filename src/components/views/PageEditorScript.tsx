@@ -1,30 +1,28 @@
 'use client';
 
 import {RENDER_MODE, MetaData} from '@enonic/nextjs-adapter';
-import {ComponentPath, EditorEvents, PageEditor} from '@enonic/page-editor';
+import {init, subscribe, isInitialized, renderLoadingComponent, renderComponent, renderErrorComponent} from '@enonic/page-editor';
 
 const SINGLE_COMPONENT_MARKER = 'details[data-single-component-output="true"]';
 
-const PageEditorScript = function ({meta: {path, locale, renderMode}}: { meta: MetaData }) {
+const PageEditorScript = function ({meta: {locale, renderMode}}: { meta: MetaData }) {
 
-    if (PageEditor.isInitialized()) {
+    if (isInitialized()) {
         return null;
     }
 
-    PageEditor.init({editMode: renderMode === RENDER_MODE.EDIT});
+    init({editMode: renderMode === RENDER_MODE.EDIT});
     console.info(`Page editor started in ${renderMode} mode.`);
 
-    PageEditor.on(EditorEvents.ComponentLoadRequest, async (event) => {
-        const data = event.getData() as { path?: ComponentPath } | undefined;
-        const componentPath = data?.path;
-        if (!componentPath) {
+    subscribe('component-load-request', async ({path, isExisting}) => {
+        if (!path) {
             return;
         }
 
-        PageEditor.renderLoadingComponent(componentPath);
+        renderLoadingComponent(path);
 
         try {
-            const url = `/${locale}/${path}/_/component/${componentPath}`.replace(/\/{2,}/g, '/');
+            const url = `/${locale}/${path}/_/component/${path}`.replace(/\/{2,}/g, '/');
 
             const res = await fetch(url, {credentials: 'same-origin'});
             if (!res.ok) {
@@ -37,9 +35,9 @@ const PageEditorScript = function ({meta: {path, locale, renderMode}}: { meta: M
                 throw new Error('Single-component marker not found in response');
             }
 
-            PageEditor.renderComponent(componentPath, marker.innerHTML);
+            renderComponent(path, marker.innerHTML);
         } catch (err) {
-            PageEditor.renderErrorComponent(componentPath, err instanceof Error ? err : new Error(String(err)));
+            renderErrorComponent(path, err instanceof Error ? err : new Error(String(err)));
         }
     });
 
