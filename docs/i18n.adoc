@@ -19,15 +19,16 @@ To demonstrate multi-language, you first need to activate support for translatin
 +
 image:content-studio-settings.png[title="Project list",width=1024px]
 +
-Click `New...` button, and select type `Layer`. Then choose the `Movie DB` project as the parent
+Select existing `intro` project and click `New...` button.
+This will open the layer creation wizard for the `intro` project.
 +
 image:content-studio-create-layer.png[title="Layered project type",width=1024px]
 +
-Fill in the rest of the form, using the following values:
+Fill in the form, using the following values:
 +
 * *Name*: `Film DB`
 * *Identifier*: `intro-no`
-* *Language*: `norsk (no)`
+* *Default Language*: `norsk (no)`
 * *Access mode*: `Public`
 * Other fields may be skipped
 +
@@ -70,6 +71,12 @@ NOTE: The reason for repeating paths, is that the path may be different in each 
 . Next, add the static texts file for every locale to the `src/phrases` folder.
 The file name should be `<locale>.json`, e.g. `no.json` for Norwegian.
 +
+.src/phrases/no.json
+[source,json]
+----
+include::{sourcedir}/phrases/no.json[]
+----
++
 . Finally *restart your Next.js server* to pick up the changes to environment variables.
 
 
@@ -96,7 +103,7 @@ image:content-studio-mark-as-ready.png[title="Click tree icon to include all chi
 +
 . **Verify that your front-end is working**
 +
-Finally, by adding `/no` (i.e. `localhost:4242/no`) to the URL of your Next.js server you should now see the published content from the Norwegian project.
+Finally, by adding `/no` (i.e. `localhost:3000/no`) to the URL of your Next.js server in an *incognito window* you should now see the published content from the Norwegian project.
 
 
 == Multi front-end setup
@@ -114,15 +121,12 @@ NOTE: The sandbox configuration files are located in the sandbox' home directory
 ----
 # uncomment to override default values
 # nextjs.default.secret=yourSecret
-# nextjs.default.url=http://127.0.0.1:4242
+# nextjs.default.url=http://localhost:3000
 #
-# config 'someName'
-nextjs.someName.secret=yourSecret
-nextjs.someName.url=https://your.next-site.com
+# config 'prod'
+nextjs.prod.secret=yourSecret
+nextjs.prod.url=https://your.next-site.com
 #
-# config 'anotherName'
-nextjs.anotherName.secret=yourOtherSecret
-nextjs.anotherName.url=https://your.other-next-site.com
 # ...
 ----
 +
@@ -141,11 +145,12 @@ Here are some insight on how to make further use of locales in your Next.js proj
 ----
 export type PageProps = {
     locale: string,
-    contentPath: string[],
+    contentPath?: string[],
 }
 
-export default async function Page({params}: { params: PageProps }) {
-    const {locale, contentPath} = params;
+export default async function Page({params}: { params: Promise<PageProps> }) {
+    const resolvedParams = await params;
+    const {locale, contentPath} = resolvedParams;
     // ...
 }
 ----
@@ -195,9 +200,9 @@ export default function ClientSideComponent() {
 }
 ----
 
-NOTE: The `useLocaleContext` hook is only available in client-side components.
+NOTE: The `useLocaleContext` hook is only available in *client-side* components.
 
-. In server-side components, you can use `I18n.getLocale()` from `@enonic/nextjs-adapter` todo the same:
+. In server-side components, you can use `I18n.getLocale()` from `@enonic/nextjs-adapter` to do the same:
 +
 [source,TypeScript]
 ----

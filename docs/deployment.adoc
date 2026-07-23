@@ -92,7 +92,7 @@ With the front-end running, you can link it to Content Studio to activate the pr
 
 TIP: To save time, you may export content from your local machine and import it to the server using the https://market.enonic.com/vendors/glenn-ricaud/data-toolbox[Data Toolbox app].
 
-. **Install the Next.XP app** `Solution` -> `Applications` -> `Install` -> Search for `Next.XP`, select it an click install
+. **Install the Next.XP app** `Solution` -> `Applications` -> `Install` -> Search for `Next.XP`, select it and click install
 . **Add configuration**.
 +
 image:console-configure-app.png[title="Configure the Next.XP application in the solution console",width=769px]

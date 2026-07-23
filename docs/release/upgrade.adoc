@@ -6,6 +6,66 @@
 
 IMPORTANT: Guillotine version 7 is required if you need to modify graphql schema in your application.
 
+== Upgrading from v3.x
+
+. *Framework upgrades*: Next.js 16 and React 19 are now required.
++
+See https://nextjs.org/docs/app/building-your-application/upgrading[Next.js upgrade guide] and https://react.dev/blog/2024/12/05/react-19[React 19 migration guide].
+
+. *Adapter upgrade*: Update `@enonic/nextjs-adapter` to `^5.0.0`.
++
+The Guillotine query syntax and `ENONIC_API` URL format are unchanged.
+
+. *Middleware replaced by proxy*: Rename `src/middleware.ts` to `src/proxy.ts`, following the Next.js 16 convention.
++
+If you have custom middleware logic, migrate it to the new proxy pattern.
+
+. *Next.js 16 async params*: Route params are now `Promise` and must be awaited:
++
+[source,TypeScript]
+----
+// Before (v3.x)
+export type PageProps = {
+    locale: string,
+    contentPath: string[],
+}
+export default async function Page({params}: { params: PageProps }) {
+    const {locale, contentPath} = params;
+
+// After (v4.x)
+export type PageProps = {
+    locale: string,
+    contentPath?: string[],
+}
+export default async function Page({params}: { params: Promise<PageProps> }) {
+    const resolvedParams = await params;
+----
+
+. *ESLint flat config*: Migrate from `.eslintrc` to `eslint.config.mjs`:
++
+[source,javascript]
+----
+import nextVitals from 'eslint-config-next/core-web-vitals'
+import {defineConfig, globalIgnores} from 'eslint/config'
+
+const eslintConfig = defineConfig([
+    ...nextVitals,
+    {
+        rules: {
+            "@next/next/no-img-element": "off",
+            "eol-last": "warn"
+        }
+    },
+    globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts'])
+])
+
+export default eslintConfig
+----
+
+. *Default port change*: `npm run start` no longer forces port 4242 — production now runs on the default port 3000.
++
+If you relied on port 4242, update your `com.enonic.app.nextxp.cfg` and any reverse-proxy configuration accordingly.
+
 == Upgrading from v2.x
 
 . You need to use Next.js app router to be able to use v3.x.

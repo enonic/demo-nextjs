@@ -11,8 +11,9 @@ Occationaly, you may require rich components, even within your rich text. This i
 
 == FactBox macro
 
-In your Enonic project, a `FactBox` macro schema is pre-defined. It is located in `src/main/resources/site/macros/FactBox.xml`
-If you take a closer look at the Léa Seydoux bio, you can see how the [factbox] macro is used.
+In your Enonic project, a `FactBox` macro schema is pre-defined.
+It is located in `src/main/resources/cms/macros/factbox/factbox.yaml`
+If you take a closer look at the Léa Seydough bio, you can see how the [factbox] macro is used.
 
 
 
@@ -60,7 +61,7 @@ IMPORTANT: Macros must be registered before any other component that uses RichTe
 +
 . *Sweet!*
 +
-You should now see http://localhost:3000/persons/lea-seydoux[Lea Seydoux] updated with the `FactBox` macro:
+You should now see http://localhost:3000/persons/lea-seydough[Lea Seydough] updated with the `FactBox` macro:
 
 image::rich-text-result.png[title="Person content rendered with rich text and macro",width=1142px]
 

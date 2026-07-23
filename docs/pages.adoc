@@ -23,7 +23,7 @@ ComponentRegistry.addContentType(CATCH_ALL, {
 */
 ----
 +
-. **Verify that pages are no longer rendering** by visiting your site on `http://localhost:3000`.
+. **Verify that pages are no longer rendering json body** by visiting your site on `http://localhost:3000`.
 +
 The same will now apply to Content Studio.
 
@@ -32,27 +32,25 @@ The same will now apply to Content Studio.
 
 Content types need to exist in Enonic before an editor can create content. Similarly, page components must be defined before Content Studio can enable editors to create pages.
 
-. *Add a page component* to the Enonic app
+. Verify Enonic app (not the Next.js frontend) has a *page component descriptor* at:
 +
-.src/main/resources/site/pages/main/main.xml
-[source,xml]
+.src/main/resources/cms/pages/main/main.yaml
+[source,yaml]
 ----
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<page xmlns="urn:enonic:xp:model:1.0">
-  <display-name>Main page</display-name>
-  <description>Will be rendered by front-end</description>
-  <form/>
-  <regions>
-      <region name="main"/>
-  </regions>
-</page>
+kind: "Page"
+title: "Main"
+description: "Contains a single main region"
+form: [ ]
+regions:
+  - "main"
 ----
 +
 NOTE: The definition of the region `main`, allows Content Studio editors to add components to the page, as you will see later.
 +
-*Redeploy the Enonic app* to register the page component (happens automatically if you started `enonic project dev`).
+*Redeploy the Enonic app* to register the page component if it didn't have it (happens automatically if you started `enonic project dev`).
 +
 . **Configure page rendering in Next.js**
++
 Rendering a page is similar to rendering a content type.
 Go to the folder `./src/components`, create a new folder here called `pages`, and inside it a new file called `Main.tsx` containing the following code.
 +
@@ -88,31 +86,85 @@ It's time to build a custom page.
 
 . **Turn the site into a page**
 +
-From Content Studio, select and edit the `/hmdb` content item. From the edit view, activate the page editor by clicking the monitor icon in the top right corner.
+From Content Studio, select and edit the `/hmdb` content item.
+From the edit view, activate the Context Panel by clicking the `Show Context Menu` icon in the top right corner, and select `Main page` extension from the dropdown menu.
 +
 You should now see the following:
 +
 image:page-setup.png[title="Selecting the page component in the page view",width=1440px]
 +
-From the preview area, select the `Main` component we created earlier from the dropdown menu.
+In the preview area, select the `Main` component we created earlier from the Template dropdown menu.
 +
 You should then see a page with a single "dropzone" inside (the region we specified earlier).
 +
 image:page-rendered.png[title="Active page controller rendering an empty region visualized by a placeholder",width=1440px]
 
-== Task: Using the text component
+== Task: Adding a paragraph part
 
-Content Studio ships with a built-in Text component which can be handy when composing pages.
+To put something on the page, we need a component editors can drop into the region.
+Let's create a simple `Paragraph` part that holds rich text.
 
-. From the Insert tab (on the right hand side), drag a Text component into the region. 
-. Text mode will now be activated, and you can use the link:https://developer.enonic.com/docs/content-studio/stable/editor/component-types#text_component[rich-text editor] to write and format text, but also insert images.
+NOTE: Deeper dive into parts and components will be covered in the next chapter.
+
+. Verify Enonic app (not the Next.js frontend) has **the `paragraph` part**:
 +
-image:text-component.png[title="Next.js-rendered text component with an image",width=1440px]
+.src/main/resources/cms/parts/paragraph/paragraph.yaml
+[source,yaml]
+----
+kind: "Part"
+title: "Paragraph"
+description: "Rich text paragraph"
+form:
+- type: "HtmlArea"
+  name: "text"
+  label: "Text"
+----
++
+NOTE: The link:https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types/htmlarea[HtmlArea input] gives editors a rich-text editor with formatting, links, images and macros.
++
+**Redeploy the Enonic app** if it didn't have it to register the part (happens automatically if you started `enonic project dev`).
++
+. **Add the part implementation to the Next.js app**
++
+.src/components/parts/Paragraph.tsx
+[source,TypeScript]
+----
+include::{sourcedir}/components/parts/Paragraph.tsx[]
+----
++
+The `RichTextView` component (from the Enonic adapter) takes care of resolving links, sizing images and rendering macros.
++
+. **Register the part** by adding the following lines to _mappings.ts:
++
+.src/components/_mappings.ts
+[source,TypeScript,options="nowrap"]
+----
+import {richTextQuery} from '@enonic/nextjs-adapter';
+import Paragraph from './parts/Paragraph';
+
+// Part mappings
+ComponentRegistry.addPart(`${APP_NAME}:paragraph`, {
+    view: Paragraph,
+    configQuery: `{${richTextQuery('text')}}`
+});
+----
++
+NOTE: `richTextQuery` generates the query fragment needed for the adapter to resolve link, image and macro metadata within the rich text field of the part config form.
++
+. **Add the part to your page**
++
+Back in Content Studio, from the Insert tab on the right hand side, drag a part component into the region and select `Paragraph` in the Context Window.
+Use the link:https://developer.enonic.com/docs/content-studio/stable/editor/component-types#htmlarea[rich-text editor] to write and format text, as well as insert images or macros.
++
+image:paragraph-component.png[title="Next.js-rendered paragraph part with an image",width=1440px]
 +
 . You may also click the `Preview` button in Content Studio for a full screen version.
 
 == Task: Publish page
-Your new page is looking good. However, if you visit `http://localhost:3000[http://localhost:3000^]` - you'll get a "404 page not found" error. This is because only published changes are visible from the front end.
+
+Your new page is looking good.
+However, if you visit `http://localhost:3000[http://localhost:3000^]` in an incognito window or different browser - you'll get a "404 page not found" error.
+This is because preview mode is off in incognito window and only published changes are visible from the front end.
 
 Content Studio activates Next.js' preview mode, which in turn uses the drafts API. When accessing the front-end directly, Next.js fetches published content from the master branch.
 
@@ -120,6 +172,6 @@ Content Studio activates Next.js' preview mode, which in turn uses the drafts AP
 +
 image:publish.png[title="Publishing wizard",width=810px]
 +
-. **Verify that your page is live** by visiting `http://localhost:3000[http://localhost:3000^]` once again.
+. **Verify that your page is live** by visiting `http://localhost:3000[http://localhost:3000^]` in incognito window once again.
 
 That concludes the introduction to page rendering, coming up we'll add some <<parts#, configurable page components>> to play with.
