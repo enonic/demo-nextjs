@@ -3,45 +3,47 @@
 :imagesdir: media/
 :sourcedir: ../src
 
-Enonic provides a highly customizable component type called link:https://developer.enonic.com/docs/xp/stable/cms/pages/parts[parts^]. Similar to page components parts must be defined in both Enonic and Next.js in order to fully work.
+Enonic provides a highly customizable component type called link:https://developer.enonic.com/docs/xp/stable/cms/pages/parts[parts^] and you actually have already created one called `Paragraph` in the previous chapter!
+Similar to page components, parts must be defined in both Enonic and Next.js in order to fully work.
 
 
 == Task: Add part to Enonic
 We'll start off by adding a simple component that lists child items in the tree structure.
 
-. **Add the `child-list` part** to the Enonic app
+. Verify Enonic app (not the Next.js frontend) has **the `child-list` part descriptor** at:
 +
-.src/main/resources/site/parts/child-list/child-list.xml
-[source,xml]
+.src/main/resources/cms/parts/child-list/child-list.yaml
+[source,yaml]
 ----
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<part xmlns="urn:enonic:xp:model:1.0">
-    <display-name>Child list</display-name>
-    <description>Lists children of current item</description>
-    <form>
-        <input name="sorting" type="ComboBox">
-            <label>Sort order</label>
-            <occurrences minimum="0" maximum="1"/>
-            <config>
-                <option value="displayName ASC">Ascending</option>
-                <option value="displayName DESC">Descending</option>
-            </config>
-            <default>displayName ASC</default>
-        </input>
-    </form>
-</part>
+kind: "Part"
+title: "Child list"
+description: "Lists children of current item"
+form:
+  - type: "ComboBox"
+    name: "sorting"
+    label: "Sort order"
+    occurrences:
+      min: 0
+      max: 1
+    options:
+      - value: "displayName ASC"
+        label: "Ascending"
+      - value: "displayName DESC"
+        label: "Descending"
+    default: "displayName ASC"
 ----
 +
 NOTE: This component also contains a form, similar to content types.
 This means editors can configure it - sorting the items Ascending or Descending.
 +
-. **Build and deploy your Enonic app** once more to make the new part available in Content Studio (happens automatically if you started `enonic project dev`).
+**Build and redeploy your Enonic app** once more if it didn't have it to make the new part available in Content Studio (happens automatically if you started `enonic project dev`).
 +
 . **Add parts to the page**
 +
 Back in Content Studio, edit the `/hmdb/persons` folder item.
-Expand the page preview section by clicking display icon in the top right corner and select `Main page` controller in the dropdown in the middle of page.
-Create the page and add a new part to the region (`right-click -> Insert`, or drag-n-drop from the `Insert panel`` on the right hand side).
+Expand the page preview section by clicking `Show Context Panel` icon in the top right corner and select `Page` extension in the dropdown.
+Then choose `Main page` template to create a page.
+Now add a new part to the region (`right-click -> Insert`, or drag-n-drop from the `Insert panel`` on the right hand side).
 Finally select the `Child list` in the part descriptor dropdown.
 +
 TIP: The part will appear without making any changes to the front-end, this is because the Enonic Adapter contains fallback part rendering, as long as Next.js is running in DEV mode.
@@ -91,26 +93,23 @@ Try customizing the part configuration and see what happens.
 
 For more components to play with, you may add another part:
 
-. **Add files** to the Enonic app
+. Verify Enonic app (not the Next.js frontend) contains **the Heading part descriptor**:
 +
 This part definition includes a form, with an link:https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types[input field] called `heading`.This makes it possible for editors to override the heading (aka displayName) coming from the content item.
 +
-.src/main/resources/site/parts/heading/heading.xml
-[source,xml]
+.src/main/resources/cms/parts/heading/heading.yaml
+[source,yaml]
 ----
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<part xmlns="urn:enonic:xp:model:1.0">
-    <display-name>Heading</display-name>
-    <description>Demo heading</description>
-    <form>
-        <input type="TextLine" name="heading">
-            <label>Override heading</label>
-        </input>
-    </form>
-</part>
+kind: "Part"
+title: "Heading"
+description: "Demo heading"
+form:
+- type: "TextLine"
+  name: "heading"
+  label: "Override heading"
 ----
 +
-. **Redeploy** the Enonic app and add the part to your page (happens automatically if you started `enonic project dev`).
+**Redeploy** the Enonic app if it didn't have it and add the part to your page (happens automatically if you started `enonic project dev`).
 +
 . **Add the heading component in Next.js**.
 +
@@ -132,6 +131,6 @@ ComponentRegistry.addPart(`${APP_NAME}:heading`, {
 });
 ----
 +
-You should now have two configurable parts to play with.
+You should now have three configurable parts to play with.
 
 In the next chapter you will make page composition even more interesting, with the introduction of <<layouts#, layouts>>. 

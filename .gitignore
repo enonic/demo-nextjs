@@ -92,4 +92,6 @@ yarn-error.log*
 # vercel
 .vercel
 
+*.tsbuildinfo
+
 

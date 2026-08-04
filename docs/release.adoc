@@ -1,6 +1,36 @@
 = Release Notes
 :toc: right
 
+== Next.XP Demo 4
+
+=== Enonic XP 8 support
+
+The tutorial is now based on Enonic XP 8:
+
+* Application schemas use the new YAML format in `src/main/resources/cms/` (previously XML in `src/main/resources/site/`)
+* Content Studio steps and screenshots updated for the XP 8 user interface
+* Guillotine 7 is still used, so the API and GraphQL queries are unchanged
+
+=== Framework upgrades
+
+* Next.js 16 and React 19
+* TypeScript 5.9
+* ESLint 9 with flat config (`eslint.config.mjs`)
+* `@enonic/nextjs-adapter` v5
+
+=== Proxy replaces middleware
+
+The `src/middleware.ts` file has been replaced by `src/proxy.ts`, following the Next.js 16 convention.
+Route params are now asynchronous (`Promise`) and must be awaited.
+
+=== Paragraph part replaces the Text component
+
+The tutorial now creates a custom `Paragraph` part with a rich text (`HtmlArea`) field, replacing the usage of Content Studio's built-in Text component.
+
+=== Default port
+
+The production server (`npm run prod`) now starts on the default port 3000 instead of 4242, so Content Studio preview works in both dev and prod modes without extra configuration.
+
 == Next.XP Demo 3
 
 === App router structure
