@@ -69,7 +69,8 @@ The documentation relies on GitHub Actions for building and publishing, while th
 - **Location:** This documentation is published at https://developer.enonic.com/docs/next.xp, but controlled from the CMS.
 - **Structure:** The structure of the adoc files are mapped to a corresponding relative URL. For example `docs/release.adoc` and `docs/release/upgrade.adoc` in this repo will have url pattern `/release` and `/release/upgrade` respectively.
 - **Navigation:** The site navigation and menu structure are defined in `docs/menu.json`.
-- **Versioning:** Documentation versions are configured in `docs/versions.json`. The `stable` version builds from the `master` branch (a moving target); older versions are pinned to commits. Releases of the demo app are tagged on master (`git tag vX.Y.Z`) after the pull-request is merged — see README.md.
+- **Versioning:** Documentation versions are configured in `docs/versions.json`.
+Each version object support the following fields: `label` (Used in URL path and version dropdown), `checkout` (git ref to use), `displayName` (Overrides the label, excluding url name). Additionally, one and one of the versions may have the "latest": "true" flag. This is important, as it sets the default version to show on the site, and use in searches. label `next` should be used for un-released bigger updates, and will prevent indexing in search engines.
 - **Entry Point:** `docs/index.adoc` is the main entry point for the documentation.
 
 ## Key Conventions
