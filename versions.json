@@ -1,17 +1,18 @@
 {
   "versions": [
     {
-      "label": "1.x",
-      "checkout": "7eee6d7840feca4f9dc0667ae5ca49a537cbc903"
-    },
-    {
-      "label": "2.x",
-      "checkout": "c5953f2f86b57d9d7a1e06bbe49173725ec91db3"
+      "label": "3.x",
+      "checkout": "3.x"
     },
     {
       "label": "stable",
-      "checkout": "master",
+      "checkout": "4.x",
+      "displayName": "4.x",
       "latest": true
+    },
+    {
+      "label": "next",
+      "checkout": "master"
     }
   ]
 }
