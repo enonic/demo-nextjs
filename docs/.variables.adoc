@@ -1,0 +1,31 @@
+// Shared version attributes for the Next.XP tutorial.
+// Not published (dot-prefix excludes it from the CMS import).
+// Usage: add `include::.variables.adoc[]` below the chapter title,
+// then reference attributes like {xp-version} in the text.
+
+// Next.XP release documented by this tutorial (follows the adapter major)
+:nextxp-version: 5
+
+// Enonic stack
+:xp-version: 8
+:guillotine-version: 8
+:cli-version: latest
+
+// Front-end stack
+:adapter-version: 5
+:next-version: 16
+:react-version: 19
+:typescript-version: 5.9
+
+// Minimum tooling requirements (from @enonic/nextjs-adapter engines)
+:node-minimum: 24.15.0
+:npm-minimum: 10.9.2
+
+// Source template for the Next.js app (chapter 4)
+:template-ref: github:enonic/nextxp-template#xp8
+
+// Frequently referenced docs
+:xp-docs: https://developer.enonic.com/docs/xp/stable
+:guillotine-docs: https://developer.enonic.com/docs/guillotine/stable
+:cms-docs: https://developer.enonic.com/docs/cms
+:next-docs: https://nextjs.org/docs

@@ -1,6 +1,7 @@
-= Next.js website powered by Enonic XP
+= Building a Next.js website powered by Enonic XP
 :toc: right
 :imagesdir: media/
+include::.variables.adoc[]
 
 This is a step-by-step tutorial on building and managing Next.js sites, using Enonic as your backend. The combined set of software and tools used in this tutorial is simply called Next.XP. You may alternatively <<demo#,skip the tutorial and try out a demo of Next.XP>> instead.
 
@@ -31,5 +32,28 @@ You will complete the following steps:
 * Static Site Generation SSG
 * Deploy to live servers
 * How to handle multi-language sites
+
+== Prerequisites
+
+To follow this tutorial you will need:
+
+* The https://developer.enonic.com/start[Enonic CLI]
+* link:https://nodejs.org/[Node.js] {node-minimum} or newer, with npm {npm-minimum} or newer
+* link:https://git-scm.com/[Git], and a GitHub account for the <<deployment#,live deployment>> chapter
+* Your favorite code editor
+
+This version of the tutorial is based on NextXP {nextxp-version}, consisting of:
+
+[%header,cols="2,1"]
+|===
+| Component | Version
+| Enonic XP | {xp-version}
+| Guillotine | {guillotine-version}
+| `@enonic/nextjs-adapter` | {adapter-version}
+| Next.js | {next-version}
+| React | {react-version}
+|===
+
+TIP: Using an older setup? Select the matching tutorial version from the version menu on this page.
 
 Get started by <<enonic-setup#, setting up the Enonic development environment>>.

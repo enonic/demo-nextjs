@@ -67,7 +67,7 @@ The documentation relies on GitHub Actions for building and publishing, while th
 - **Format:** Content is written in [AsciiDoc](https://asciidoc.org/) (`.adoc`).
 - **Publishing:** The build crunches and imports the result into Enonic XP, where it will be only one of many aggregated documentation packages.
 - **Location:** This documentation is published at https://developer.enonic.com/docs/next.xp, but controlled from the CMS.
-- **Structure:** The structure of the adoc files are mapped to a corresponding relative URL. For example `docs/release.adoc` and `docs/release/upgrade.adoc` in this repo will have url pattern `/release` and `/release/upgrade` respectively.
+- **Structure:** The structure of the adoc files are mapped to a corresponding relative URL. For example `docs/demo.adoc` in this repo will have url pattern `/demo`. Release and upgrade notes for the Next.XP product live in the separate `doc-nextxp` repo — this repo only documents the tutorial and demo.
 - **Navigation:** The site navigation and menu structure are defined in `docs/menu.json`.
 - **Versioning:** Documentation versions are configured in `docs/versions.json`.
 Each version object support the following fields: `label` (Used in URL path and version dropdown), `checkout` (git ref to use), `displayName` (Overrides the label, excluding url name). Additionally, one and one of the versions may have the "latest": "true" flag. This is important, as it sets the default version to show on the site, and use in searches. label `next` should be used for un-released bigger updates, and will prevent indexing in search engines.
