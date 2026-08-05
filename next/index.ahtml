@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.26">
-<title>Next.js website powered by Enonic XP</title>
+<title>Building a Next.js website powered by Enonic XP</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,11 +437,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>Next.js website powered by Enonic XP</h1>
+<h1>Building a Next.js website powered by Enonic XP</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#intro">Intro</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
 </ul>
 </div>
 </div>
@@ -519,6 +520,79 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="prerequisites"><a class="link" href="#prerequisites">Prerequisites</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To follow this tutorial you will need:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <a href="https://developer.enonic.com/start">Enonic CLI</a></p>
+</li>
+<li>
+<p><a href="https://nodejs.org/">Node.js</a> 24.15.0 or newer, with npm 10.9.2 or newer</p>
+</li>
+<li>
+<p><a href="https://git-scm.com/">Git</a>, and a GitHub account for the <a href="deployment.ahtml">live deployment</a> chapter</p>
+</li>
+<li>
+<p>Your favorite code editor</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This version of the tutorial is based on NextXP 5, consisting of:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 66.6666%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Component</th>
+<th class="tableblock halign-left valign-top">Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enonic XP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Guillotine</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@enonic/nextjs-adapter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Next.js</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">React</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">19</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Using an older setup? Select the matching tutorial version from the version menu on this page.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>Get started by <a href="enonic-setup.ahtml">setting up the Enonic development environment</a>.</p>
 </div>
@@ -527,7 +601,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-04 14:49:57 UTC
+Last updated 2026-08-05 06:26:23 UTC
 </div>
 </div>
 </body>
