@@ -2,6 +2,8 @@
 :toc: right
 :toclevels: 3
 :imagesdir: media/
+include::.variables.adoc[]
+
 
 In this chapter we will create a front-end application that renders content from the Enonic CMS (the app created in the previous chapters).
 
@@ -16,10 +18,10 @@ Create an empty folder, go inside and run the following command:
 
 [source,bash,options="nowrap"]
 ----
-npx degit github:enonic/nextxp-template#xp8
+npx degit github:enonic/starter-nextjs
 ----
 
-The *nextxp-template* is based on link:https://nextjs.org/docs/getting-started[Next.js' own introduction app], so if you're familiar with that, you'll recognize the structure of the files.
+*starter-nextjs* is based on link:https://nextjs.org/docs/getting-started[Next.js' own introduction app], so if you're familiar with that, you'll recognize the structure of the files.
 
 The template includes some boilerplate we will customize, and an npm dependency aka ´The Enonic Adapter` that facilitates and simplifies integration with Enonic.
 

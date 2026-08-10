@@ -21,8 +21,6 @@
 :node-minimum: 24.15.0
 :npm-minimum: 10.9.2
 
-// Source template for the Next.js app (chapter 4)
-:template-ref: github:enonic/nextxp-template#xp8
 
 // Frequently referenced docs
 :xp-docs: https://developer.enonic.com/docs/xp/stable
