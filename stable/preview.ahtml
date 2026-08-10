@@ -503,7 +503,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li>
 <p>After applying and saving the changes, you should be able to see the live preview in Content Studio when selecting any content in the "Persons" folder.</p>
 <div class="paragraph">
-<p><span class="image"><img src="media/morgan-freeman-preview.png" alt="morgan freeman preview" width="1072px" title="Next.js-rendered preview in Content Studio"></span></p>
+<p><span class="image"><img src="media/morgan-floatman-preview.png" alt="morgan floatman preview" width="1072px" title="Next.js-rendered preview in Content Studio"></span></p>
 </div>
 </li>
 </ol>
@@ -566,7 +566,7 @@ The Next.XP proxy then automatically processes these remaining URLs before the r
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 10:01:56 UTC
+Last updated 2026-08-10 11:48:35 UTC
 </div>
 </div>
 </body>

@@ -474,7 +474,7 @@ The <code>Bio</code> field for persons is a Rich Text input, and some Persons' d
 <div class="content">
 <img src="media/rich-text-bio.png" alt="rich text bio" width="662px">
 </div>
-<div class="title">Figure 1. Rich text bio field for Lea Seydoux</div>
+<div class="title">Figure 1. Rich text bio field for Lea Seydough</div>
 </div>
 </div>
 </div>
@@ -678,7 +678,7 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 <li>
 <p><strong>That&#8217;s it!</strong></p>
 <div class="paragraph">
-<p>The resulting page for <a href="http://localhost:3000/persons/lea-seydoux">Lea Seydoux</a> should look like this:</p>
+<p>The resulting page for <a href="http://localhost:3000/persons/lea-seydough">Lea Seydough</a> should look like this:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -697,7 +697,7 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 10:01:56 UTC
+Last updated 2026-08-10 11:48:35 UTC
 </div>
 </div>
 </body>

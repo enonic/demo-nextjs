@@ -463,21 +463,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Add the <code>movie-details</code> part to Enonic</strong> - same procedure as before&#8230;&#8203;</p>
+<p>Verify Enonic app hs <strong>the <code>movie-details</code> part descriptor</strong> at - same procedure as before&#8230;&#8203;</p>
 <div class="listingblock">
-<div class="title">src/main/resources/site/parts/movie-details/movie-details.xml</div>
+<div class="title">src/main/resources/cms/parts/movie-details/movie-details.yaml</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
-&lt;part xmlns="urn:enonic:xp:model:1.0"&gt;
-    &lt;display-name&gt;Movie Details&lt;/display-name&gt;
-    &lt;description&gt;Show details of a movie&lt;/description&gt;
-    &lt;form/&gt;
-&lt;/part&gt;</code></pre>
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">kind: "Part"
+title: "Movie Details"
+description: "Show details of a movie"
+form: [ ]</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p><strong>Redeploy</strong> the Enonic app (happens automatically if you started <code>enonic project dev</code>).</p>
+<p><strong>Redeploy</strong> the Enonic app if you made any changes (happens automatically if you started <code>enonic project dev</code>).</p>
 </li>
 <li>
 <p><strong>Add the Movie query and view</strong> in Next.</p>
@@ -680,10 +678,10 @@ ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>In Content Studio, select and <strong>edit your favorite movie</strong> (or choose "No time to die" if you have no faviorites).</p>
+<p>In Content Studio, select and <strong>edit your favorite movie</strong> (or choose "No time to deflate" if you have no favorites).</p>
 </li>
 <li>
-<p><strong>Activate the page editor</strong> by pressing <code>Display</code> icon in the top right screen corner, select the "Main page" descriptor and <strong>add the "Movie details" part</strong> to the page.</p>
+<p><strong>Activate the context panel</strong> by pressing its icon in the top right screen corner, select the <code>Page</code> extension, then "Main page" descriptor in dropdown and <strong>add the "Movie details" part</strong> to the page.</p>
 <div class="paragraph">
 <p><span class="image"><img src="media/movie-details.png" alt="movie details" width="1440px" title="No time to die, configured with movie-details part"></span></p>
 </div>
@@ -692,13 +690,13 @@ ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
 </div>
 </li>
 <li>
-<p>In the page editor, <strong>select the page (root) component</strong> (for instance by clicking on the header).</p>
+<p>In the page tab in the form on the left, <strong>select the page (root) component</strong>.</p>
 <div class="paragraph">
 <p><span class="image"><img src="media/movie-page.png" alt="movie page" width="1440px" title="With page component selected, save as template appears in right hand panel"></span></p>
 </div>
 </li>
 <li>
-<p>Click <strong>Save as template</strong> from the right hand panel.</p>
+<p>Right click it and select <strong>Save as template</strong> from the context menu.</p>
 <div class="paragraph">
 <p>This will create a new page template content item, and open it in a new tab for editing.</p>
 </div>
@@ -725,7 +723,7 @@ ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 10:01:56 UTC
+Last updated 2026-08-10 11:48:35 UTC
 </div>
 </div>
 </body>

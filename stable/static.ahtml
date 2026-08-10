@@ -443,7 +443,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#task_activate_prod_mode">Task: Activate prod mode</a></li>
-<li><a href="#task_fixing_preview">Task: Fixing preview</a></li>
 <li><a href="#task_test_page_invalidation">Task: Test page invalidation</a>
 <ul class="sectlevel2">
 <li><a href="#what_happened">What happened?</a></li>
@@ -507,22 +506,11 @@ Remember to stop your existing Next.js dev instance before you continue.
 </div>
 </li>
 <li>
-<p><strong>Verify</strong> by pointing your browser to <a href="http://localhost:4242" target="_blank" rel="noopener">http://localhost:4242</a>, you should now see the published items, just like in dev mode. Only this time, they will be much faster. <strong>Sweet!</strong></p>
+<p><strong>Verify</strong> by pointing your <strong>incognito window</strong> to <a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a>, you should now see the published items, just like in dev mode.
+Only this time, they will be much faster. <strong>Sweet!</strong></p>
 </li>
 </ol>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="task_fixing_preview"><a class="link" href="#task_fixing_preview">Task: Fixing preview</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>With Next.js now running on a different port, Content Studio preview will stop working.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Fix the preview by <strong>adding a Next.XP configuration file</strong>, with the following content to your sandbox:</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -530,35 +518,11 @@ Remember to stop your existing Next.js dev instance before you continue.
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The configuration files are located in your sandbox home directory, which can be found in your users home directory as <code>.enonic/sandboxes/&lt;your-sandbox&gt;/home/config/</code>.
+Since prod mode now runs on the default port 3000 (same as dev mode), Content Studio preview should continue to work without any configuration changes.
+Just remember to stop your dev server before starting prod mode.
 </td>
 </tr>
 </table>
-</div>
-<div class="listingblock">
-<div class="title">add com.enonic.app.nextxp.cfg</div>
-<div class="content">
-<pre class="highlight"><code class="language-properties" data-lang="properties">nextjs.default.secret=mySecretKey
-nextjs.default.url=http://127.0.0.1:4242</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p><strong>Verify that the preview is working</strong> in Content Studio.</p>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-Content Studio uses Next.js' preview mode, which automatically bypasses static pages - giving you a fresh preview of your draft content.
-</td>
-</tr>
-</table>
-</div>
-</li>
-</ol>
 </div>
 </div>
 </div>
@@ -573,12 +537,12 @@ Content Studio uses Next.js' preview mode, which automatically bypasses static p
 This will trigger a revalidation hook, which is built into the Next.XP app.</p>
 </div>
 <div class="paragraph">
-<p>The page should now get updated at <code><a href="http://localhost:4242" class="bare">http://localhost:4242</a></code> - more or less instantly.🎉</p>
+<p>The page should now get updated at <a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a> - more or less instantly.🎉</p>
 </div>
 <div class="sect2">
 <h3 id="what_happened"><a class="link" href="#what_happened">What happened?</a></h3>
 <div class="paragraph">
-<p>In addition to handling previews, the Next.XP app automatically triggers revalidation of all pages when it detects the publishing event.</p>
+<p>In addition to handling previews, the Next.XP app automatically triggers revalidation of all pages when it detects the publishing event in the site it is added to.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -685,7 +649,7 @@ export async function generateStaticParams(props: { params: PageProps }): Promis
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 10:01:56 UTC
+Last updated 2026-08-10 11:48:35 UTC
 </div>
 </div>
 </body>

@@ -481,7 +481,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The full name of your content type should now be <code>com.example.myproject:person</code>. If you used a different name when creating the Enonic app, update the <code>.env</code> file in your Next.js app to reflect this.
+The full name of your content type should now be <code>tutorial.nxp:person</code>.
+If you used a different name when creating the Enonic app, update the <code>.env</code> file in your Next.js app to reflect this.
 </td>
 </tr>
 </table>
@@ -533,8 +534,9 @@ export default getPerson;</code></pre>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-You may validate the query by copying it to the GraphQL playground. Replace <code>APP_NAME_UNDERSCORED</code> with <code>com_example_myproject</code> and set a query variable, try this for instance:
-  <code>{"path": "/hmdb/persons/brad-pitt"}</code>
+You may validate the query by copying it to the GraphQL playground.
+Replace <code>APP_NAME_UNDERSCORED</code> with <code>tutorial_nxp</code> and set a query variable, try this for instance:
+<code>{"path": "/hmdb/persons/brad-pittless"}</code>
 </td>
 </tr>
 </table>
@@ -566,10 +568,10 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 <li>
 <p><strong>Check the result</strong></p>
 <div class="paragraph">
-<p>By visiting a person item (like <code><a href="http://localhost:3000/persons/morgan-freeman" target="_blank" rel="noopener">http://localhost:3000/persons/morgan-freeman</a></code>) you should now see data props listed in the view.</p>
+<p>By visiting a person item (like <code><a href="http://localhost:3000/persons/morgan-floatman" target="_blank" rel="noopener">http://localhost:3000/persons/morgan-floatman</a></code>) you should now see data props listed in the view.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="media/morgan-freeman-props.png" alt="morgan freeman props" width="767px" title="Page showing data props for Morgan Freeman content item"></span></p>
+<p><span class="image"><img src="media/morgan-floatman-props.png" alt="morgan floatman props" width="767px" title="Page showing data props for Morgan Freeman content item"></span></p>
 </div>
 </li>
 </ol>
@@ -654,7 +656,7 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 <li>
 <p><strong>Check the result</strong> - The page should automatically reload once the changes have been saved</p>
 <div class="paragraph">
-<p><span class="image"><img src="media/morgan-freeman-render.png" alt="morgan freeman render" width="768px" title="Person rendering with query and view"></span></p>
+<p><span class="image"><img src="media/morgan-floatman-render.png" alt="morgan floatman render" width="768px" title="Person rendering with query and view"></span></p>
 </div>
 </li>
 </ol>
@@ -721,7 +723,7 @@ import {getAsset} from '@enonic/nextjs-adapter';</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">return (
-    &lt;LocaleContextProvider locale={params.locale}&gt;
+    &lt;LocaleContextProvider locale={resolvedParams.locale}&gt;
         &lt;StaticContent condition={isEdit}&gt;
             &lt;main&gt;{children}&lt;/main&gt;
         &lt;/StaticContent&gt;
@@ -735,7 +737,7 @@ import {getAsset} from '@enonic/nextjs-adapter';</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">return (
-    &lt;LocaleContextProvider locale={params.locale}&gt;
+    &lt;LocaleContextProvider locale={resolvedParams.locale}&gt;
         &lt;StaticContent condition={isEdit}&gt;
             &lt;Header meta={meta} title={I18n.localize('title')} logoUrl={getAsset('/images/xp-shield.svg', meta)}/&gt;
             &lt;main&gt;{children}&lt;/main&gt;
@@ -765,7 +767,7 @@ It ensures that links to assets are working seamlessly in Next.js, as well as in
 <p>Morgan Freeman&#8217;s page should now look like this</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="media/morgan-freeman-header-footer.png" alt="morgan freeman header footer" width="768px" title="Rendering with header and footer"></span></p>
+<p><span class="image"><img src="media/morgan-floatman-header-footer.png" alt="morgan floatman header footer" width="768px" title="Rendering with header and footer"></span></p>
 </div>
 </div>
 </div>
@@ -809,7 +811,7 @@ If you do not need any common props, remove it from the mappings to optimize per
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 10:01:56 UTC
+Last updated 2026-08-10 11:48:35 UTC
 </div>
 </div>
 </body>

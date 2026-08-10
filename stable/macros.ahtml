@@ -470,8 +470,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="factbox_macro"><a class="link" href="#factbox_macro">FactBox macro</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In your Enonic project, a <code>FactBox</code> macro schema is pre-defined. It is located in <code>src/main/resources/site/macros/FactBox.xml</code>
-If you take a closer look at the Léa Seydoux bio, you can see how the [factbox] macro is used.</p>
+<p>In your Enonic project, a <code>FactBox</code> macro schema is pre-defined.
+It is located in <code>src/main/resources/cms/macros/factbox/factbox.yaml</code>
+If you take a closer look at the Léa Seydough bio, you can see how the [factbox] macro is used.</p>
 </div>
 <div class="sect2">
 <h3 id="task_factbox_component"><a class="link" href="#task_factbox_component">Task: Factbox component</a></h3>
@@ -626,7 +627,7 @@ Macros must be registered before any other component that uses RichTextView! Bes
 <li>
 <p><strong>Sweet!</strong></p>
 <div class="paragraph">
-<p>You should now see <a href="http://localhost:3000/persons/lea-seydoux">Lea Seydoux</a> updated with the <code>FactBox</code> macro:</p>
+<p>You should now see <a href="http://localhost:3000/persons/lea-seydough">Lea Seydough</a> updated with the <code>FactBox</code> macro:</p>
 </div>
 </li>
 </ol>
@@ -646,7 +647,7 @@ Macros must be registered before any other component that uses RichTextView! Bes
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 10:01:56 UTC
+Last updated 2026-08-10 11:48:35 UTC
 </div>
 </div>
 </body>

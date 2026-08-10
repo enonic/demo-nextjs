@@ -463,20 +463,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Add the <code>2-column</code> layout</strong> to the Enonic app</p>
+<p>Verify the Enonic app has <strong>the <code>2-column</code> layout descriptor</strong> at:</p>
 <div class="listingblock">
-<div class="title">src/main/resources/site/layouts/2-column/2-column.xml</div>
+<div class="title">src/main/resources/cms/layouts/2-column/2-column.yaml</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
-&lt;layout xmlns="urn:enonic:xp:model:1.0"&gt;
-    &lt;display-name&gt;2 columns&lt;/display-name&gt;
-    &lt;description&gt;Provides left and right regions&lt;/description&gt;
-    &lt;form/&gt;
-    &lt;regions&gt;
-        &lt;region name="left"/&gt;
-        &lt;region name="right"/&gt;
-    &lt;/regions&gt;
-&lt;/layout&gt;</code></pre>
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">kind: "Layout"
+title: "2 columns"
+description: "Provides left and right regions"
+form: [ ]
+regions:
+  - "left"
+  - "right"</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -492,7 +489,7 @@ Just like a page, layouts may declare named regions.
 </table>
 </div>
 <div class="paragraph">
-<p>When completed, as always <strong>redeploy the Enonic app</strong> (happens automatically if you started <code>enonic project dev</code>).</p>
+<p>When completed, as always <strong>redeploy the Enonic app</strong> if you had to change it (happens automatically if you started <code>enonic project dev</code>).</p>
 </div>
 </li>
 </ol>
@@ -603,10 +600,7 @@ this specific layout does not need any additional data - hence no query or proce
 </ol>
 </div>
 <div class="paragraph">
-<p>After completing these steps, you should be able to add the layout to a page, and then add components inside the layout. It might look something like this:</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="media/layout-empty.png" alt="layout empty" width="1440px" title="Empty layout on the persons page"></span></p>
+<p>After completing these steps, you should be able to add the layout to a page, and then add components inside the layout.</p>
 </div>
 <div class="paragraph">
 <p>By combining layout, part and text we are starting to see the potential of the page editor:</p>
@@ -623,7 +617,7 @@ Page templates allow us to reuse a page definition across multiple content items
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 10:01:56 UTC
+Last updated 2026-08-10 11:48:35 UTC
 </div>
 </div>
 </body>

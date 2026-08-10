@@ -482,11 +482,11 @@ Next.js supports both client-side rendering and <a href="https://nextjs.org/docs
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">npx degit git@github.com:enonic/nextxp-template.git</code></pre>
+<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">npx degit github:enonic/starter-nextjs</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The "nextxp-template" is based on <a href="https://nextjs.org/docs/getting-started">Next.js' own introduction app</a>, so if you&#8217;re familiar with that, you&#8217;ll recognize the structure of the files.</p>
+<p><strong>starter-nextjs</strong> is based on <a href="https://nextjs.org/docs/getting-started">Next.js' own introduction app</a>, so if you&#8217;re familiar with that, you&#8217;ll recognize the structure of the files.</p>
 </div>
 <div class="paragraph">
 <p>The template includes some boilerplate we will customize, and an npm dependency aka ´The Enonic Adapter` that facilitates and simplifies integration with Enonic.</p>
@@ -501,18 +501,20 @@ Next.js supports both client-side rendering and <a href="https://nextjs.org/docs
 <div class="content">
 <pre class="highlight"><code class="language-files" data-lang="files">.env                                <i class="conum" data-value="1"></i><b>(1)</b>
 src/
-    proxy.ts                   <i class="conum" data-value="2"></i><b>(2)</b>
+    proxy.ts                        <i class="conum" data-value="2"></i><b>(2)</b>
     components/                     <i class="conum" data-value="3"></i><b>(3)</b>
     phrases/                        <i class="conum" data-value="4"></i><b>(4)</b>
         en.json
+    styles/                         <i class="conum" data-value="5"></i><b>(5)</b>
     app/
         [locale]
             [[...contentPath]]/
-                page.tsx            <i class="conum" data-value="5"></i><b>(5)</b>
-            layout.tsx              <i class="conum" data-value="6"></i><b>(6)</b>
-            error.tsx               <i class="conum" data-value="7"></i><b>(7)</b>
-            not-found.tsx           <i class="conum" data-value="8"></i><b>(8)</b>
-        api/                        <i class="conum" data-value="9"></i><b>(9)</b>
+                layout.tsx          <i class="conum" data-value="6"></i><b>(6)</b>
+                page.tsx            <i class="conum" data-value="7"></i><b>(7)</b>
+            layout.tsx              <i class="conum" data-value="8"></i><b>(8)</b>
+            error.tsx               <i class="conum" data-value="9"></i><b>(9)</b>
+            not-found.tsx           <i class="conum" data-value="10"></i><b>(10)</b>
+        api/                        <i class="conum" data-value="11"></i><b>(11)</b>
             preview/
                 route.tsx
             renderable/
@@ -541,22 +543,30 @@ src/
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>The main rendering file, catching all requests satisfying the pattern <code>/[locale]/[[&#8230;&#8203;contentPath]]</code></td>
+<td>Global styles for the site</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Layout file that wraps all pages and adds common structures (eg. <code>&lt;Header&gt;</code>, <code>&lt;LocaleContextProvider&gt;</code>, etc.)</td>
+<td>Layout file for all pages under the locale/content path</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="7"></i><b>7</b></td>
-<td>Error page handler</td>
+<td>The main rendering file, catching all requests satisfying the pattern <code>/[locale]/[[&#8230;&#8203;contentPath]]</code></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="8"></i><b>8</b></td>
-<td>Not found page handler</td>
+<td>Global layout file that wraps all pages and adds common structures (eg. <code>&lt;Header&gt;</code>, <code>&lt;LocaleContextProvider&gt;</code>, etc.)</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="9"></i><b>9</b></td>
+<td>Error page handler</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="10"></i><b>10</b></td>
+<td>Not found page handler</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="11"></i><b>11</b></td>
 <td>Folder containing API routes</td>
 </tr>
 </table>
@@ -694,13 +704,13 @@ Common:
 <h2 id="next_url_patterns"><a class="link" href="#next_url_patterns">Next URL patterns</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The URL structure of your front-end will mirror the structure of the content in the CMS. <a href="http://localhost:3000/" target="_blank" rel="noopener">http://localhost:3000/</a> will be mounted to the site root, which in our case has the internal path <code>/hmdb</code>.</p>
+<p>The URL structure of your front-end will mirror the structure of the content in the CMS. <a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a> will be mounted to the site root, which in our case has the internal path <code>/hmdb</code>.</p>
 </div>
 <div class="paragraph">
-<p>Using the Movie Se7en as an example:</p>
+<p>Using the Movie s7ven as an example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Result when visiting <a href="http://localhost:3000/movies/se7en" target="_blank" rel="noopener">http://localhost:3000/movies/se7en</a></div>
+<div class="title">Result when visiting <a href="http://localhost:3000/movies/s7ven" target="_blank" rel="noopener">http://localhost:3000/movies/s7ven</a></div>
 <div class="content">
 <pre class="highlight"><code>Page:
 {
@@ -710,7 +720,7 @@ Common:
 Common:
 {
   "get": {
-    "displayName": "Se7en",
+    "displayName": "s7ven",
     "_id": "1cb3dbf4-31d1-4e8a-816a-8cf891de7ad6",
     "type": "tutorial.nxp:movie",
     "dataAsJson": {
@@ -752,8 +762,8 @@ Common:
 </div>
 </div>
 <div class="paragraph">
-<div class="title">Se7en as seen in Content Studio - internal path is <code>/hmdb/movies/se7en</code></div>
-<p><span class="image"><img src="media/se7en-edit.png" alt="se7en edit" width="768px" title="Editing item in Content Studio - the path /hmdb/movies/se7en is highlighted"></span></p>
+<div class="title">S7ven as seen in Content Studio - internal path is <code>/hmdb/movies/s7ven</code></div>
+<p><span class="image"><img src="media/s7ven-edit.png" alt="s7ven edit" width="768px" title="Editing item in Content Studio - the path /hmdb/movies/s7ven is highlighted"></span></p>
 </div>
 <div class="sect2">
 <h3 id="task_visit_some_more_pages"><a class="link" href="#task_visit_some_more_pages">Task: Visit some more pages</a></h3>
@@ -769,7 +779,7 @@ Common:
 <p><a href="http://localhost:3000/persons" target="_blank" rel="noopener">http://localhost:3000/persons</a><br></p>
 </li>
 <li>
-<p><a href="http://localhost:3000/persons/brad-pitt" target="_blank" rel="noopener">http://localhost:3000/persons/brad-pitt</a></p>
+<p><a href="http://localhost:3000/persons/brad-pittless" target="_blank" rel="noopener">http://localhost:3000/persons/brad-pittless</a></p>
 </li>
 </ul>
 </div>
@@ -788,7 +798,7 @@ Common:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 10:01:56 UTC
+Last updated 2026-08-10 11:48:35 UTC
 </div>
 </div>
 </body>

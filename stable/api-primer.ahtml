@@ -498,7 +498,7 @@ New to GraphQL as well? Check out the <a href="https://graphql.org/">GraphQL doc
 <p>The API can be accessed directly following URL: <a href="http://localhost:8080/site/intro" target="_blank" rel="noopener">http://localhost:8080/site/intro</a>.</p>
 </div>
 <div class="paragraph">
-<p><code>hmdb</code> is the name of your Content Studio project.</p>
+<p><code>intro</code> is the name of your Content Studio project.</p>
 </div>
 </td>
 </tr>
@@ -617,7 +617,7 @@ Query variables enable you to re-use the same query, but for instance fetch diff
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Tthe <code>path</code> field in the JSON corresponds to the <code>$path</code> in the query string above:
+The <code>path</code> field in the JSON corresponds to the <code>$path</code> in the query string above:
 </td>
 </tr>
 </table>
@@ -625,7 +625,7 @@ Tthe <code>path</code> field in the JSON corresponds to the <code>$path</code> i
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-JSON" data-lang="JSON">{
-    "path": "/movies/se7en"
+    "path": "/movies/s7ven"
 }</code></pre>
 </div>
 </div>
@@ -647,12 +647,12 @@ Tthe <code>path</code> field in the JSON corresponds to the <code>$path</code> i
 <p>Content types may also define their own <a href="https://developer.enonic.com/docs/xp/stable/cms/content-types">custom fields</a>. These are stored under the <code>data</code> field. In the headless API, deeper data and functionality belonging to a content type is accessed through <strong>introspection</strong>.</p>
 </div>
 <div class="paragraph">
-<p>For example, you may introspect the fields that are exclusive to the <code>com.example.myproject:movie</code> content type like this:</p>
+<p>For example, you may introspect the fields that are exclusive to the <code>tutorial.nxp:movie</code> content type like this:</p>
 </div>
 <div class="listingblock">
 <div class="title">Content type introspection:</div>
 <div class="content">
-<pre class="highlight nowrap"><code>... on com_example_myproject_Movie</code></pre>
+<pre class="highlight nowrap"><code>... on tutorial_nxp_Movie</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -672,7 +672,7 @@ The fully-qualified content type name is used, dots are replaced with underscore
 <li>
 <p><strong>Fetch a complex data set</strong></p>
 <div class="paragraph">
-<p>Lets get content for a movie, the referenced <em>image</em> items <code>media:image</code> and <em>person</em> items <code>com.example.myproject:person</code> in a single query:</p>
+<p>Lets get content for a movie, the referenced <em>image</em> items <code>media:image</code> and <em>person</em> items <code>tutorial.nxp:person</code> in a single query:</p>
 </div>
 <div class="paragraph">
 <p>Paste this query into the GraphQL Playground:</p>
@@ -733,7 +733,7 @@ The fully-qualified content type name is used, dots are replaced with underscore
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-JSON" data-lang="JSON">{
-    "path": "/movies/se7en"
+    "path": "/movies/s7ven"
 }</code></pre>
 </div>
 </div>
@@ -754,7 +754,7 @@ The fully-qualified content type name is used, dots are replaced with underscore
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 10:01:56 UTC
+Last updated 2026-08-10 11:48:35 UTC
 </div>
 </div>
 </body>

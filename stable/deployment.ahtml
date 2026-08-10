@@ -695,7 +695,7 @@ To save time, you may export content from your local machine and import it to th
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Install the Next.XP app</strong> <code>Solution</code> &#8594; <code>Applications</code> &#8594; <code>Install</code> &#8594; Search for <code>Next.XP</code>, select it an click install</p>
+<p><strong>Install the Next.XP app</strong> <code>Solution</code> &#8594; <code>Applications</code> &#8594; <code>Install</code> &#8594; Search for <code>Next.XP</code>, select it and click install</p>
 </li>
 <li>
 <p><strong>Add configuration</strong>.</p>
@@ -792,7 +792,7 @@ If you imported content from your local environment, the following two steps can
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 10:01:56 UTC
+Last updated 2026-08-10 11:48:35 UTC
 </div>
 </div>
 </body>

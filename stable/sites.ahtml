@@ -543,7 +543,8 @@ This will leave the item in <code>In progress</code> state, which is ok for now.
 <h2 id="add_content"><a class="link" href="#add_content">Add content</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To quickly get some content and structure within the site, let&#8217;s move the Movie DB content into the site.</p>
+<p>To quickly get some content and structure within the site, let&#8217;s move the Movie DB content into the site.
+Return back to the Content Studio tab, and follow these steps:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -563,7 +564,8 @@ This will leave the item in <code>In progress</code> state, which is ok for now.
 </div>
 </li>
 <li>
-<p>To <strong>publish the entire new tree structure</strong> select the hierarchy icon to the left of the site. This will expand to include all items that have been moved as well. Then click <code>Publish Now</code></p>
+<p>To <strong>publish the entire new tree structure</strong> select the include child items checkbox, then apply in the notification bar.
+Then click <code>Publish Now</code></p>
 <div class="paragraph">
 <p><span class="image"><img src="media/content-studio-publish.png" alt="content studio publish" width="1024px" title="Publish entire tree structure"></span></p>
 </div>
@@ -620,7 +622,7 @@ SiteKey can be either path, or the site&#8217;s unique ID. A benefit of using th
 <div class="listingblock">
 <div class="content">
 <pre>{
-    "path": "${site}/movies/se7en"
+    "path": "${site}/movies/s7ven"
 }</pre>
 </div>
 </div>
@@ -631,7 +633,7 @@ SiteKey can be either path, or the site&#8217;s unique ID. A benefit of using th
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Here, <code>${site}</code> will resolve to the path of the site and expand - in this case the full path will be expanded to <code>/hmdb/movies/se7en</code>.
+Here, <code>${site}</code> will resolve to the path of the site and expand - in this case the full path will be expanded to <code>/hmdb/movies/s7ven</code>.
 </td>
 </tr>
 </table>
@@ -644,7 +646,7 @@ Here, <code>${site}</code> will resolve to the path of the site and expand - in 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 10:01:56 UTC
+Last updated 2026-08-10 11:48:35 UTC
 </div>
 </div>
 </body>
