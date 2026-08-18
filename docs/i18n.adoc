@@ -72,9 +72,10 @@ NOTE: The reason for repeating paths, is that the path may be different in each 
 The file name should be `<locale>.json`, e.g. `no.json` for Norwegian.
 +
 .src/phrases/no.json
-```[source,json]
+[source,json]
+----
 include::{sourcedir}/phrases/no.json[]
-```
+----
 +
 . Finally *restart your Next.js server* to pick up the changes to environment variables.
 
@@ -102,7 +103,7 @@ image:content-studio-mark-as-ready.png[title="Click tree icon to include all chi
 +
 . **Verify that your front-end is working**
 +
-Finally, by adding `/no/hmdb` (i.e. `localhost:3000/no/hmdb`) to the URL of your Next.js server in an *incognito window* you should now see the published content from the Norwegian project.
+Finally, by adding `/no` (i.e. `localhost:3000/no`) to the URL of your Next.js server in an *incognito window* you should now see the published content from the Norwegian project.
 
 
 == Multi front-end setup

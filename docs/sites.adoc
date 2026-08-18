@@ -77,10 +77,10 @@ One of the new features you get from the site context is the `${site}` placehold
 [source,JSON]
 ----
 {
-    "path": "${site}/movies/se7en"
+    "path": "${site}/movies/s7ven"
 }
 ----
 
-NOTE: Here, `${site}` will resolve to the path of the site and expand - in this case the full path will be expanded to `/hmdb/movies/se7en`.
+NOTE: Here, `${site}` will resolve to the path of the site and expand - in this case the full path will be expanded to `/hmdb/movies/s7ven`.
 
 Coming up - get your <<nextjs-setup#, your Next.js developer environment>> up and running.

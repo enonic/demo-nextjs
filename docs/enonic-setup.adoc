@@ -63,7 +63,7 @@ image::xp-boot.png[The XP boot page, 1085w]
 
 The Welcome page provides an overview of the sandbox, including installed application and https://developer.enonic.com/docs/xp/stable/deployment/config[standard configuration files^].
 
-NOTE: `My App` should be in the list, together with other applications that were automatically installed when you created the sandbox.
+NOTE: `Intro` should be in the list, together with other applications that were automatically installed when you created the sandbox.
 
 Click btn:[Log In as Guest] to open the XP admin dashboard. You should now see the following:
 

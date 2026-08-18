@@ -32,22 +32,22 @@ The same will now apply to Content Studio.
 
 Content types need to exist in Enonic before an editor can create content. Similarly, page components must be defined before Content Studio can enable editors to create pages.
 
-. *Add a page component* to the Enonic app (not the Next.js frontend) by creating the following file:
+. Verify Enonic app (not the Next.js frontend) has a *page component descriptor* at:
 +
 .src/main/resources/cms/pages/main/main.yaml
 [source,yaml]
 ----
 kind: "Page"
-title: "Main page"
-description: "Will be rendered by front-end"
-form: []
+title: "Main"
+description: "Contains a single main region"
+form: [ ]
 regions:
-- "main"
+  - "main"
 ----
 +
 NOTE: The definition of the region `main`, allows Content Studio editors to add components to the page, as you will see later.
 +
-*Redeploy the Enonic app* to register the page component (happens automatically if you started `enonic project dev`).
+*Redeploy the Enonic app* to register the page component if it didn't have it (happens automatically if you started `enonic project dev`).
 +
 . **Configure page rendering in Next.js**
 +
@@ -93,7 +93,7 @@ You should now see the following:
 +
 image:page-setup.png[title="Selecting the page component in the page view",width=1440px]
 +
-From the preview area, select the `Main` component we created earlier from the dropdown menu.
+In the preview area, select the `Main` component we created earlier from the Template dropdown menu.
 +
 You should then see a page with a single "dropzone" inside (the region we specified earlier).
 +
@@ -106,7 +106,7 @@ Let's create a simple `Paragraph` part that holds rich text.
 
 NOTE: Deeper dive into parts and components will be covered in the next chapter.
 
-. **Add the `paragraph` part** to the Enonic app
+. Verify Enonic app (not the Next.js frontend) has **the `paragraph` part**:
 +
 .src/main/resources/cms/parts/paragraph/paragraph.yaml
 [source,yaml]
@@ -122,7 +122,7 @@ form:
 +
 NOTE: The link:https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types/htmlarea[HtmlArea input] gives editors a rich-text editor with formatting, links, images and macros.
 +
-**Redeploy the Enonic app** to register the part (happens automatically if you started `enonic project dev`).
+**Redeploy the Enonic app** if it didn't have it to register the part (happens automatically if you started `enonic project dev`).
 +
 . **Add the part implementation to the Next.js app**
 +

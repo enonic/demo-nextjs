@@ -9,7 +9,7 @@ Layouts are essentially parts, with an extra trick up their sleve. Regions. This
 
 Adding layouts is more or less identical to pages and parts. Simply follow the steps below:
 
-. **Add the `2-column` layout** to the Enonic app
+. Verify the Enonic app has **the `2-column` layout descriptor** at:
 +
 .src/main/resources/cms/layouts/2-column/2-column.yaml
 [source,yaml]
@@ -17,15 +17,15 @@ Adding layouts is more or less identical to pages and parts. Simply follow the s
 kind: "Layout"
 title: "2 columns"
 description: "Provides left and right regions"
-form: []
+form: [ ]
 regions:
-- "left"
-- "right"
+  - "left"
+  - "right"
 ----
 +
 NOTE: Just like a page, layouts may declare named regions.
 +
-When completed, as always *redeploy the Enonic app* (happens automatically if you started `enonic project dev`).
+When completed, as always *redeploy the Enonic app* if you had to change it (happens automatically if you started `enonic project dev`).
 
 == Task: Add layout rendering to the front-end
 

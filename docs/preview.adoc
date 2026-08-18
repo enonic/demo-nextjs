@@ -39,7 +39,7 @@ This matches your setup, so everything should work out of the box. We will get b
 +
 . After applying and saving the changes, you should be able to see the live preview in Content Studio when selecting any content in the "Persons" folder.
 +
-image:morgan-freeman-preview.png[title="Next.js-rendered preview in Content Studio",width=1072px]
+image:morgan-floatman-preview.png[title="Next.js-rendered preview in Content Studio",width=1072px]
 
 == How does it work?
 

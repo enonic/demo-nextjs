@@ -15,7 +15,8 @@ By defining custom queries and react components tailored for each content type, 
 
 Let's build our first component, starting with a rendering of the "Person" content type:
 
-NOTE: The full name of your content type should now be `com.example.myproject:person`. If you used a different name when creating the Enonic app, update the `.env` file in your Next.js app to reflect this.
+NOTE: The full name of your content type should now be `tutorial.nxp:person`.
+If you used a different name when creating the Enonic app, update the `.env` file in your Next.js app to reflect this.
 
 . **Add a query** by creating the following file in your front-end application:
 +
@@ -28,6 +29,10 @@ include::{sourcedir}/components/queries/getPerson.ts[]
 This file defines a graphQL query 'getPerson' that will fetch data from the Enonic API.
 +
 NOTE: Query uses variables `siteKey`, `branch`, `project` and `path` that are automatically populated by the Enonic next.js adapter.
++
+TIP: You may validate the query by copying it to the GraphQL playground.
+Replace `APP_NAME_UNDERSCORED` with `tutorial_nxp` and set the query variables, try this for instance:
+`{"path": "/hmdb/persons/brad-pittless", "project": "intro", "branch": "draft", "siteKey": "/hmdb"}`
 +
 . **Add the following imports** to the component mappings file:
 +
@@ -52,9 +57,9 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 +
 . **Check the result**
 +
-By visiting a person item (like `http://localhost:3000/persons/morgan-freeman[http://localhost:3000/persons/morgan-freeman^]`) you should now see data props listed in the view.
+By visiting a person item (like `http://localhost:3000/persons/morgan-floatman[http://localhost:3000/persons/morgan-floatman^]`) you should now see data props listed in the view.
 +
-image:morgan-freeman-props.png[title="Page showing data props for Morgan Freeman content item",width=767px]
+image:morgan-floatman-props.png[title="Page showing data props for Morgan Floatman content item",width=767px]
 
 == Task: Add person template
 
@@ -92,7 +97,7 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 +
 . **Check the result** - The page should automatically reload once the changes have been saved
 +
-image:morgan-freeman-render.png[title="Person rendering with query and view",width=768px]
+image:morgan-floatman-render.png[title="Person rendering with query and view",width=768px]
 
 The content type mapping applies to every `person` content item in the site, regardless of its location in the hierarchy.
 Try looking at some other persons, e.g., http://localhost:3000/persons/uma-thurman[http://localhost:3000/persons/uma-thurman^]
@@ -156,9 +161,9 @@ return (
 )
 ----
 
-Morgan Freeman's page should now look like this
+Morgan Floatman's page should now look like this
 
-image:morgan-freeman-header-footer.png[title="Rendering with header and footer",width=768px]
+image:morgan-floatman-header-footer.png[title="Rendering with header and footer",width=768px]
 
 == The common query
 
