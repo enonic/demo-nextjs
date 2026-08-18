@@ -2,6 +2,7 @@
 :toc: right
 :toclevels: 3
 :imagesdir: media/
+include::.variables.adoc[]
 
 In this chapter we will create a front-end application that renders content from the Enonic CMS (the app created in the previous chapters).
 
@@ -16,10 +17,10 @@ Create an empty folder, go inside and run the following command:
 
 [source,bash,options="nowrap"]
 ----
-npx degit github:enonic/nextxp-template
+npx degit github:enonic/starter-nextjs
 ----
 
-The "nextxp-template" is based on link:https://nextjs.org/docs/getting-started[Next.js' own introduction app], so if you're familiar with that, you'll recognize the structure of the files.
+*starter-nextjs* is based on link:https://nextjs.org/docs/getting-started[Next.js' own introduction app], so if you're familiar with that, you'll recognize the structure of the files.
 
 The template includes some boilerplate we will customize, and an npm dependency aka ´The Enonic Adapter` that facilitates and simplifies integration with Enonic.
 
@@ -144,9 +145,9 @@ For more details on booting Next, check out the link:https://nextjs.org/docs/api
 
 The URL structure of your front-end will mirror the structure of the content in the CMS. http://localhost:3000[http://localhost:3000^] will be mounted to the site root, which in our case has the internal path `/hmdb`.
 
-Using the Movie Se7en as an example:
+Using the Movie s7ven as an example:
 
-.Result when visiting http://localhost:3000/movies/se7en[http://localhost:3000/movies/se7en^]
+.Result when visiting http://localhost:3000/movies/s7ven[http://localhost:3000/movies/s7ven^]
 [source]
 ----
 Page:
@@ -157,7 +158,7 @@ Page:
 Common:
 {
   "get": {
-    "displayName": "Se7en",
+    "displayName": "s7ven",
     "_id": "1cb3dbf4-31d1-4e8a-816a-8cf891de7ad6",
     "type": "tutorial.nxp:movie",
     "dataAsJson": {
@@ -198,8 +199,8 @@ Common:
 }
 ----
 
-.Se7en as seen in Content Studio - internal path is `/hmdb/movies/se7en`
-image:se7en-edit.png[title="Editing item in Content Studio - the path /hmdb/movies/se7en is highlighted",width=768px]
+.S7ven as seen in Content Studio - internal path is `/hmdb/movies/s7ven`
+image:s7ven-edit.png[title="Editing item in Content Studio - the path /hmdb/movies/s7ven is highlighted",width=768px]
 
 ### Task: Visit some more pages
 
@@ -207,7 +208,7 @@ Give the default rendering a spin by trying out some other URLs, for example: +
 
 * http://localhost:3000/movies[http://localhost:3000/movies^] +
 * http://localhost:3000/persons[http://localhost:3000/persons^] +
-* http://localhost:3000/persons/brad-pitt[http://localhost:3000/persons/brad-pitt^]
+* http://localhost:3000/persons/brad-pittless[http://localhost:3000/persons/brad-pittless^]
 
 ...etc.
 

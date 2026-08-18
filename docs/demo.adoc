@@ -53,20 +53,16 @@ With the front-end running, it is time to enable preview in Content Studio.
 The fastest way to try it out goes as follows:
 
 . **Launch Enonic XP admin** from the solution dashboard.
-. **Open Content Studio** from the top right `XP menu -> Content Studio`.
-. Choose the `Headless Movie DB` project, then click the root item in the tree structure `/hmdb` and click `Edit`.
+. **No changes needed in Content Studio** because Next.js preview widget is already installed in the solution.
 +
-image:content-studio-edit-site.png[title="Select and edit the site",width=650px]
+. We only need to instruct Next.js preview widget where to find the frontend server:
 +
-. Add the `Next.XP` app to the list of applications on the site.
-It will override the default preview for the content within the site.
+[.red]#TODO: Screenshot needs attention — Next.js Preview App#
 +
-image:content-studio-add-nextxp.png[title="Add the Next.XP application to the site.",width=779px]
-+
-. Now, instruct Next.XP where to find the frontend server:
-+
-.Go to Applications tab in Enonic Cloud and select Next.XP app:
+.Go to Applications tab in Enonic Cloud and select Next.js preview app:
 image:cloud-next-app-edit.png[title="Select the Next.XP application",width=937px]
++
+[.red]#TODO: Screenshot needs attention — Next.js Preview App#
 +
 .Press `Edit...` button in the app context menu and add the URL and secret of the Vercel app you deployed in step 3:
 image:cloud-next-app-config.png[title="Add the Next.XP application to the site.",width=872px]
@@ -79,10 +75,17 @@ image:cloud-preview.png[title="Front page as seen from Content Studio",width=141
 
 
 == How does it work?
-The Next.XP app acts as a proxy, and forwards the token from the configuration to activate Next.js' preview mode.
 
-Your edits will only be visible in Content Studio, until published. 
+Content Studio will ask every widget if it supports preview, and if so, it will ask the widget to render a preview of the content.
+When asked, the Next.js preview widget will do following sequence:
 
-When publishing changes, Next.XP should automatically trigger revalidation of all pages in the front-end, and the changes will go live.
+. send encrypted request to the configured Next.js front-end to fetch XP path to frontend URL mappings
+. during that request it will also initialize the Next.js preview mode if necessary
+. use those mappings to generate a frontend URL for a given content
+. return it back to Content Studio for rendering it directly
+
+Your edits will only be visible in Content Studio, until published.
+
+When publishing changes, Next.js preview widget should automatically trigger revalidation of all pages in the front-end, and the changes will go live.
 
 Congratulations, you now have a Next.js site powered by Enonic! 🚀

@@ -20,9 +20,7 @@ image:content-studio-guillotine.png[title="Browsing the Guillotine API using Que
 ====
 The API can be accessed directly following URL: http://localhost:8080/api/com.enonic.app.guillotine:graphql[http://localhost:8080/api/com.enonic.app.guillotine:graphql^].
 
-
-
-`hmdb` is the name of your Content Studio project.
+`intro` is the name of your Content Studio project.
 ====
 
 == Task: Run a simple query
@@ -97,7 +95,7 @@ NOTE: The `path` field in the JSON corresponds to the `$path` in the query strin
 [source,JSON]
 ----
 {
-    "path": "/movies/se7en"
+    "path": "/movies/s7ven"
 }
 ----
 +
@@ -110,18 +108,18 @@ The queries above only specify fields like `_id` and `displayName` for each cont
 
 Content types may also define their own link:https://developer.enonic.com/docs/xp/stable/cms/content-types[custom fields]. These are stored under the `data` field. In the headless API, deeper data and functionality belonging to a content type is accessed through **introspection**.
 
-For example, you may introspect the fields that are exclusive to the `com.example.myproject:movie` content type like this:
+For example, you may introspect the fields that are exclusive to the `tutorial.nxp:movie` content type like this:
 
 .Content type introspection:
 [source,options="nowrap"]
 ----
-... on com_example_myproject_Movie
+... on tutorial_nxp_Movie
 ----
 NOTE: The fully-qualified content type name is used, dots are replaced with underscores, and the name is capitalized `Movie`.
 
 . **Fetch a complex data set**
 +
-Lets get content for a movie, the referenced _image_ items `media:image` and _person_ items `com.example.myproject:person` in a single query:
+Lets get content for a movie, the referenced _image_ items `media:image` and _person_ items `tutorial.nxp:person` in a single query:
 +
 Paste this query into the GraphQL Playground:
 +
@@ -173,7 +171,7 @@ query($path:ID!){
 [source,JSON]
 ----
 {
-    "path": "/movies/se7en"
+    "path": "/movies/s7ven"
 }
 ----
 +
