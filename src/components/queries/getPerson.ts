@@ -1,4 +1,4 @@
-import {APP_NAME_UNDERSCORED} from '@enonic/nextjs-adapter';
+import { APP_NAME_UNDERSCORED } from '@enonic/nextjs-adapter';
 
 const getPerson = () => `
 query {
@@ -10,7 +10,9 @@ query {
           dateofbirth
           photos {
            ... on media_Image {
-              imageUrl: imageUrl(type: absolute, scale: "width(500)")
+              imageUrl(scale: "width(500)") {
+                url
+              }
               attachments {
                 name
               }

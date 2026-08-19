@@ -1,5 +1,5 @@
-import React from 'react'
-import {FetchContentResult, getUrl, I18n} from '@enonic/nextjs-adapter';
+import React from 'react';
+import { FetchContentResult, getUrl, I18n } from '@enonic/nextjs-adapter';
 import Link from 'next/link';
 
 const Person = (props: FetchContentResult) => {
@@ -14,7 +14,7 @@ const Person = (props: FetchContentResult) => {
                 {
                     photos.map((photo: any, i: number) => (
                         <img key={i}
-                             src={getUrl(photo.imageUrl, meta)}
+                             src={getUrl(photo.imageUrl?.url, meta)}
                              title={getTitle(photo, displayName)}
                              alt={getTitle(photo, displayName)}
                              width="500"

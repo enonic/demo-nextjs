@@ -1,5 +1,5 @@
-import React from 'react'
-import {APP_NAME_UNDERSCORED, getUrl, I18n, MetaData, PartProps} from '@enonic/nextjs-adapter';
+import React from 'react';
+import { APP_NAME_UNDERSCORED, getUrl, I18n, MetaData, PartProps } from '@enonic/nextjs-adapter';
 import Link from 'next/link';
 
 
@@ -20,7 +20,9 @@ query {
           release
           photos {
             ... on media_Image {
-              imageUrl: imageUrl(type: absolute, scale: "width(500)")
+              imageUrl(scale: "width(500)") {
+                url
+              }
               attachments {
                 name
               }
@@ -35,7 +37,9 @@ query {
                 data {
                   photos {
                     ... on media_Image {
-                      imageUrl: imageUrl(type: absolute, scale: "block(200,200)")
+                      imageUrl(scale: "block(200,200)") {
+                        url
+                      }
                       attachments {
                         name
                       }
@@ -83,7 +87,9 @@ interface MovieInfoProps {
     abstract: string;
     cast: CastMemberProps[],
     photos: {
-        imageUrl: string;
+        imageUrl: {
+            url: string;
+        };
     }[];
 }
 
@@ -95,8 +101,8 @@ const MovieInfo = (props: MovieInfoProps) => {
             {props.release && (
                 <p>({new Date(props.release).getFullYear()})</p>
             )}
-            {posterPhoto.imageUrl && (
-                <img src={getUrl(posterPhoto.imageUrl, props.meta)}
+            {posterPhoto.imageUrl?.url && (
+                <img src={getUrl(posterPhoto.imageUrl.url, props.meta)}
                      title={props.subtitle}
                      alt={props.subtitle}
                 />
@@ -118,7 +124,9 @@ interface CastMemberProps {
         displayName: string;
         data: {
             photos: {
-                imageUrl: string;
+                imageUrl: {
+                    url: string;
+                };
                 attachments: {
                     name: string
                 }[]
@@ -150,8 +158,8 @@ const CastMember = (props: CastMemberProps & { meta: MetaData }) => {
     return (
         <li style={{marginRight: "15px"}}>
             {
-                personPhoto.imageUrl &&
-                <img src={getUrl(personPhoto.imageUrl, meta)}
+                personPhoto.imageUrl?.url &&
+                <img src={getUrl(personPhoto.imageUrl.url, meta)}
                      title={`${displayName} as ${character}`}
                      alt={`${displayName} as ${character}`}/>
             }
