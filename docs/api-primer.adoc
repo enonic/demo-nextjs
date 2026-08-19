@@ -139,7 +139,9 @@ query($path:ID!){
           release
           photos {
             ... on media_Image {
-                imageUrl: imageUrl(type: absolute, scale: "width(500)")
+                imageUrl(scale: "width(500)") {
+                  url
+                }
             }
           }
           cast {
@@ -151,7 +153,9 @@ query($path:ID!){
                 data {
                   photos {
                     ... on media_Image {
-                      imageUrl: imageUrl(type: absolute, scale: "block(100,100)")
+                      imageUrl(scale: "block(100,100)") {
+                        url
+                      }
                     }
                   }
                 }

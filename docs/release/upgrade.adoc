@@ -4,26 +4,22 @@
 
 == Guillotine application
 
-IMPORTANT: Guillotine version 8 is required for v5.x.
+IMPORTANT: Guillotine version 9 is required for v6.x.
 
-== Upgrading from v3.x
+== Upgrading from v5.x
 
-. *Framework upgrades*: Next.js 16 and React 19 are now required.
-+
-See https://nextjs.org/docs/app/building-your-application/upgrading[Next.js upgrade guide] and https://react.dev/blog/2024/12/05/react-19[React 19 migration guide].
-
-. *Guillotine 8 query syntax*: GraphQL queries must use the new `guillotine()` field with explicit parameters:
+. *Guillotine 9 query syntax*: GraphQL queries must use the new `guillotine()` field with explicit parameters:
 +
 [source,graphql]
 ----
-# Before (v3.x)
+# Before (v5.x)
 query($path:ID!) {
   guillotine {
     get(key: $path) { ... }
   }
 }
 
-# After (v5.x)
+# After (v6.x)
 query {
   guillotine(siteKey: $siteKey, branch: $branch, project: $project) {
     get(key: $path) { ... }
@@ -43,53 +39,49 @@ export function commonVariables(vars: GlobalVariables) {
 }
 ----
 
+. *Guillotine 9 media URLs*: `imageUrl` and `mediaUrl` fields now return objects and require a subselection.
+The `type` argument (e.g. `type: absolute`) is gone, and so is the `type` field of the `processHtml` input — returned URLs are always server-relative:
++
+[source,graphql]
+----
+# Before (v5.x)
+imageUrl: imageUrl(type: absolute, scale: "width(500)")
+
+# After (v6.x)
+imageUrl(scale: "width(500)") {
+  url
+}
+----
++
+Pass the returned `url` value through `getUrl()` when rendering — it resolves media URLs against the API host:
++
+[source,TypeScript]
+----
+<img src={getUrl(photo.imageUrl?.url, meta)}/>
+----
+
 . *ENONIC_API environment variable*: The API URL now points to the Guillotine GraphQL endpoint directly:
 +
 [source,properties]
 ----
-# Before
+# Before (v5.x)
 ENONIC_API=http://127.0.0.1:8080/site
 
-# After
+# After (v6.x)
 ENONIC_API=http://127.0.0.1:8080/api/com.enonic.app.guillotine:graphql
 ----
 
-. *Middleware replaced by proxy*: `src/middleware.ts` has been replaced by `src/proxy.ts`.
-+
-The proxy handles encrypted blob validation for Content Studio requests, locale detection, and draft mode activation.
-If you have a custom middleware, migrate it to the new proxy pattern.
-
 . *Encrypted blob authentication*: API routes now use encrypted blob validation instead of plain token comparison.
+`ENONIC_API_TOKEN` is still required — it is now used as the encryption secret.
 +
 [source,TypeScript]
 ----
-// Before (v3.x)
+// Before (v5.x)
 import {validateToken} from '../../../utils';
 
-// After (v5.x)
+// After (v6.x)
 import {validateBlob} from '../../../utils';
 import {decryptParams} from '@enonic/nextjs-adapter';
-----
-
-. *Next.js 16 async params*: Route params are now `Promise` and must be awaited:
-+
-[source,TypeScript]
-----
-// Before (v3.x)
-export type PageProps = {
-    locale: string,
-    contentPath: string[],
-}
-export default async function Page({params}: { params: PageProps }) {
-    const {locale, contentPath} = params;
-
-// After (v5.x)
-export type PageProps = {
-    locale: string,
-    contentPath?: string[],
-}
-export default async function Page({params}: { params: Promise<PageProps> }) {
-    const resolvedParams = await params;
 ----
 
 . *MetaData type changes*:
@@ -113,36 +105,24 @@ site: string;
 - `getRenderMode()` context parameter is now optional
 - `JSX.Element` replaced with `ReactElement` in component types
 
-. *ESLint flat config*: Migrate from `.eslintrc` to `eslint.config.mjs`:
+. *next.config.js*: Add CORS headers so the Content Studio widget can talk to the Next.js server:
 +
 [source,javascript]
 ----
-import nextVitals from 'eslint-config-next/core-web-vitals'
-import {defineConfig, globalIgnores} from 'eslint/config'
-
-const eslintConfig = defineConfig([
-    ...nextVitals,
+headers: [
     {
-        rules: {
-            "@next/next/no-img-element": "off",
-            "eol-last": "warn"
-        }
+        key: 'Access-Control-Allow-Origin',
+        value: 'http://localhost:8080' // Can't be '*' when credentials are allowed
     },
-    globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts'])
-])
-
-export default eslintConfig
-----
-
-. *next.config.js*: Add turbopack alias and CORS headers configuration:
-+
-[source,javascript]
-----
-turbopack: {
-    resolveAlias: {
-        "@phrases": path.resolve(__dirname, "src", "phrases"),
+    {
+        key: 'Access-Control-Allow-Credentials',
+        value: 'true' // Needed for cookies to be sent in cross-origin requests
+    },
+    {
+        key: 'Access-Control-Allow-Methods',
+        value: 'GET, POST, PUT, DELETE, PATCH, OPTIONS'
     }
-},
+],
 ----
 
 . *Next.XP app replaced by Next.js Preview*: The `Next.XP` app (`com.enonic.app.nextxp`) has been replaced by the `Next.js Preview` app (`com.enonic.app.preview.nextjs`).
@@ -165,76 +145,3 @@ import PageEditorScript from '../../../components/views/PageEditorScript';
     <PageEditorScript mode={data.meta.renderMode}/>
 </>
 ----
-
-== Upgrading from v2.x
-
-. You need to use Next.js app router to be able to use v3.x.
-See https://nextjs.org/docs/pages/building-your-application/upgrading/app-router-migration[upgrade instructions] from pages router here.
-
-. `_renderable` page is now an API route at `src/api/renderable/route.ts`.
-
-. `@enonic/nextjs-adapter` methods renamed:
-+
-- getLocaleProjectConfig() -> getLocaleMapping()
-- getProjectLocaleConfigById -> getLocaleMappingById()
-
-. `@enonic/nextjs-adapter` method signature changes:
-- `fetchFromApi` method changed to :
-+
- fetchFromApi(
-    apiUrl: string,
-    projectConfig: ProjectLocaleConfig,
-    options?: FetchOptions): Promise<GuillotineResponseJson>
-+
-- `fetchGuillotine` method signature changes:
-+
- fetchGuillotine(
-    contentApiUrl: string,
-    projectConfig: ProjectLocaleConfig,
-    options?: FetchOptions): Promise<GuillotineResult>
-+
-. `@enonic/nextjs-adapter` exports rearranged:
-+
-Exports working both on the server and client sides are now available from `@enonic/nextjs-adapter` package root.
-Client-only exports are available from `@enonic/nextjs-adapter/client` package.
-Server-only exports are available from `@enonic/nextjs-adapter/server` package.
-Views are available at `@enonic/nextjs-adapter/views/<ViewName>`.
-
-. `ENONIC_PROJECTS` environmental variable change:
-+
- ENONIC_PROJECTS -> ENONIC_MAPPINGS
-+
-.Language is now required for every project config:
-
-    ENONIC_MAPPINGS=<lang>:<repo-name>/site/path[,<lang>:<repo-name>/site/path,...]
-+
-TIP: First config in the list is used as default.
-+
-. `next.config.js` config changes:
-+
-.Remove i18n block from next.js config:
-[source,language="javascript"]
-----
-i18n: {
-    locales: ['en', 'no'],
-    defaultLocale: 'en',
-}
-----
-+
-.Add phrases block to webpack config:
-[source,language="javascript"]
-----
-config.resolve.alias = {
-    ...config.resolve.alias,
-    "@phrases": path.resolve(__dirname, "./src/phrases"),
-}
-----
-
-. *Add* `src/phrases` folder to your project root.
-This folder should contain static translations for every language from `ENONIC_MAPPINGS` env var in the following format: `src/phrases/<lang>.json`
-
-    src/phrases/en.json
-    src/phrases/no.json
-
-. Middleware file has been updated to support new i18n config.
-If you have custom proxy, you need to update it to support new i18n config.
