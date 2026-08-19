@@ -1,7 +1,7 @@
 = Release Notes
 :toc: right
 
-== Next.XP Demo 5
+== Next.XP Demo 6
 
 === Framework upgrades
 
@@ -12,6 +12,11 @@
 === Guillotine 8 query syntax
 
 GraphQL queries now use explicit `siteKey`, `project`, and `branch` parameters passed directly to the `guillotine()` field, instead of relying on the API URL path to determine project and branch.
+
+=== Guillotine 9 media URLs
+
+`imageUrl` and `mediaUrl` fields now return objects and must be queried with a subselection, e.g. `imageUrl(scale: "width(500)") { url }`.
+The `type: absolute` argument and the `type` field of the `processHtml` input have been removed — media URLs are always server-relative, and `getUrl()` resolves them against the API host.
 
 === New API URL format
 
