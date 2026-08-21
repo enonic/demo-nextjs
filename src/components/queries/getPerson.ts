@@ -22,6 +22,9 @@ query {
       }
       parent {
         _path
+        pageUrl {
+          path
+        }
       }
     }
   }

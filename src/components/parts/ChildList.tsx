@@ -1,6 +1,6 @@
-import {Context, PartProps, VariablesGetterResult, GlobalVariables, getUrl} from '@enonic/nextjs-adapter';
+import { Context, PartProps, VariablesGetterResult, GlobalVariables } from '@enonic/nextjs-adapter';
 import Link from 'next/link';
-import React from 'react'
+import React from 'react';
 
 const FORBIDDEN_TYPES_REGEXP = "^media:.*|portal:fragment|portal:template-folder|portal:page-template$";
 
@@ -22,7 +22,7 @@ const ChildList = (props: PartProps) => {
                 <ul>{
                     children.map((child: any, i: number) => (
                         <li key={i}>
-                            <Link href={getUrl(child._path, meta)} data-content-path={child._path}>{child.displayName}</Link>
+                            <Link href={child.pageUrl?.path} data-content-path={child._path}>{child.displayName}</Link>
                         </li>
                     ))
                 }</ul>
@@ -47,6 +47,9 @@ export const getChildList = {
                       _id
                       displayName
                       type
+                      pageUrl {
+                        path
+                      }
                   }
                 }
               }

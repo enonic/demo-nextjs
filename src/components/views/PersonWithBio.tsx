@@ -1,5 +1,5 @@
 import React from 'react';
-import { FetchContentResult, getUrl, I18n } from '@enonic/nextjs-adapter';
+import { FetchContentResult, I18n } from '@enonic/nextjs-adapter';
 import Link from 'next/link';
 import RichTextView from '@enonic/nextjs-adapter/views/RichTextView';
 import styles from './PersonWithBio.module.css';
@@ -21,7 +21,7 @@ const PersonWithBio = (props: FetchContentResult) => {
                     {
                         photos.filter((p: any) => !!p).map((photo: any, i: number) => (
                             <img key={i}
-                                 src={getUrl(photo.imageUrl?.url, meta)}
+                                 src={photo.imageUrl?.url}
                                  title={getTitle(photo, displayName)}
                                  alt={getTitle(photo, displayName)}
                                  width="500"
@@ -30,7 +30,7 @@ const PersonWithBio = (props: FetchContentResult) => {
                     }
                 </div>
             </div>
-            <p><Link href={getUrl(parent._path, meta)}>{I18n.localize('back')}</Link></p>
+            <p><Link href={parent.pageUrl?.path} data-content-path={parent._path}>{I18n.localize('back')}</Link></p>
         </>
     )
 }
