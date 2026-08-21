@@ -1,10 +1,10 @@
 import React from 'react';
-import { FetchContentResult, getUrl, I18n } from '@enonic/nextjs-adapter';
+import { FetchContentResult, I18n } from '@enonic/nextjs-adapter';
 import Link from 'next/link';
 
 const Person = (props: FetchContentResult) => {
-    const {displayName, data, parent} = props.data?.get as any;
-    const {photos} = data;
+    const { displayName, data, parent } = props.data?.get as any;
+    const { photos } = data;
     const meta = props.meta;
 
     return (
@@ -14,7 +14,7 @@ const Person = (props: FetchContentResult) => {
                 {
                     photos.map((photo: any, i: number) => (
                         <img key={i}
-                             src={getUrl(photo.imageUrl?.url, meta)}
+                             src={photo.imageUrl?.url}
                              title={getTitle(photo, displayName)}
                              alt={getTitle(photo, displayName)}
                              width="500"
@@ -22,10 +22,10 @@ const Person = (props: FetchContentResult) => {
                     ))
                 }
             </div>
-            <p><Link href={getUrl(parent._path, meta)}>{I18n.localize('back')}</Link></p>
+            <p><Link href={parent.pageUrl?.path} data-content-path={parent._path}>{I18n.localize('back')}</Link></p>
         </>
-    )
-}
+    );
+};
 
 export default Person;
 

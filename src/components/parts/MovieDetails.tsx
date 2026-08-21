@@ -1,5 +1,5 @@
 import React from 'react';
-import { APP_NAME_UNDERSCORED, getUrl, I18n, MetaData, PartProps } from '@enonic/nextjs-adapter';
+import { APP_NAME_UNDERSCORED, I18n, MetaData, PartProps } from '@enonic/nextjs-adapter';
 import Link from 'next/link';
 
 
@@ -10,7 +10,9 @@ query {
       type
       displayName
       parent {
-        _path
+        pageUrl {
+          path
+        }
       }
       ... on ${APP_NAME_UNDERSCORED}_Movie {
         data {
@@ -33,6 +35,9 @@ query {
             actor {
               ... on ${APP_NAME_UNDERSCORED}_Person {
                 _path
+                pageUrl {
+                  path
+                }
                 displayName
                 data {
                   photos {
@@ -61,7 +66,7 @@ const MovieView = (props: PartProps) => {
     const data = props.data?.get.data as MovieInfoProps;
     const meta = props.meta;
     const {displayName, parent} = props.data.get;
-    const href = parent?._path && getUrl(parent?._path, meta);
+    const href = parent?.pageUrl?.path;
     return (
         <>
             <div>
@@ -71,7 +76,7 @@ const MovieView = (props: PartProps) => {
             </div>
             {href &&
              <p>
-                 <Link href={href}>{I18n.localize('back')}</Link>
+                 <Link href={href} data-content-path={parent?._path}>{I18n.localize('back')}</Link>
             </p>
             }
         </>
@@ -102,7 +107,7 @@ const MovieInfo = (props: MovieInfoProps) => {
                 <p>({new Date(props.release).getFullYear()})</p>
             )}
             {posterPhoto.imageUrl?.url && (
-                <img src={getUrl(posterPhoto.imageUrl.url, props.meta)}
+                <img src={posterPhoto.imageUrl.url}
                      title={props.subtitle}
                      alt={props.subtitle}
                 />
@@ -121,6 +126,9 @@ interface CastMemberProps {
     character: string;
     actor: {
         _path: string;
+        pageUrl: {
+            path: string;
+        };
         displayName: string;
         data: {
             photos: {
@@ -151,22 +159,22 @@ const Cast = (props: CastProps) => (
 
 
 const CastMember = (props: CastMemberProps & { meta: MetaData }) => {
-    const {character, actor, meta} = props;
-    const {displayName, _path, data} = actor;
+    const { character, actor } = props;
+    const { displayName, pageUrl, data, _path } = actor;
     const personPhoto = (data.photos || [])[0] || {};
 
     return (
         <li style={{marginRight: "15px"}}>
             {
                 personPhoto.imageUrl?.url &&
-                <img src={getUrl(personPhoto.imageUrl.url, meta)}
+                <img src={personPhoto.imageUrl.url}
                      title={`${displayName} as ${character}`}
                      alt={`${displayName} as ${character}`}/>
             }
             <div>
                 <p>{character}</p>
                 <p>
-                    <Link href={getUrl(_path, meta)}>
+                    <Link href={pageUrl?.path} data-content-path={_path}>
                         {displayName}
                     </Link>
                 </p>
