@@ -4,21 +4,6 @@
 
 In this chapter, you'll enable Content Studio to load the preview directly from the Next.js app.
 
-== Task: Allow the Next.js origin in Content Studio
-
-Content Studio ships with a strict Content Security Policy that blocks loading pages from third-party URLs, including `http://localhost:3000`.
-To allow it, add a configuration file for Content Studio in your sandbox' https://developer.enonic.com/docs/xp/stable/deployment/config[config folder^]:
-
-.com.enonic.app.contentstudio.cfg
-[source,properties]
-----
-contentSecurityPolicy.header=default-src 'self' http://localhost:3000; connect-src 'self' ws: wss: http://localhost:3000; script-src 'self' 'unsafe-eval' 'unsafe-inline' http://localhost:3000; object-src 'none'; style-src 'self' 'unsafe-inline' http://localhost:3000; img-src 'self' http://localhost:3000 data:;
-----
-
-The directives whitelist the Next.js dev server (`http://localhost:3000`) as an allowed source for scripts, styles, images, frames, and WebSocket connections (used by Next.js HMR). `'unsafe-eval'` and `'unsafe-inline'` are required by the Next.js dev runtime.
-
-NOTE: When deploying to production, replace `http://localhost:3000` with your live Next.js origin and consider removing `'unsafe-eval'` / `'unsafe-inline'` if your production build does not need them.
-
 == Task: Enable preview
 
 Install the `Next.js Preview` app that adds a new preview widget to Content Studio.
@@ -37,6 +22,11 @@ By default Next.js Preview uses the following values:
 +
 This matches your setup, so everything should work out of the box. We will get back to tuning these values in the <<static#, Static pages>>, and <<deployment#, Deployment>> chapters.
 +
+NOTE: Content Studio ships with a strict Content Security Policy that blocks loading pages from third-party URLs, including `http://localhost:3000`.
+The Next.js Preview app automatically adds its configured Next.js origins to this policy, so no manual configuration is needed.
+The default `http://localhost:3000` origin is only allowed when XP runs in dev mode - like your sandbox.
+In production, only explicitly configured URLs are allowed.
++
 . After applying and saving the changes, you should be able to see the live preview in Content Studio when selecting any content in the "Persons" folder.
 +
 image:morgan-floatman-preview.png[title="Next.js-rendered preview in Content Studio",width=1072px]
@@ -52,6 +42,8 @@ When an editor selects a content item, the widget:
 . Loads the resolved page in the preview pane
 
 On the Next.js side, the proxy (`src/proxy.ts`) receives the request, authenticates the request by decrypting parameters, enables Next.js draft mode, and renders the page with unpublished content.
+
+The app also extends Content Studio's Content Security Policy with every Next.js origin from its configuration (the `frame-src` and `connect-src` directives), allowing the preview iframe to load pages from those servers.
 
 == Live page editing
 

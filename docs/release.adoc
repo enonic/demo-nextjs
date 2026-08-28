@@ -35,6 +35,13 @@ The `decryptParams` and `encryptParams` functions are available from `@enonic/ne
 
 Returns routing mapping configuration to Content Studio, secured with blob validation.
 
+=== Automatic Content Studio CSP allow listing
+
+The Next.js Preview app now automatically adds its configured front-end origins to Content Studio's Content Security Policy (`frame-src` and `connect-src`), so the preview iframe can load pages from those servers out of the box.
+The manual `contentSecurityPolicy.header` setup in `com.enonic.app.contentstudio.cfg` is no longer needed.
+When nothing is configured, the default `http://localhost:3000` origin is allowed only in dev mode - in production, only explicitly configured URLs are added.
+Requires Enonic XP 8.1 or later.
+
 === Content Studio live editing with `@enonic/page-editor`
 
 The new `@enonic/page-editor` package brings full compatibility with Content Studio's live page editing.

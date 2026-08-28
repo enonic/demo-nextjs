@@ -106,6 +106,9 @@ nextjs.default.secret = <yourSecret>
 +
 TIP: Remember, you can also create named configurations if needed.
 +
+NOTE: The app automatically adds the configured front-end origins to Content Studio's Content Security Policy, so the preview from your Vercel URL works without any Content Studio configuration.
+Unlike your local sandbox, a production server allows only explicitly configured URLs - the `http://localhost:3000` default applies to dev mode only, so this configuration step is required.
++
 NOTE: If you imported content from your local environment, the following two steps can be skipped
 +
 NOTE: The Next.js Preview app adds a preview widget that works without adding the app to the site.

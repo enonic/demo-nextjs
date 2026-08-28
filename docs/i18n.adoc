@@ -130,6 +130,8 @@ nextjs.prod.url=https://your.next-site.com
 # ...
 ----
 +
+NOTE: Every configured URL is automatically allowed in Content Studio's Content Security Policy, so the preview works for each front-end without further configuration.
++
 . *Assign the configuration to your site* by clicking the pencil icon next to the `Next.js Preview` app name in the site form, and selecting it from the list of named configurations:
 +
 image:content-studio-configure-nextxp.png[title="Form with fields for server url and nextjs token",width=771px]
