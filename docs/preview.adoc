@@ -75,6 +75,6 @@ return (
 
 Since the preview widget loads pages directly from the Next.js server, links within the rendered page need to work correctly inside Content Studio's as well.
 
-The `getUrl()` function from the Enonic Adapter handles links to media files, basepath resolution, and language prefix — ensuring they work correctly both in standalone mode and in Content Studio preview.
+URL fields like `imageUrl`, `mediaUrl` and `attachmentUrl` return ready-made URLs with the base URL resolved by XP, so no client-side URL processing is needed — links work both in standalone mode and in Content Studio preview.
 
 That completes the preview setup; moving forward, we'll look into rendering <<rich-text#, Html Area>> fields.

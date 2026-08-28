@@ -15,8 +15,23 @@ GraphQL queries now use explicit `siteKey`, `project`, and `branch` parameters p
 
 === Guillotine 9 media URLs
 
-`imageUrl` and `mediaUrl` fields now return objects and must be queried with a subselection, e.g. `imageUrl(scale: "width(500)") { url }`.
-The `type: absolute` argument and the `type` field of the `processHtml` input have been removed — media URLs are always server-relative, and `getUrl()` resolves them against the API host.
+The `imageUrl`, `mediaUrl` and `attachmentUrl` fields now return objects and must be queried with a subselection, e.g. `imageUrl(scale: "width(500)") { url }`.
+See the https://developer.enonic.com/docs/guillotine/next/api[Guillotine API reference^] for details.
+
+The returned object contains the following fields:
+
+* `url` — the ready-made URL, with the base URL resolved by XP
+* `path` — the full media API path with a leading slash, ready to append to a base URL of your own
+* `queryString` — URL-escaped query string, with a `?` prefix
+* `context` — project context segment
+* `id` — content ID
+* `fingerprint` — media fingerprint
+* `name` — file name (for `imageUrl`, with the requested format extension)
+* `scale` — processed scale segment (`imageUrl` only)
+* `intent` — `download` or `inline` (`mediaUrl`/`attachmentUrl` only)
+
+The `type: absolute` argument and the `type` field of the `processHtml` input have been removed.
+Instead, `url` is server-relative by default, and can be configured to be absolute by setting a base URL — either on the site/project, or globally with the `media.defaultBaseUrl` option in `com.enonic.xp.portal.cfg`.
 
 === New API URL format
 
@@ -57,6 +72,7 @@ It is included automatically via the main page handler.
 === Adapter API changes
 
 * `getContentApiUrl()` removed
+* `getUrl()` deprecated — URLs returned by the API are ready to use and need no processing
 * `getContentBranch()` added
 * `BaseMacro` no longer accepts `renderInEditMode` prop
 * `getRenderMode()` context parameter is now optional

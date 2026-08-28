@@ -39,8 +39,8 @@ export function commonVariables(vars: GlobalVariables) {
 }
 ----
 
-. *Guillotine 9 media URLs*: `imageUrl` and `mediaUrl` fields now return objects and require a subselection.
-The `type` argument (e.g. `type: absolute`) is gone, and so is the `type` field of the `processHtml` input — returned URLs are always server-relative:
+. *Guillotine 9 media URLs*: `imageUrl`, `mediaUrl` and `attachmentUrl` fields now return objects and require a subselection.
+The `type` argument (e.g. `type: absolute`) is gone, and so is the `type` field of the `processHtml` input:
 +
 [source,graphql]
 ----
@@ -53,12 +53,15 @@ imageUrl(scale: "width(500)") {
 }
 ----
 +
-Pass the returned `url` value through `getUrl()` when rendering — it resolves media URLs against the API host:
+The returned `url` value is ready to use — render it directly:
 +
 [source,TypeScript]
 ----
-<img src={getUrl(photo.imageUrl?.url, meta)}/>
+<img src={photo.imageUrl?.url}/>
 ----
++
+By default the URL is server-relative.
+To make it absolute, configure a base URL — either on the site/project, or globally with the `media.defaultBaseUrl` option in `com.enonic.xp.portal.cfg`, e.g. `media.defaultBaseUrl=http://localhost:8080/api`.
 
 . *ENONIC_API environment variable*: The API URL now points to the Guillotine GraphQL endpoint directly:
 +
@@ -100,6 +103,7 @@ site: string;
 . *`@enonic/nextjs-adapter` API changes*:
 +
 - `getContentApiUrl()` removed
+- `getUrl()` deprecated — URLs returned by the API are ready to use, remove the wrapping calls
 - `getContentBranch()` added
 - `BaseMacro` no longer accepts `renderInEditMode` prop
 - `getRenderMode()` context parameter is now optional

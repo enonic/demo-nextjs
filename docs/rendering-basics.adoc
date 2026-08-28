@@ -61,6 +61,22 @@ By visiting a person item (like `http://localhost:3000/persons/morgan-floatman[h
 +
 image:morgan-floatman-props.png[title="Page showing data props for Morgan Floatman content item",width=767px]
 
+== Task: Configure media URLs
+
+The `getPerson` query requests `imageUrl { url }` — a ready-made URL for a scaled version of the image.
+By default this URL is server-relative, so the browser would resolve it against the Next.js server, where no media service exists — and images would not load.
+
+**Add the following line** to the `com.enonic.xp.portal.cfg` file in your sandbox' https://developer.enonic.com/docs/xp/stable/deployment/config[config folder^], located in your user's root directory at `.enonic/sandboxes/nxptutorial/home/config` (create the file if it does not exist):
+
+.com.enonic.xp.portal.cfg
+[source,properties]
+----
+media.defaultBaseUrl=http://localhost:8080/api
+----
+
+This makes XP return absolute media URLs pointing to its own media API, so images render correctly in the front-end.
+The change is picked up automatically — no sandbox restart needed.
+
 == Task: Add person template
 
 With fresh content available, it's time to make things shine:

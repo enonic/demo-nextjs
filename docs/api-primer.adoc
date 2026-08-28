@@ -168,7 +168,10 @@ query($path:ID!){
   }
 }
 ----
-<1> Notice how `imageUrl` is requested with parameters of its own? Type introspections can expose certain link:https://developer.enonic.com/docs/guillotine/stable/api[functions for processing data] before returning it.
+
+<1> Notice how `imageUrl` is requested with parameters of its own?
+Type introspections can expose certain link:https://developer.enonic.com/docs/guillotine/next/api[functions for processing data^] before returning it.
+Such URL functions return objects: `url` holds the ready-made URL, with additional fields available for building custom URLs.
 +
 . Keep the **query variables** from the previous step:
 +

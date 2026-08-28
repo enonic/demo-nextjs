@@ -42,13 +42,13 @@ enonic cloud app install
 
 == Task: Expose API via route
 
-The purpose of routes is to expose APIs and other endpoints in Enonic XP like `:8080/site/<project>/<branch>` to the internet.
+The purpose of routes is to expose APIs and other endpoints in Enonic XP, like the `:8080/api` API root, to the internet.
 
 . **Create a new ingress called "API"** from `Solution` -> `Ingresses`.
 +
 Use the following settings:
 +
-Target path:: `/site`
+Target path:: `/api`
 Public path:: `/api`
 ID provider:: -empty-
 +
@@ -56,6 +56,19 @@ ID provider:: -empty-
 
 NOTE: The URL should look something like this: `https://account-solution-environment.enonic.net/api`.
 
+== Task: Configure media URLs
+
+Just like <<rendering-basics#, you did locally>>, XP must return absolute media URLs for images to render in the front-end — this time using the public API route.
+
+**Add the following line** to the `com.enonic.xp.portal.cfg` https://developer.enonic.com/docs/xp/stable/deployment/config[configuration file^] of your environment, using the route URL from the previous task:
+
+.com.enonic.xp.portal.cfg
+[source,properties]
+----
+media.defaultBaseUrl=<route URL>
+----
+
+[.red]#TODO: Describe how to edit XP config files in the Enonic Cloud console#
 
 == Task: Add your front-end to Git
 
@@ -74,7 +87,7 @@ You are now ready to deploy the the front-end application.
 . **Add the following environment variables** to the project (name: value):
 +
 * ENONIC_APP_NAME: <enonic app name (`tutorial.nxp` in this guide)>
-* ENONIC_API: <enonic ingress URL>
+* ENONIC_API: <enonic ingress URL>/com.enonic.app.guillotine:graphql
 * ENONIC_API_TOKEN: <yourSecret>
 * ENONIC_MAPPINGS: en:intro/hmdb,no:intro-no/hmdb
 
