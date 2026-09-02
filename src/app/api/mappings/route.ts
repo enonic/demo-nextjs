@@ -1,10 +1,10 @@
-import {NextResponse, NextRequest} from 'next/server';
-import {validateBlob} from '../../../utils';
+import { NextResponse, NextRequest } from 'next/server';
+import { validateBlob } from '../../../utils';
 
 const MAPPINGS = [
     {
         sources: ['/.*'],
-        target: '/${_path}',
+        target: '/${siteRelativePath}',
     },
 ];
 
