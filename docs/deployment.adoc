@@ -88,6 +88,7 @@ You are now ready to deploy the the front-end application.
 +
 * ENONIC_APP_NAME: <enonic app name (`tutorial.nxp` in this guide)>
 * ENONIC_API: <enonic ingress URL>/com.enonic.app.guillotine:graphql
+* ENONIC_ADMIN: <enonic admin URL> (optional, only if admin is on a different domain than the API)
 * ENONIC_API_TOKEN: <yourSecret>
 * ENONIC_MAPPINGS: en:intro/hmdb,no:intro-no/hmdb
 

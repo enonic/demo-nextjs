@@ -34,6 +34,7 @@ Vercel are the makers of Next.js, and you'll be using their service to host the 
 +
 * ENONIC_APP_NAME: com.enonic.app.hmdb
 * ENONIC_API: <URL to Enonic API>
+* ENONIC_ADMIN: <enonic admin URL> (optional, only if admin is on a different domain than the API)
 * ENONIC_API_TOKEN: <yourSecret>
 * ENONIC_MAPPINGS: en:hmdb/hmdb
 +

@@ -57,6 +57,12 @@ The manual `contentSecurityPolicy.header` setup in `com.enonic.app.contentstudio
 When nothing is configured, the default `http://localhost:3000` origin is allowed only in dev mode - in production, only explicitly configured URLs are added.
 Requires Enonic XP 8.1 or later.
 
+=== CORS headers for Content Studio
+
+`next.config.js` now sets the CORS headers needed by the Content Studio widget.
+The allowed origin is derived from the new optional `ENONIC_ADMIN` environment variable, falling back to the origin of `ENONIC_API` when it is not set or not a valid URL.
+Set `ENONIC_ADMIN` when the Enonic admin UI is served from a different domain than the API.
+
 === Content Studio live editing with `@enonic/page-editor`
 
 The new `@enonic/page-editor` package brings full compatibility with Content Studio's live page editing.
@@ -81,7 +87,6 @@ It is included automatically via the main page handler.
 
 * Next.js 16 async params: route params are now `Promise` and must be awaited
 * The adapter automatically sets `renderMode` to `EDIT` when Next.js draft mode is enabled
-* CORS headers configured for Content Studio widget support
 * `JSX.Element` replaced with `ReactElement` for more precise TypeScript typing
 
 == Next.XP Demo 3

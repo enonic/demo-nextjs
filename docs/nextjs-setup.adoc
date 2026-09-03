@@ -88,10 +88,16 @@ ENONIC_MAPPINGS=en:intro/hmdb <1>
 
 # Absolute URL to Content API
 ENONIC_API=http://127.0.0.1:8080/api/com.enonic.app.guillotine:graphql <2>
+
+# Absolute URL to Enonic admin, only needed if it differs from the API origin (used for CORS)
+#ENONIC_ADMIN=http://127.0.0.1:8080 <3>
 ----
 
 <1> Mapping an XP project (intro) and site (/hmdb) to the Next.js router.
 <2> URL of the Guillotine GraphQL API endpoint.
+<3> Optional.
+Origin of the Enonic admin UI, used for CORS.
+Defaults to the origin of `ENONIC_API`.
 
 TIP: These configuration values can be overridden later when deploying your app to a live server.
 

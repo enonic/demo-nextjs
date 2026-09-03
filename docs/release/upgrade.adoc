@@ -109,14 +109,33 @@ site: string;
 - `getRenderMode()` context parameter is now optional
 - `JSX.Element` replaced with `ReactElement` in component types
 
-. *next.config.js*: Add CORS headers so the Content Studio widget can talk to the Next.js server:
+. *next.config.js*: Add CORS headers so the Content Studio widget can talk to the Next.js server.
+The allowed origin is derived from the optional `ENONIC_ADMIN` environment variable, falling back to `ENONIC_API`:
 +
 [source,javascript]
 ----
+function getOrigin(urlString) {
+    try {
+        return new URL(urlString).origin.replace('127.0.0.1', 'localhost');
+    } catch {
+        return undefined;
+    }
+}
+
+function getXpOrigin() {
+    const adminOrigin = getOrigin(process.env.ENONIC_ADMIN);
+    if (adminOrigin) {
+        return adminOrigin;
+    }
+    return getOrigin(process.env.ENONIC_API);
+}
+
+const xpOrigin = getXpOrigin();
+
 headers: [
     {
         key: 'Access-Control-Allow-Origin',
-        value: 'http://localhost:8080' // Can't be '*' when credentials are allowed
+        value: xpOrigin // Can't be '*' when credentials are allowed
     },
     {
         key: 'Access-Control-Allow-Credentials',
@@ -128,6 +147,8 @@ headers: [
     }
 ],
 ----
++
+Set `ENONIC_ADMIN` to the URL of the Enonic admin UI when it is served from a different domain than the API.
 
 . *Next.XP app replaced by Next.js Preview*: The `Next.XP` app (`com.enonic.app.nextxp`) has been replaced by the `Next.js Preview` app (`com.enonic.app.preview.nextjs`).
 The new app adds a preview widget that loads pages directly from the Next.js server, instead of proxying requests.
