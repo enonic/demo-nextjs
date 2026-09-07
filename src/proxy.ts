@@ -112,7 +112,8 @@ function addLanguageToPath(req: NextRequest, explicitLocale?: string): boolean {
         return false;
     }
 
-    req.nextUrl.pathname = `/${locale}${pathname}`
+    // No trailing slash for the site root: with trailingSlash=false Next would 308 "/en/" to "/en", and that redirect carries no CORS headers
+    req.nextUrl.pathname = `/${locale}${pathname}`.replace(/\/$/, '');
     return true;
 }
 
