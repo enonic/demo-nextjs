@@ -1,5 +1,15 @@
 import React from 'react';
-import { APP_NAME_UNDERSCORED, I18n, MetaData, PartProps } from '@enonic/nextjs-adapter';
+import type { ImageUrl, PageUrl } from '@enonic/nextjs-adapter';
+import {
+    APP_NAME_UNDERSCORED,
+    I18n,
+    MetaData,
+    PartProps,
+    imageUrl,
+    imageUrlQuery,
+    pageUrl,
+    pageUrlQuery,
+} from '@enonic/nextjs-adapter';
 import Link from 'next/link';
 
 
@@ -10,9 +20,8 @@ query {
       type
       displayName
       parent {
-        pageUrl {
-          path
-        }
+        _path
+        ${pageUrlQuery()}
       }
       ... on ${APP_NAME_UNDERSCORED}_Movie {
         data {
@@ -22,9 +31,7 @@ query {
           release
           photos {
             ... on media_Image {
-              imageUrl(scale: "width(500)") {
-                url
-              }
+              ${imageUrlQuery({ scale: 'width(500)' })}
               attachments {
                 name
               }
@@ -35,16 +42,12 @@ query {
             actor {
               ... on ${APP_NAME_UNDERSCORED}_Person {
                 _path
-                pageUrl {
-                  path
-                }
+                ${pageUrlQuery()}
                 displayName
                 data {
                   photos {
                     ... on media_Image {
-                      imageUrl(scale: "block(200,200)") {
-                        url
-                      }
+                      ${imageUrlQuery({ scale: 'block(200,200)' })}
                       attachments {
                         name
                       }
@@ -66,7 +69,7 @@ const MovieView = (props: PartProps) => {
     const data = props.data?.get.data as MovieInfoProps;
     const meta = props.meta;
     const {displayName, parent} = props.data.get;
-    const href = parent?.pageUrl?.path;
+    const href = pageUrl(parent?.pageUrl, meta);
     return (
         <>
             <div>
@@ -92,22 +95,20 @@ interface MovieInfoProps {
     abstract: string;
     cast: CastMemberProps[],
     photos: {
-        imageUrl: {
-            url: string;
-        };
+        imageUrl: ImageUrl;
     }[];
 }
 
 // Main movie info: release year, poster image and abstract text.
 const MovieInfo = (props: MovieInfoProps) => {
-    const posterPhoto = (props.photos || [])[0] || {};
+    const posterSrc = imageUrl((props.photos || [])[0]?.imageUrl);
     return (
         <>
             {props.release && (
                 <p>({new Date(props.release).getFullYear()})</p>
             )}
-            {posterPhoto.imageUrl?.url && (
-                <img src={posterPhoto.imageUrl.url}
+            {posterSrc && (
+                <img src={posterSrc}
                      title={props.subtitle}
                      alt={props.subtitle}
                 />
@@ -126,15 +127,11 @@ interface CastMemberProps {
     character: string;
     actor: {
         _path: string;
-        pageUrl: {
-            path: string;
-        };
+        pageUrl: PageUrl;
         displayName: string;
         data: {
             photos: {
-                imageUrl: {
-                    url: string;
-                };
+                imageUrl: ImageUrl;
                 attachments: {
                     name: string
                 }[]
@@ -160,21 +157,21 @@ const Cast = (props: CastProps) => (
 
 const CastMember = (props: CastMemberProps & { meta: MetaData }) => {
     const { character, actor } = props;
-    const { displayName, pageUrl, data, _path } = actor;
-    const personPhoto = (data.photos || [])[0] || {};
+    const { displayName, pageUrl: actorPageUrl, data, _path } = actor;
+    const photoSrc = imageUrl((data.photos || [])[0]?.imageUrl);
 
     return (
         <li style={{marginRight: "15px"}}>
             {
-                personPhoto.imageUrl?.url &&
-                <img src={personPhoto.imageUrl.url}
+                photoSrc &&
+                <img src={photoSrc}
                      title={`${displayName} as ${character}`}
                      alt={`${displayName} as ${character}`}/>
             }
             <div>
                 <p>{character}</p>
                 <p>
-                    <Link href={pageUrl?.path} data-content-path={_path}>
+                    <Link href={pageUrl(actorPageUrl, props.meta)} data-content-path={_path}>
                         {displayName}
                     </Link>
                 </p>

@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Header.module.css';
-import { MetaData } from '@enonic/nextjs-adapter';
+import { MetaData, pageUrl } from '@enonic/nextjs-adapter';
 import Link from 'next/link';
 
 export interface HeaderProps {
@@ -16,7 +16,7 @@ const Header = ({title, logoUrl, meta}: HeaderProps) => {
         <div className={styles.wrapper}>
             {title && (
                 <h1>
-                    <Link href="/" data-content-path={meta.site}>{title}</Link>
+                    <Link href={pageUrl({ path: '/' }, meta)} data-content-path={meta.site}>{title}</Link>
                 </h1>
             )}
             {logoUrl && (

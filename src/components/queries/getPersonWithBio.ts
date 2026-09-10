@@ -1,4 +1,4 @@
-import { APP_NAME_UNDERSCORED, richTextQuery } from '@enonic/nextjs-adapter';
+import { APP_NAME_UNDERSCORED, imageUrlQuery, pageUrlQuery, richTextQuery } from '@enonic/nextjs-adapter';
 
 const getPersonWithBio = () => `
 query {
@@ -11,9 +11,7 @@ query {
           dateofbirth
           photos {
            ... on media_Image {
-              imageUrl(scale: "width(500)") {
-                url
-              }
+              ${imageUrlQuery({ scale: 'width(500)' })}
               attachments {
                 name
               }
@@ -23,9 +21,7 @@ query {
       }
       parent {
         _path
-        pageUrl {
-          path
-        }
+        ${pageUrlQuery()}
       }
     }
   }

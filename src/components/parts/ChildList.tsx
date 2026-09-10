@@ -1,4 +1,11 @@
-import { Context, PartProps, VariablesGetterResult, GlobalVariables } from '@enonic/nextjs-adapter';
+import {
+    Context,
+    PartProps,
+    VariablesGetterResult,
+    GlobalVariables,
+    pageUrl,
+    pageUrlQuery,
+} from '@enonic/nextjs-adapter';
 import Link from 'next/link';
 import React from 'react';
 
@@ -22,7 +29,8 @@ const ChildList = (props: PartProps) => {
                 <ul>{
                     children.map((child: any, i: number) => (
                         <li key={i}>
-                            <Link href={child.pageUrl?.path} data-content-path={child._path}>{child.displayName}</Link>
+                            <Link href={pageUrl(child.pageUrl, meta)}
+                                  data-content-path={child._path}>{child.displayName}</Link>
                         </li>
                     ))
                 }</ul>
@@ -47,9 +55,7 @@ export const getChildList = {
                       _id
                       displayName
                       type
-                      pageUrl {
-                        path
-                      }
+                      ${pageUrlQuery()}
                   }
                 }
               }
