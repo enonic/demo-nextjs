@@ -1,40 +1,55 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getRequestLocaleInfo, decryptParams, PROJECT_ID_HEADER, JSESSIONID_HEADER } from '@enonic/nextjs-adapter';
+import {
+    getRequestLocaleInfo,
+    getLocaleMappingByProjectId,
+    decryptParams,
+    FROM_XP_PARAM,
+    JSESSIONID_HEADER,
+} from '@enonic/nextjs-adapter';
 
 const DRAFT_COOKIE = '__prerender_bypass';
 
 type LocaleInfo = ReturnType<typeof getRequestLocaleInfo>;
+type Url = NextRequest['nextUrl'];
 
 export function proxy(request: NextRequest): NextResponse {
-    const { pathname } = request.nextUrl;
+    const { pathname, searchParams } = request.nextUrl;
 
     addCookiesToHeaders(request);
 
-    const params = decryptXpParams(request);
-    if (params) {
-        addParamsToHeaders(request, params);
-    }
-
     const localeInfo = getRequestLocaleInfo({ contentPath: pathname, headers: request.headers });
+    const xpBlob = searchParams.get(FROM_XP_PARAM);
+    const params = xpBlob ? decryptXpParams(xpBlob) : null;
 
-    // Public URLs carry no prefix for the default locale
-    const canonicalUrl = withoutDefaultLocale(request, localeInfo);
-    if (canonicalUrl) {
-        console.debug(`Proxy at '${pathname}': redirecting to '${canonicalUrl.pathname}'`);
-        return NextResponse.redirect(canonicalUrl, 308);
-    }
-
-    if (params && !request.cookies.has(DRAFT_COOKIE)) {
-        return redirectToDraftMode(request);
-    }
-
-    // Route internally to /[locale]/... and drop the xp param
+    // Canonical public URL: no xp param, no default-locale prefix, and the project's locale for older preview apps sending site-relative paths
     const url = request.nextUrl.clone();
-    url.searchParams.delete('xp');
-    addLocalePrefix(url, localeInfo);
+    url.searchParams.delete(FROM_XP_PARAM);
+    stripDefaultLocale(url, localeInfo);
+    const projectLocale = getLocaleMappingByProjectId(params?.xpProject, false)?.locale;
+    if (projectLocale && projectLocale !== localeInfo.defaultLocale) {
+        addLocalePrefix(url, { ...localeInfo, locale: projectLocale });
+    }
 
+    if (xpBlob && params && !request.cookies.has(DRAFT_COOKIE)) {
+        // First Content Studio request: /api/preview validates the blob, enables draft mode and lands on the canonical URL
+        const draftUrl = request.nextUrl.clone();
+        draftUrl.pathname = '/api/preview';
+        draftUrl.search = '';
+        draftUrl.searchParams.set(FROM_XP_PARAM, xpBlob);
+        draftUrl.searchParams.set('path', url.pathname + url.search);
+        console.debug(`Proxy at '${pathname}': no draft cookie, redirecting to '${draftUrl.pathname}'`);
+        return NextResponse.redirect(draftUrl);
+    }
+
+    if (url.href !== request.nextUrl.href) {
+        console.debug(`Proxy at '${pathname}': redirecting to '${url.pathname}'`);
+        return NextResponse.redirect(url, xpBlob ? 307 : 308);
+    }
+
+    // Route internally to /[locale]/..., add even the default one
+    addLocalePrefix(url, localeInfo);
     if (url.href === request.nextUrl.href) {
-        console.debug(`Proxy at '${pathname}': passing through`);
+        console.debug(`Proxy at '${pathname}': ok, passing through`);
         return NextResponse.next({request});
     }
 
@@ -42,28 +57,13 @@ export function proxy(request: NextRequest): NextResponse {
     return NextResponse.rewrite(url, { request });
 }
 
-function decryptXpParams(request: NextRequest): Record<string, string> | null {
-    const xpBlob = request.nextUrl.searchParams.get('xp');
+function decryptXpParams(xpBlob: string): Record<string, string> | null {
     const secret = process.env.ENONIC_API_TOKEN;
-    if (!xpBlob || !secret) {
-        return null;
-    }
-
-    const params = decryptParams(xpBlob, secret);
+    const params = secret ? decryptParams(xpBlob, secret) : null;
     if (!params) {
-        console.debug(`Proxy at '${request.nextUrl.pathname}': failed to decrypt blob, treating as a direct request`);
+        console.debug('Proxy: failed to decrypt the xp blob, treating the request as a direct one');
     }
     return params;
-}
-
-function redirectToDraftMode(request: NextRequest): NextResponse {
-    // No draft-mode cookie yet: /api/preview sets it and redirects back with the blob
-    const draftUrl = request.nextUrl.clone();
-    draftUrl.pathname = '/api/preview';
-    draftUrl.searchParams.set('path', request.nextUrl.pathname);
-
-    console.debug(`Proxy at '${request.nextUrl.pathname}': no draft cookie, redirecting to '${draftUrl.pathname}'`);
-    return NextResponse.redirect(draftUrl);
 }
 
 function addCookiesToHeaders(request: NextRequest) {
@@ -73,24 +73,17 @@ function addCookiesToHeaders(request: NextRequest) {
     }
 }
 
-function addParamsToHeaders(request: NextRequest, params: Record<string, string>) {
-    if (params.xpProject) {
-        request.headers.set(PROJECT_ID_HEADER, params.xpProject);
-    }
-}
-
-function withoutDefaultLocale(request: NextRequest, { defaultLocale }: LocaleInfo): NextRequest['nextUrl'] | null {
-    const [, firstSegment, ...rest] = request.nextUrl.pathname.split('/');
+function stripDefaultLocale(url: Url, { defaultLocale }: LocaleInfo): boolean {
+    const [, firstSegment, ...rest] = url.pathname.split('/');
     if (!defaultLocale || firstSegment !== defaultLocale) {
-        return null;
+        return false;
     }
 
-    const url = request.nextUrl.clone();
     url.pathname = `/${rest.join('/')}`;
-    return url;
+    return true;
 }
 
-function addLocalePrefix(url: NextRequest['nextUrl'], { locale, locales }: LocaleInfo): void {
+function addLocalePrefix(url: Url, { locale, locales }: LocaleInfo): void {
     const firstSegment = url.pathname.split('/')[1];
     if (locales.includes(firstSegment) || !locale) {
         return;

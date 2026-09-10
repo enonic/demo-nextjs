@@ -42,7 +42,7 @@ The Guillotine endpoint is derived by appending `GUILLOTINE_API` (default `com.e
 === Proxy replaces middleware
 
 The `src/middleware.ts` file has been replaced by `src/proxy.ts`.
-It validates Content Studio requests (encrypted blob, draft mode activation), rewrites URLs without a locale prefix to the internal default-locale route and redirects `/<default locale>/...` to `/...`; public URLs carry a prefix only for non-default locales.
+It validates Content Studio requests (encrypted blob, draft mode activation) and redirects them to the same URL without the `xp` parameter, so preview URLs never show it; it rewrites URLs without a locale prefix to the internal default-locale route and redirects `/<default locale>/...` to `/...`; public URLs carry a prefix only for non-default locales.
 
 === Encrypted blob authentication
 

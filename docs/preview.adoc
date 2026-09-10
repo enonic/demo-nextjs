@@ -41,8 +41,10 @@ When an editor selects a content item, the widget:
 . Encrypts request parameters with the shared secret and sends a request
 . Loads the resolved page in the preview pane
 
-On the Next.js side, the proxy (`src/proxy.ts`) receives the request, authenticates the request by decrypting parameters, enables Next.js draft mode, and renders the page with unpublished content.
-Preview URLs use the public form, without a prefix for the default locale; the proxy routes them to the internal `[locale]` segment and redirects `/en/...` to `/...`.
+On the Next.js side, the proxy (`src/proxy.ts`) validates the encrypted `xp` parameter once, lets `/api/preview` enable Next.js draft mode, and redirects to the same URL without the parameter.
+From then on the preview runs on clean public URLs (no prefix for the default locale): the project follows from the locale in the URL and draft mode from Next's cookie, so the page renders unpublished content.
+Only the iframe `src` set by Content Studio carries the parameter; the iframe location and every later request do not.
+The proxy also routes prefix-less URLs to the internal `[locale]` segment and redirects `/en/...` to `/...`.
 
 The app also extends Content Studio's Content Security Policy with every Next.js origin from its configuration plus `'self'` (the `frame-src`, `connect-src` and `style-src` directives), allowing the preview iframe to load pages from those servers.
 

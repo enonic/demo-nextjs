@@ -28,16 +28,11 @@ export async function processRequest(request: NextRequest): Promise<NextResponse
     // Enable Next.js draft mode (sets __prerender_bypass cookie)
     (await draftMode()).enable();
 
-    // Redirect back to the content page, preserving the encrypted blob
-    // so the middleware can decrypt it on the second pass.
+    // Redirect back to the clean content page: draft mode lives in the cookie, the project follows from the URL locale
     const redirectUrl = new URL(path, request.nextUrl.origin);
-    if (xpBlob) {
-        redirectUrl.searchParams.set('xp', xpBlob);
-    }
-
     const response = NextResponse.redirect(redirectUrl);
 
-    console.info(`Preview route at [${path}], set cookie and redirecting to [${redirectUrl.pathname}]...`);
+    console.info(`Preview route: set draft cookie and redirecting to '${redirectUrl.pathname}'...`);
 
     return response;
 }

@@ -100,6 +100,7 @@ import {decryptParams} from '@enonic/nextjs-adapter';
 ----
 +
 `validateBlob()` returns `{ok: true, params}` on success and `{ok: false, response}` otherwise, so routes can read the decrypted `xpProject`.
+`/api/preview` redirects back to the content path without the `xp` parameter, and the proxy redirects any URL that carries it to the clean form, so the blob never stays in preview URLs.
 
 . *`/api/mappings` and `/api/revalidate`*: resolve the project's locale mapping from `xpProject` and return `localizeMappings(MAPPINGS, mapping)`; revalidate the internal route path with `pageUrl({path}, {locale})` (no `defaultLocale`, so the prefix is always added).
 See the demo routes for the full code.
