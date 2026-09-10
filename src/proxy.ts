@@ -1,120 +1,103 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-    getRequestLocaleInfo,
-    decryptParams,
-    getLocaleMappingByProjectId,
-    PROJECT_ID_HEADER,
-    JSESSIONID_HEADER,
-} from '@enonic/nextjs-adapter';
+import { getRequestLocaleInfo, decryptParams, PROJECT_ID_HEADER, JSESSIONID_HEADER } from '@enonic/nextjs-adapter';
+
+const DRAFT_COOKIE = '__prerender_bypass';
+
+type LocaleInfo = ReturnType<typeof getRequestLocaleInfo>;
 
 export function proxy(request: NextRequest): NextResponse {
-    const {searchParams, pathname} = request.nextUrl;
-    const xpBlob = searchParams.get('xp');
-    const secret = process.env.ENONIC_API_TOKEN;
+    const { pathname } = request.nextUrl;
 
-    // Copy jsessionid to header
     addCookiesToHeaders(request);
 
-    if (!xpBlob || !secret) {
-        // Not a Content Studio request
-        console.debug(`Middleware at '${pathname}': no blob or secret, passing through...`);
+    const params = decryptXpParams(request);
+    if (params) {
+        addParamsToHeaders(request, params);
+    }
 
-        if (addLanguageToPath(request)) {
-            console.debug(`Middleware at '${pathname}': rewriting to '${request.nextUrl}'...`);
-            return NextResponse.rewrite(request.nextUrl, {request});
-        }
+    const localeInfo = getRequestLocaleInfo({ contentPath: pathname, headers: request.headers });
 
+    // Public URLs carry no prefix for the default locale
+    const canonicalUrl = withoutDefaultLocale(request, localeInfo);
+    if (canonicalUrl) {
+        console.debug(`Proxy at '${pathname}': redirecting to '${canonicalUrl.pathname}'`);
+        return NextResponse.redirect(canonicalUrl, 308);
+    }
+
+    if (params && !request.cookies.has(DRAFT_COOKIE)) {
+        return redirectToDraftMode(request);
+    }
+
+    // Route internally to /[locale]/... and drop the xp param
+    const url = request.nextUrl.clone();
+    url.searchParams.delete('xp');
+    addLocalePrefix(url, localeInfo);
+
+    if (url.href === request.nextUrl.href) {
+        console.debug(`Proxy at '${pathname}': passing through`);
         return NextResponse.next({request});
+    }
+
+    console.debug(`Proxy at '${pathname}': rewriting to '${url.pathname}'`);
+    return NextResponse.rewrite(url, { request });
+}
+
+function decryptXpParams(request: NextRequest): Record<string, string> | null {
+    const xpBlob = request.nextUrl.searchParams.get('xp');
+    const secret = process.env.ENONIC_API_TOKEN;
+    if (!xpBlob || !secret) {
+        return null;
     }
 
     const params = decryptParams(xpBlob, secret);
     if (!params) {
-        // Not a valid Content Studio request
-        console.debug(`Middleware at '${pathname}': failed to decrypt blob, passing through...`);
-
-        if (addLanguageToPath(request)) {
-            console.debug(`Middleware at '${pathname}': rewriting to '${request.nextUrl}'...`);
-            return NextResponse.rewrite(request.nextUrl, {request});
-        }
-
-        return NextResponse.next({request});
+        console.debug(`Proxy at '${request.nextUrl.pathname}': failed to decrypt blob, treating as a direct request`);
     }
+    return params;
+}
 
-    addParamsToHeaders(request, params);
+function redirectToDraftMode(request: NextRequest): NextResponse {
+    // No draft-mode cookie yet: /api/preview sets it and redirects back with the blob
+    const draftUrl = request.nextUrl.clone();
+    draftUrl.pathname = '/api/preview';
+    draftUrl.searchParams.set('path', request.nextUrl.pathname);
 
-    // Content Studio requests come in site-relative with no locale.
-    // Use the project's mapping to add the locale so the result matches the locale-prefixed routes.
-    const mapping = getLocaleMappingByProjectId(params.xpProject);
-    const addedLanguage = addLanguageToPath(request, mapping?.locale);
-
-    // It's a valid request from Content Studio, so we want to enable draft mode for it
-    const hasDraftCookie = request.cookies.has('__prerender_bypass');
-
-    if (!hasDraftCookie) {
-        // No draft-mode cookie yet — redirect to the API route that enables it.
-        const draftUrl = request.nextUrl.clone();
-        draftUrl.pathname = '/api/preview';
-        draftUrl.searchParams.set('path', request.nextUrl.pathname);
-
-        console.debug(`Middleware at '${pathname}': no draft cookie, redirecting to '${draftUrl.pathname}'...`);
-
-        return NextResponse.redirect(draftUrl);
-    }
-
-    // Rewrite to a clean URL (without xp param, data is added to headers)
-    const cleanUrl = request.nextUrl.clone();
-    cleanUrl.searchParams.delete('xp');
-
-    if (addedLanguage) {
-        console.debug(`Middleware at '${pathname}': rewriting to '${cleanUrl.pathname}'...`);
-        return NextResponse.rewrite(cleanUrl, {request});
-    }
-
-    return NextResponse.next({request});
+    console.debug(`Proxy at '${request.nextUrl.pathname}': no draft cookie, redirecting to '${draftUrl.pathname}'`);
+    return NextResponse.redirect(draftUrl);
 }
 
 function addCookiesToHeaders(request: NextRequest) {
-    const headers = request.headers;
     const jsessionid = request.cookies.get('JSESSIONID')?.value;
     if (jsessionid) {
-        console.debug(`Middleware at '${request.nextUrl.pathname}': using jsessionid from cookie`);
-        headers.set(JSESSIONID_HEADER, jsessionid);
+        request.headers.set(JSESSIONID_HEADER, jsessionid);
     }
 }
 
 function addParamsToHeaders(request: NextRequest, params: Record<string, string>) {
-    const requestHeaders = request.headers;
     if (params.xpProject) {
-        console.debug(`Middleware at '${request.nextUrl.pathname}': using project from params`);
-        requestHeaders.set(PROJECT_ID_HEADER, params.xpProject);
+        request.headers.set(PROJECT_ID_HEADER, params.xpProject);
     }
 }
 
-function addLanguageToPath(req: NextRequest, explicitLocale?: string): boolean {
-    const pathname = req.nextUrl.pathname;
-    const {locale: detectedLocale, locales} = getRequestLocaleInfo({
-        contentPath: pathname,
-        headers: req.headers
-    });
-    // Prefer the explicit (project-derived) locale over the one detected from headers.
-    const locale = explicitLocale || detectedLocale;
+function withoutDefaultLocale(request: NextRequest, { defaultLocale }: LocaleInfo): NextRequest['nextUrl'] | null {
+    const [, firstSegment, ...rest] = request.nextUrl.pathname.split('/');
+    if (!defaultLocale || firstSegment !== defaultLocale) {
+        return null;
+    }
 
-    const pathPart = pathname.split('/')[1];    // pathname always starts with a slash, followed by locale
-    const pathHasLocale = locales.indexOf(pathPart) >= 0
+    const url = request.nextUrl.clone();
+    url.pathname = `/${rest.join('/')}`;
+    return url;
+}
 
-    if (pathHasLocale) {
-        // locale is already in the path, no need to redirect
-        console.debug(`Middleware at '${pathname}': '${pathPart}' locale present in path`);
-        return false;
-    } else if (!locale) {
-        // no locale found in path or headers, return 404
-        console.debug(`Middleware at '${pathname}': no locale found`);
-        return false;
+function addLocalePrefix(url: NextRequest['nextUrl'], { locale, locales }: LocaleInfo): void {
+    const firstSegment = url.pathname.split('/')[1];
+    if (locales.includes(firstSegment) || !locale) {
+        return;
     }
 
     // No trailing slash for the site root: with trailingSlash=false Next would 308 "/en/" to "/en", and that redirect carries no CORS headers
-    req.nextUrl.pathname = `/${locale}${pathname}`.replace(/\/$/, '');
-    return true;
+    url.pathname = `/${locale}${url.pathname}`.replace(/\/$/, '');
 }
 
 export const config = {
