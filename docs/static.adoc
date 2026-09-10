@@ -34,17 +34,18 @@ Just remember to stop your dev server before starting prod mode.
 == Task: Test page invalidation
 With all pages now being cached as files, Next.js must be instructed to re-generate the pages when a change is published.
 
-. **Add `Next.js Preview` app to your site**, just like you did with your app in the <<preview#, Content Studio preview>> chapter.
+. **Add the `Next.XP` app to your site**, just like you did with your app in the <<preview#, Content Studio preview>> chapter.
 This will ensure that the revalidation hook is triggered when you publish content.
 +
 . *Edit your front-page, and publish the changes*.
-This will trigger a revalidation hook, which is built into the Next.js Preview app.
+This will trigger a revalidation hook, which is built into the Next.XP app.
 
 The page should now get updated at http://localhost:3000[http://localhost:3000^] - more or less instantly.🎉
 
 === What happened?
 
-In addition to handling previews, the Next.js Preview app automatically triggers revalidation of all pages when it detects the publishing event in the site it is added to.
+In addition to handling previews, the Next.XP app automatically triggers revalidation of all pages when it detects the publishing event in the site it is added to.
+The `/api/revalidate` route resolves the locale from the publishing project, so a specific path is revalidated as its locale-prefixed page; without a path everything is revalidated.
 
 NOTE: You should also be able to tell from the Next.js log that the revalidation was triggered.
 

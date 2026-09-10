@@ -61,21 +61,14 @@ By visiting a person item (like `http://localhost:3000/persons/morgan-floatman[h
 +
 image:morgan-floatman-props.png[title="Page showing data props for Morgan Floatman content item",width=767px]
 
-== Task: Configure media URLs
+== Media URLs
 
-The `getPerson` query requests `imageUrl { url }` — a ready-made URL for a scaled version of the image.
-By default this URL is server-relative, so the browser would resolve it against the Next.js server, where no media service exists — and images would not load.
+The `getPerson` query requests the image with `${imageUrlQuery({scale: 'width(500)'})}`, a Next.XP helper that selects the URL object (`url`, `path`, `queryString` and the media components) of a scaled version of the image.
+Its `path` is server-relative, so the view turns it into an absolute URL pointing at XP's media API with `imageUrl(photo.imageUrl)`.
+The base URL comes from `ENONIC_MEDIA_CDN` and defaults to `ENONIC_API`, so no XP configuration is needed.
 
-**Add the following line** to the `com.enonic.xp.portal.cfg` file in your sandbox' https://developer.enonic.com/docs/xp/stable/deployment/config[config folder^], located in your user's root directory at `.enonic/sandboxes/nxptutorial/home/config` (create the file if it does not exist):
-
-.com.enonic.xp.portal.cfg
-[source,properties]
-----
-media.defaultBaseUrl=http://localhost:8080/api
-----
-
-This makes XP return absolute media URLs pointing to its own media API, so images render correctly in the front-end.
-The change is picked up automatically — no sandbox restart needed.
+Every Guillotine URL field has such a pair: `imageUrlQuery()`/`imageUrl()`, `mediaUrlQuery()`/`mediaUrl()`, `attachmentUrlQuery()`/`attachmentUrl()` and `pageUrlQuery()`/`pageUrl()`.
+The `pageUrl(data, meta)` function is the one to use for links between content items: it returns a relative URL prefixed with the current locale, except for the default locale which has no prefix.
 
 == Task: Add person template
 

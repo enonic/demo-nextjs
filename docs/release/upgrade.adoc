@@ -48,22 +48,31 @@ The `type` argument (e.g. `type: absolute`) is gone, and so is the `type` field 
 imageUrl: imageUrl(type: absolute, scale: "width(500)")
 
 # After (v6.x)
-imageUrl(scale: "width(500)") {
-  url
-}
+${imageUrlQuery({scale: 'width(500)'})}
 ----
 +
-The returned `url` value is ready to use — render it directly:
+Render the returned object with the matching string function, which builds an absolute URL from `ENONIC_MEDIA_CDN` (defaults to `ENONIC_API`):
 +
 [source,TypeScript]
 ----
-<img src={photo.imageUrl?.url}/>
+import {imageUrl} from '@enonic/nextjs-adapter';
+
+<img src={imageUrl(photo.imageUrl)}/>
 ----
 +
-By default the URL is server-relative.
-To make it absolute, configure a base URL — either on the site/project, or globally with the `media.defaultBaseUrl` option in `com.enonic.xp.portal.cfg`, e.g. `media.defaultBaseUrl=http://localhost:8080/api`.
+The same pattern applies to `mediaUrl`, `attachmentUrl` and `pageUrl`.
+No `media.defaultBaseUrl` configuration in XP is needed.
 
-. *ENONIC_API environment variable*: The API URL now points to the Guillotine GraphQL endpoint directly:
+. *Content links*: query with `pageUrlQuery()` and render with `pageUrl(data, meta)`, which returns a relative URL prefixed with the current locale unless it is the default one:
++
+[source,TypeScript]
+----
+import {pageUrl} from '@enonic/nextjs-adapter';
+
+<Link href={pageUrl(parent.pageUrl, meta)}>Back</Link>
+----
+
+. *ENONIC_API environment variable*: The API URL now points to the XP API root instead of the old `/site` path:
 +
 [source,properties]
 ----
@@ -71,8 +80,11 @@ To make it absolute, configure a base URL — either on the site/project, or glo
 ENONIC_API=http://127.0.0.1:8080/site
 
 # After (v6.x)
-ENONIC_API=http://127.0.0.1:8080/api/com.enonic.app.guillotine:graphql
+ENONIC_API=http://127.0.0.1:8080/api
 ----
++
+The Guillotine endpoint is `ENONIC_API` + `/` + `GUILLOTINE_API` (optional, default `com.enonic.app.guillotine:graphql`).
+Media URLs use `ENONIC_MEDIA_CDN` (optional, default `ENONIC_API`).
 
 . *Encrypted blob authentication*: API routes now use encrypted blob validation instead of plain token comparison.
 `ENONIC_API_TOKEN` is still required — it is now used as the encryption secret.
@@ -86,6 +98,11 @@ import {validateToken} from '../../../utils';
 import {validateBlob} from '../../../utils';
 import {decryptParams} from '@enonic/nextjs-adapter';
 ----
++
+`validateBlob()` returns `{ok: true, params}` on success and `{ok: false, response}` otherwise, so routes can read the decrypted `xpProject`.
+
+. *`/api/mappings` and `/api/revalidate`*: resolve the project's locale mapping from `xpProject` and return `localizeMappings(MAPPINGS, mapping)`; revalidate the internal route path with `pageUrl({path}, {locale})` (no `defaultLocale`, so the prefix is always added).
+See the demo routes for the full code.
 
 . *MetaData type changes*:
 +
@@ -103,7 +120,8 @@ site: string;
 . *`@enonic/nextjs-adapter` API changes*:
 +
 - `getContentApiUrl()` removed
-- `getUrl()` deprecated — URLs returned by the API are ready to use, remove the wrapping calls
+- `getUrl()` and `UrlProcessor` removed — use the `*UrlQuery()`/`*Url()` pairs (`imageUrl`, `mediaUrl`, `attachmentUrl`, `pageUrl`)
+- `localizeMappings()` added
 - `getContentBranch()` added
 - `BaseMacro` no longer accepts `renderInEditMode` prop
 - `getRenderMode()` context parameter is now optional
@@ -150,12 +168,12 @@ headers: [
 +
 Set `ENONIC_ADMIN` to the URL of the Enonic admin UI when it is served from a different domain than the API.
 
-. *Next.XP app replaced by Next.js Preview*: The `Next.XP` app (`com.enonic.app.nextxp`) has been replaced by the `Next.js Preview` app (`com.enonic.app.preview.nextjs`).
-The new app adds a preview widget that loads pages directly from the Next.js server, instead of proxying requests.
-The `/api/renderable` endpoint is no longer used and can be removed.
-Configuration file is now `com.enonic.app.preview.nextjs.cfg` (same property format).
+. *Next.XP app 6.x*: The `Next.XP` app (`com.enonic.app.nextxp`) now adds a preview widget, titled "Next.js Preview" in Content Studio, that loads pages directly from the Next.js server instead of proxying requests.
+It fetches URL mappings from the front-end's `/api/mappings` endpoint and caches them per project.
+The `/api/renderable` endpoint is no longer used and has been removed from the demo; delete it from your project too.
+The configuration file is still `com.enonic.app.nextxp.cfg` (same property format).
 
-. *New API route*: Add `/api/mappings` endpoint — used by the Next.js Preview app to resolve content items to Next.js URLs.
+. *New API route*: Add `/api/mappings` endpoint — used by the Next.XP app to resolve content items to Next.js URLs.
 
 . *Page Editor*: The `@enonic/page-editor` package is now required for Content Studio's live page editing (drag-and-drop, inline editing, component selection).
 Add it as a dependency and include `PageEditorScript` in your page rendering:

@@ -6,16 +6,16 @@ In this chapter, you'll enable Content Studio to load the preview directly from 
 
 == Task: Enable preview
 
-Install the `Next.js Preview` app that adds a new preview widget to Content Studio.
+Install the `Next.XP` app that adds a new preview widget, titled "Next.js Preview", to Content Studio.
 
-. **Install the Next.js Preview app**:
+. **Install the Next.XP app**:
 +
-From `XP menu` -> `Applications` -> `Install` and search for `Next.js Preview`
+From `XP menu` -> `Applications` -> `Install` and search for `Next.XP`
 +
 The preview widget will work immediately after installation.
 Optionally, you can add the app to the site to select a named configuration (useful for multi front-end setups, covered in the <<i18n#, Multi language>> chapter).
 +
-By default Next.js Preview uses the following values:
+By default Next.XP uses the following values:
 +
 * *url*: `http://localhost:3000`
 * *secret*: `mySecretKey`
@@ -23,7 +23,7 @@ By default Next.js Preview uses the following values:
 This matches your setup, so everything should work out of the box. We will get back to tuning these values in the <<static#, Static pages>>, and <<deployment#, Deployment>> chapters.
 +
 NOTE: Content Studio ships with a strict Content Security Policy that blocks loading pages from third-party URLs, including `http://localhost:3000`.
-The Next.js Preview app automatically adds its configured Next.js origins to this policy, so no manual configuration is needed.
+The Next.XP app automatically adds its configured Next.js origins to this policy, so no manual configuration is needed.
 The default `http://localhost:3000` origin is only allowed when XP runs in dev mode - like your sandbox.
 In production, only explicitly configured URLs are allowed.
 +
@@ -33,17 +33,18 @@ image:morgan-floatman-preview.png[title="Next.js-rendered preview in Content Stu
 
 == How does it work?
 
-The Next.js Preview app adds a preview widget to Content Studio that loads pages directly from the Next.js server.
+The Next.XP app adds a preview widget, titled "Next.js Preview", to Content Studio that loads pages directly from the Next.js server.
 When an editor selects a content item, the widget:
 
-. Fetches URL mapping rules from the Next.js server's `/api/mappings` endpoint
+. Fetches URL mapping rules for the current project from the Next.js server's `/api/mappings` endpoint (the request carries the encrypted project id, and the route prefixes the targets with that project's locale unless it is the default locale)
 . Resolves the content item to a Next.js URL using those mappings
 . Encrypts request parameters with the shared secret and sends a request
 . Loads the resolved page in the preview pane
 
 On the Next.js side, the proxy (`src/proxy.ts`) receives the request, authenticates the request by decrypting parameters, enables Next.js draft mode, and renders the page with unpublished content.
+Preview URLs use the public form, without a prefix for the default locale; the proxy routes them to the internal `[locale]` segment and redirects `/en/...` to `/...`.
 
-The app also extends Content Studio's Content Security Policy with every Next.js origin from its configuration (the `frame-src` and `connect-src` directives), allowing the preview iframe to load pages from those servers.
+The app also extends Content Studio's Content Security Policy with every Next.js origin from its configuration plus `'self'` (the `frame-src`, `connect-src` and `style-src` directives), allowing the preview iframe to load pages from those servers.
 
 == Live page editing
 
@@ -66,7 +67,7 @@ And then *replace the return statement* with the following code:
 return (
     <>
         <MainView {...data}/>
-        <PageEditorScript mode={data.meta.renderMode}/>
+        <PageEditorScript meta={data.meta}/>
     </>
 )
 ```
@@ -75,6 +76,9 @@ return (
 
 Since the preview widget loads pages directly from the Next.js server, links within the rendered page need to work correctly inside Content Studio's as well.
 
-URL fields like `imageUrl`, `mediaUrl` and `attachmentUrl` return ready-made URLs with the base URL resolved by XP, so no client-side URL processing is needed — links work both in standalone mode and in Content Studio preview.
+Media fields (`imageUrl`, `mediaUrl`, `attachmentUrl`) are queried with the `*UrlQuery()` helpers and rendered with the matching `imageUrl()`, `mediaUrl()` and `attachmentUrl()` functions, which build absolute URLs to XP's media API (`ENONIC_MEDIA_CDN`, defaulting to `ENONIC_API`).
+Content links use `pageUrlQuery()` and `pageUrl(data, meta)`, which returns a relative URL prefixed with the current locale unless it is the default one, so links work both in standalone mode and inside the Content Studio preview.
+
+NOTE: In preview, the browser loads draft media directly from XP using the Content Studio session, so the media host must match the Content Studio host (use `localhost` rather than `127.0.0.1`, or set `ENONIC_MEDIA_CDN` explicitly).
 
 That completes the preview setup; moving forward, we'll look into rendering <<rich-text#, Html Area>> fields.

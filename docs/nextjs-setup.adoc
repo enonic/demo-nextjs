@@ -48,15 +48,15 @@ src/
             not-found.tsx           // <10>
         api/                        // <11>
             mappings/
-                route.tsx
+                route.ts
             preview/
-                route.tsx
+                route.ts
             revalidate/
-                route.tsx
+                route.ts
 ----
 
 <1> Environment variables are placed in this file
-<2> Middleware file that routes requests based on locale
+<2> Proxy: validates Content Studio preview requests (encrypted `xp` blob, draft mode), rewrites URLs without a locale prefix to the internal default-locale route and redirects `/<default locale>/...` to `/...`
 <3> Contains your implementation of CMS components
 <4> Phrase files for multi-language support
 <5> Global styles for the site
@@ -86,16 +86,31 @@ ENONIC_APP_NAME=tutorial.nxp
 # Enonic XP projects configuration for different locales
 ENONIC_MAPPINGS=en:intro/hmdb <1>
 
-# Absolute URL to Content API
-ENONIC_API=http://127.0.0.1:8080/api/com.enonic.app.guillotine:graphql <2>
+# Absolute URL to the Enonic XP API root
+ENONIC_API=http://127.0.0.1:8080/api <2>
+
+# Guillotine API descriptor, appended to ENONIC_API
+#GUILLOTINE_API=com.enonic.app.guillotine:graphql <3>
+
+# Absolute URL to the media API, only needed if media is served from another host (e.g. a CDN)
+#ENONIC_MEDIA_CDN=http://127.0.0.1:8080/api <4>
 
 # Absolute URL to Enonic admin, only needed if it differs from the API origin (used for CORS)
-#ENONIC_ADMIN=http://127.0.0.1:8080 <3>
+#ENONIC_ADMIN=http://127.0.0.1:8080 <5>
 ----
 
 <1> Mapping an XP project (intro) and site (/hmdb) to the Next.js router.
-<2> URL of the Guillotine GraphQL API endpoint.
+<2> Root of the Enonic API.
+The Guillotine endpoint is `ENONIC_API` + `/` + `GUILLOTINE_API`.
 <3> Optional.
+Guillotine API location.
+Defaults to `com.enonic.app.guillotine:graphql`.
+<4> Optional.
+Base URL for images and attachments.
+Defaults to `ENONIC_API`.
+<5> Optional.
+Admin domain used in the CORS header.
+Defaults to `ENONIC_API` domain.
 Origin of the Enonic admin UI, used for CORS.
 Defaults to the origin of `ENONIC_API`.
 

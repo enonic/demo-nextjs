@@ -46,8 +46,9 @@ image:content-studio-filmdb.png[title="Film DB project",width=1024px]
 
 Next, let's turn on multi-language support in Next.js.
 
-. This template comes with proxy configured to do language detection and redirection.
-Feel free to study the code in `src/proxy.ts` to get a better understanding of how it works.
+. This template comes with a proxy (`src/proxy.ts`) that keeps the default locale out of public URLs: `http://localhost:3000/persons/x` is rendered by the internal `/en/persons/x` route, and `/en/persons/x` itself redirects to `/persons/x`.
+Other locales keep their prefix (`/no/persons/x`).
+Content Studio preview URLs and links rendered with `pageUrl(data, meta)` follow the same rule.
 +
 . But you need to *configure the Enonic adapter*, by specifying which content project to use for each locale:
 +
@@ -84,6 +85,9 @@ include::{sourcedir}/phrases/no.json[]
 
 As long as your preview configuration was working before you started, Content Studio should automatically be able to detect the right locale for each project.
 
+NOTE: Every project used for preview must be listed in `ENONIC_MAPPINGS`.
+Otherwise `/api/mappings` answers 404 and Content Studio reports that the content cannot be rendered.
+
 NOTE: You may need to restart/rebuild your Next.js server for the changes to be picked up.
 
 . In Content Studio, *Switch editing context* to the `Film DB` project by toggling in the top left corner of Content Studio.
@@ -112,11 +116,11 @@ In some cases, you may prefer a setup where each language/market is served by a 
 
 Setting up Next.js to do this is just like handling a single language. To enable Content Studio preview to know which Next.js server to use, some additional configuration will be required.
 
-. *Update the Next.js Preview configuration file* for your Enonic installation by adding multiple entries:
+. *Update the Next.XP configuration file* for your Enonic installation by adding multiple entries:
 +
 NOTE: The sandbox configuration files are located in the sandbox' home directory inside your user's root directory at `.enonic/sandboxes/<your-sandbox-name>/home/config`.
 +
-.com.enonic.app.preview.nextjs.cfg
+.com.enonic.app.nextxp.cfg
 [source,properties]
 ----
 # uncomment to override default values
@@ -132,7 +136,7 @@ nextjs.prod.url=https://your.next-site.com
 +
 NOTE: Every configured URL is automatically allowed in Content Studio's Content Security Policy, so the preview works for each front-end without further configuration.
 +
-. *Assign the configuration to your site* by clicking the pencil icon next to the `Next.js Preview` app name in the site form, and selecting it from the list of named configurations:
+. *Assign the configuration to your site* by clicking the pencil icon next to the `Next.XP` app name in the site form, and selecting it from the list of named configurations:
 +
 image:content-studio-configure-nextxp.png[title="Form with fields for server url and nextjs token",width=771px]
 
@@ -181,6 +185,7 @@ export interface MetaData {
 ----
 
 You can also use `I18n.getLocale()` and `useLocaleContext()` to access locale in server-side and client-side components respectively.
+For links, pass `meta` to `pageUrl(data, meta)` and the locale prefix is added for non-default locales; `pageUrl({path: '/'}, meta)` gives the site root (`/` or `/no`).
 
 == Localizing the views
 

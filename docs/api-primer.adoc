@@ -171,7 +171,8 @@ query($path:ID!){
 
 <1> Notice how `imageUrl` is requested with parameters of its own?
 Type introspections can expose certain link:https://developer.enonic.com/docs/guillotine/next/api[functions for processing data^] before returning it.
-Such URL functions return objects: `url` holds the ready-made URL, with additional fields available for building custom URLs.
+Such URL functions return objects: `url` holds the URL as XP resolves it, while `path`, `queryString` and the other fields let you build your own.
+In the Next.js app you will not write this selection by hand: the `imageUrlQuery()` helper from the adapter generates it with every field, and `imageUrl()` turns the result into an absolute URL to the media API.
 +
 . Keep the **query variables** from the previous step:
 +

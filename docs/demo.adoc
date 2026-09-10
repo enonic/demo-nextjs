@@ -33,8 +33,9 @@ Vercel are the makers of Next.js, and you'll be using their service to host the 
 . **Add environment variables** telling the app where to find the API endpoints, as well as a secret you will need to access preview mode in a later step.
 +
 * ENONIC_APP_NAME: com.enonic.app.hmdb
-* ENONIC_API: <URL to Enonic API>
+* ENONIC_API: <URL to the Enonic API root, e.g. https://<environment>/api>
 * ENONIC_ADMIN: <enonic admin URL> (optional, only if admin is on a different domain than the API)
+* ENONIC_MEDIA_CDN: <media URL> (optional, only if images and attachments are served from a different domain than the API)
 * ENONIC_API_TOKEN: <yourSecret>
 * ENONIC_MAPPINGS: en:hmdb/hmdb
 +
