@@ -15,14 +15,14 @@ export async function processRequest(request: NextRequest): Promise<NextResponse
     const xpBlob = searchParams.get('xp');
     const path = searchParams.get('path') || '/';
 
-    let response = validateBlob(xpBlob);
-    if (response !== null) {
-        return response;
+    const blob = validateBlob(xpBlob);
+    if (!blob.ok) {
+        return blob.response;
     }
 
-    response = validatePath(path);
-    if (response !== null) {
-        return response;
+    const pathResponse = validatePath(path);
+    if (pathResponse !== null) {
+        return pathResponse;
     }
 
     // Enable Next.js draft mode (sets __prerender_bypass cookie)
@@ -35,7 +35,7 @@ export async function processRequest(request: NextRequest): Promise<NextResponse
         redirectUrl.searchParams.set('xp', xpBlob);
     }
 
-    response = NextResponse.redirect(redirectUrl);
+    const response = NextResponse.redirect(redirectUrl);
 
     console.info(`Preview route at [${path}], set cookie and redirecting to [${redirectUrl.pathname}]...`);
 
