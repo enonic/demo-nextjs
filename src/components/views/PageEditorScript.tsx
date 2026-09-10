@@ -1,11 +1,18 @@
 'use client';
 
-import {RENDER_MODE, MetaData} from '@enonic/nextjs-adapter';
-import {init, subscribe, isInitialized, renderLoadingComponent, renderComponent, renderErrorComponent} from '@enonic/page-editor';
+import { RENDER_MODE, MetaData } from '@enonic/nextjs-adapter';
+import {
+    init,
+    subscribe,
+    isInitialized,
+    renderLoadingComponent,
+    renderComponent,
+    renderErrorComponent,
+} from '@enonic/page-editor';
 
 const SINGLE_COMPONENT_MARKER = 'details[data-single-component-output="true"]';
 
-const PageEditorScript = function ({meta: {locale, renderMode}}: { meta: MetaData }) {
+const PageEditorScript = function ({ meta: { locale, renderMode, path: contentPath } }: { meta: MetaData }) {
 
     if (isInitialized()) {
         return null;
@@ -22,7 +29,7 @@ const PageEditorScript = function ({meta: {locale, renderMode}}: { meta: MetaDat
         renderLoadingComponent(path);
 
         try {
-            const url = `/${locale}/${path}/_/component/${path}`.replace(/\/{2,}/g, '/');
+            const url = `/${locale}/${contentPath}/_/component/${path}`.replace(/\/{2,}/g, '/');
 
             const res = await fetch(url, {credentials: 'same-origin'});
             if (!res.ok) {
