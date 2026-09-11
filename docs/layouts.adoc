@@ -3,7 +3,7 @@
 :imagesdir: media/
 :sourcedir: ../src
 
-Layouts are essentially parts, with an extra trick up their sleve. Regions. This means that layouts may host other components, and build rich page structures.
+Layouts are essentially parts, with an extra trick up their sleeve. Regions. This means that layouts may host other components, and build rich page structures.
 
 == Task: Add layout to Enonic
 
@@ -25,7 +25,7 @@ regions:
 +
 NOTE: Just like a page, layouts may declare named regions.
 +
-When completed, as always *redeploy the Enonic app* if you had to change it (happens automatically if you started `enonic project dev`).
+When completed, as always *redeploy the Enonic app* if you had to change it (happens automatically if you started `enonic dev`).
 
 == Task: Add layout rendering to the front-end
 
@@ -47,7 +47,7 @@ And it's CSS module
 include::{sourcedir}/components/layouts/TwoColumnLayout.module.css[]
 ----
 +
-NOTE: This is an example of using CSS modules. For more details visit the https://nextjs.org/docs/pages/getting-started/css[Next.js style documentation]
+NOTE: This is an example of using CSS modules. For more details visit the https://nextjs.org/docs/app/getting-started/css[Next.js style documentation]
 +
 . **Register the component** in _mappings.ts:
 +

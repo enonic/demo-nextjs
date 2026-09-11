@@ -47,7 +47,7 @@ regions:
 +
 NOTE: The definition of the region `main`, allows Content Studio editors to add components to the page, as you will see later.
 +
-*Redeploy the Enonic app* to register the page component if it didn't have it (happens automatically if you started `enonic project dev`).
+*Redeploy the Enonic app* to register the page component if it didn't have it (happens automatically if you started `enonic dev`).
 +
 . **Configure page rendering in Next.js**
 +
@@ -87,13 +87,13 @@ It's time to build a custom page.
 . **Turn the site into a page**
 +
 From Content Studio, select and edit the `/hmdb` content item.
-From the edit view, activate the Context Panel by clicking the `Show Context Menu` icon in the top right corner, and select `Main page` extension from the dropdown menu.
+From the edit view, open the Context Panel by clicking the `Show Context Panel` icon in the top right corner, and select `Page` in the widget dropdown at the top of the panel.
 +
 You should now see the following:
 +
 image:page-setup.png[title="Selecting the page component in the page view",width=1440px]
 +
-In the preview area, select the `Main` component we created earlier from the Template dropdown menu.
+In the `Inspect` tab of the panel, select the `Main` component we created earlier from the `Template` dropdown (it shows `Automatic` until then).
 +
 You should then see a page with a single "dropzone" inside (the region we specified earlier).
 +
@@ -113,16 +113,20 @@ NOTE: Deeper dive into parts and components will be covered in the next chapter.
 ----
 kind: "Part"
 title: "Paragraph"
-description: "Rich text paragraph"
+description: "A rich text component"
 form:
-- type: "HtmlArea"
-  name: "text"
-  label: "Text"
+  - name: "text"
+    type: "HtmlArea"
+    label: "Text"
+    occurrences:
+      min: 1
+      max: 1
+    allowHeadings: "h1 h2 h3"
 ----
 +
 NOTE: The link:https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types/htmlarea[HtmlArea input] gives editors a rich-text editor with formatting, links, images and macros.
 +
-**Redeploy the Enonic app** if it didn't have it to register the part (happens automatically if you started `enonic project dev`).
+**Redeploy the Enonic app** if it didn't have it to register the part (happens automatically if you started `enonic dev`).
 +
 . **Add the part implementation to the Next.js app**
 +
@@ -153,8 +157,8 @@ NOTE: `richTextQuery` generates the query fragment needed for the adapter to res
 +
 . **Add the part to your page**
 +
-Back in Content Studio, from the Insert tab on the right hand side, drag a part component into the region and select `Paragraph` in the Context Window.
-Use the link:https://developer.enonic.com/docs/content-studio/stable/editor/component-types#htmlarea[rich-text editor] to write and format text, as well as insert images or macros.
+Back in Content Studio, drag `Part` from the `Insert` tab on the right hand side into the region, then select `Paragraph` in the part dropdown of the `Inspect` tab.
+Use the link:https://developer.enonic.com/docs/content-studio/stable/editor/component-types#htmlarea[rich-text editor] to write and format text, as well as insert images or macros, and click `Apply`.
 +
 image:paragraph-component.png[title="Next.js-rendered paragraph part with an image",width=1440px]
 +
@@ -168,7 +172,7 @@ This is because preview mode is off in incognito window and only published chang
 
 Content Studio activates Next.js' preview mode, which in turn uses the drafts API. When accessing the front-end directly, Next.js fetches published content from the master branch.
 
-. **Publish the page** by clicking `Mark as ready...`, and then `Publish`.
+. **Publish the page** by clicking `Mark as ready`, and then `Publish now` in the Publishing Wizard.
 +
 image:publish.png[title="Publishing wizard",width=810px]
 +

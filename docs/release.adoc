@@ -9,7 +9,7 @@
 * TypeScript 5.9
 * ESLint 9 with flat config (`eslint.config.mjs`)
 
-=== Guillotine 8 query syntax
+=== Guillotine 9 query syntax
 
 GraphQL queries now use explicit `siteKey`, `project`, and `branch` parameters passed directly to the `guillotine()` field, instead of relying on the API URL path to determine project and branch.
 
@@ -36,13 +36,13 @@ No XP-side `media.defaultBaseUrl` configuration is needed.
 
 === New API URL format
 
-`ENONIC_API` now points to the XP API root (e.g. `http://127.0.0.1:8080/api`) instead of the old `/site` path.
+`ENONIC_API` now points to the XP API root (e.g. `http://localhost:8080/api`) instead of the old `/site` path.
 The Guillotine endpoint is derived by appending `GUILLOTINE_API` (default `com.enonic.app.guillotine:graphql`), and media URLs are built from `ENONIC_MEDIA_CDN`, which defaults to `ENONIC_API`.
 
 === Proxy replaces middleware
 
 The `src/middleware.ts` file has been replaced by `src/proxy.ts`.
-It validates Content Studio requests (encrypted blob, draft mode activation) and redirects them to the same URL without the `xp` parameter, so preview URLs never show it; it rewrites URLs without a locale prefix to the internal default-locale route and redirects `/<default locale>/...` to `/...`; public URLs carry a prefix only for non-default locales.
+It validates Content Studio requests (encrypted `xp` blob), enables draft mode through `/api/preview` when the draft cookie is missing or belongs to another build (`BUILD_ID` from `next.config.js`), and redirects to the same URL without the parameter, so preview URLs never show it; it rewrites URLs without a locale prefix to the internal default-locale route and redirects `/<default locale>/...` to `/...`; public URLs carry a prefix only for non-default locales.
 
 === Encrypted blob authentication
 

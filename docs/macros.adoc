@@ -7,7 +7,7 @@ In this chapter you'll learn how to render Macros, which are custom components w
 
 == Intro
 
-Occationaly, you may require rich components, even within your rich text. This is enabled via a component type called Macros. Macros follow the same pattern as we have seen for other components
+Occasionally, you may require rich components, even within your rich text. This is enabled via a component type called Macros. Macros follow the same pattern as we have seen for other components
 
 == FactBox macro
 

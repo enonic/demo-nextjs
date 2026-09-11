@@ -1,7 +1,7 @@
 = Static Site Generation
 :toc: right
 :imagesdir: media/
-:sourcedir: ../src/app/[locale]/[[...contentPath]]/
+:sourcedir: ../src/app/[locale]/[[...contentPath]]
 
 In this chapter you will learn about NextJS' static site generation capabilities, and how Enonic triggers re-generation of pages when publishing.
 
@@ -30,11 +30,12 @@ Only this time, they will be much faster. **Sweet!**
 
 NOTE: Since prod mode now runs on the default port 3000 (same as dev mode), Content Studio preview should continue to work without any configuration changes.
 Just remember to stop your dev server before starting prod mode.
+The draft cookie issued by the dev server belongs to another build, so the proxy sends the first preview request through `/api/preview` again and draft mode is re-enabled for the prod build.
 
 == Task: Test page invalidation
 With all pages now being cached as files, Next.js must be instructed to re-generate the pages when a change is published.
 
-. **Add the `Next.XP` app to your site**, just like you did with your app in the <<preview#, Content Studio preview>> chapter.
+. **Add the `Next.XP` app to your site**, just like you added your own app in the <<sites#, Sites>> chapter (select it in the `Applications` field, click `Apply`, then publish the site).
 This will ensure that the revalidation hook is triggered when you publish content.
 +
 . *Edit your front-page, and publish the changes*.
@@ -59,7 +60,7 @@ And the function we are interested the most is:
 
 Below, we explain the details of the code:
 
-.src/app/[locale]/[[...contentPath]]/page.ts
+.src/app/[locale]/[[...contentPath]]/page.tsx
 [source,TypeScript,options="nowrap"]
 ----
 include::{sourcedir}/page.tsx[]

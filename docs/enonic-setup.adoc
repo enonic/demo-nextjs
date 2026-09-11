@@ -3,7 +3,7 @@
 :imagesdir: media/
 :experimental:
 
-In this chapter you will create create a local Enonic developer environment, create and deploy an Enonic app.
+In this chapter you will create a local Enonic developer environment, create and deploy an Enonic app.
 
 == Task: Install the Enonic CLI
 
@@ -23,17 +23,17 @@ IMPORTANT: Leave the sandbox running in the first terminal window, and open a ne
 
 . *Create a new project* using the `Introduction` app as a starter, by running the following command in your terminal:
 +
- enonic create tutorial.nxp -r tutorial-intro --s nxptutorial -f
+ enonic create tutorial.nxp -r tutorial-intro -s nxptutorial -f
 +
 This command will:
 
 * use the GitHub repo `github.com/enonic/tutorial-intro` as a starter
 * to create an app called `tutorial.nxp`
-* and link it to the `nxptutorial`
+* and link it to the `nxptutorial` sandbox
 
 . *Deploy the application*
 +
-To build and run your application, execute these commands:
+To build and run your application, execute these commands (the CLI placed the project in a folder named after the last part of the app name):
 
   cd nxp
   enonic dev
@@ -68,7 +68,7 @@ NOTE: `Intro` should be in the list, together with other applications that were 
 Click btn:[Log In as Guest] to open the XP admin dashboard. You should now see the following:
 
 .The XP admin dashboard
-image::xp-dashboard.png[The XP admin dashboard, {image-xl}]
+image::xp-dashboard.png[The XP admin dashboard, 1085w]
 
 You are now on the admin dashboard.
 The center menu (aka `XP menu`) enables navigation between admin tools.
@@ -82,7 +82,7 @@ https://market.enonic.com/vendors/enonic/content-studio[Content Studio^] is the 
 
 *Click btn:[Content Studio]* in the XP menu to launch it.
 
-The first time your application was deployed to the sandbox, it automatically created a content project called `Intro Project` and populated it with content. Since this is the only available project at the moment, Content Studio will automatically open it, revealing the list of sample content items.
+The first time your application was deployed to the sandbox, it automatically created a content project called `Intro Project` (id `intro`) and populated it with content. Since this is the only available project at the moment, Content Studio will automatically open it, revealing the list of sample content items.
 
 TIP: The current project is shown at the top of Content Studio.
 

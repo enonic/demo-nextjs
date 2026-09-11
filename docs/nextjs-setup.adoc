@@ -22,7 +22,7 @@ npx degit github:enonic/starter-nextjs
 
 *starter-nextjs* is based on link:https://nextjs.org/docs/getting-started[Next.js' own introduction app], so if you're familiar with that, you'll recognize the structure of the files.
 
-The template includes some boilerplate we will customize, and an npm dependency aka ´The Enonic Adapter` that facilitates and simplifies integration with Enonic.
+The template includes some boilerplate we will customize, and an npm dependency aka `The Enonic Adapter` (`@enonic/nextjs-adapter`) that facilitates and simplifies integration with Enonic.
 
 === Code overview
 
@@ -34,19 +34,28 @@ The following file structure should now exist within your new project folder:
 .env                                // <1>
 src/
     proxy.ts                        // <2>
-    components/                     // <3>
-    phrases/                        // <4>
+    utils.ts                        // <3>
+    components/                     // <4>
+        _mappings.ts
+        queries/
+            common.ts
+        views/
+            Header.tsx
+            Footer.tsx
+            PageEditorScript.tsx
+    phrases/                        // <5>
         en.json
-    styles/                         // <5>
+    styles/                         // <6>
     app/
-        [locale]
-            [[...contentPath]]/
-                layout.tsx          // <6>
-                page.tsx            // <7>
+        layout.tsx                  // <7>
+        [locale]/
             layout.tsx              // <8>
             error.tsx               // <9>
             not-found.tsx           // <10>
-        api/                        // <11>
+            [[...contentPath]]/
+                layout.tsx          // <11>
+                page.tsx            // <12>
+        api/                        // <13>
             mappings/
                 route.ts
             preview/
@@ -56,16 +65,18 @@ src/
 ----
 
 <1> Environment variables are placed in this file
-<2> Proxy: validates Content Studio preview requests (encrypted `xp` blob, draft mode), rewrites URLs without a locale prefix to the internal default-locale route and redirects `/<default locale>/...` to `/...`
-<3> Contains your implementation of CMS components
-<4> Phrase files for multi-language support
-<5> Global styles for the site
-<6> Layout file for all pages under the locale/content path
-<7> The main rendering file, catching all requests satisfying the pattern `/[locale]/[[...contentPath]]`
-<8> Global layout file that wraps all pages and adds common structures (eg. `<Header>`, `<LocaleContextProvider>`, etc.)
+<2> Proxy: validates Content Studio preview requests (encrypted `xp` blob) and enables draft mode through `/api/preview`, rewrites URLs without a locale prefix to the internal default-locale route and redirects `/<default locale>/...` to `/...`
+<3> Helpers used by the API routes: blob validation and project mapping lookup
+<4> Your implementation of CMS components: the component mappings (`_mappings.ts`), the common query and ready-made views (header, footer and the page editor script)
+<5> Phrase files for multi-language support
+<6> Global styles for the site
+<7> Root layout required by Next.js
+<8> Locale layout: renders `<html>` and `<body>`, sets the locale used for static texts and the page metadata
 <9> Error page handler
 <10> Not found page handler
-<11> Folder containing API routes
+<11> Content layout: fetches the content and wraps every page with the locale context, the static content wrapper and the draft mode indicator
+<12> The main rendering file, catching all requests satisfying the pattern `/[locale]/[[...contentPath]]`
+<13> Folder containing API routes
 
 
 == Task: Configure application
@@ -87,16 +98,16 @@ ENONIC_APP_NAME=tutorial.nxp
 ENONIC_MAPPINGS=en:intro/hmdb <1>
 
 # Absolute URL to the Enonic XP API root
-ENONIC_API=http://127.0.0.1:8080/api <2>
+ENONIC_API=http://localhost:8080/api <2>
 
 # Guillotine API descriptor, appended to ENONIC_API
 #GUILLOTINE_API=com.enonic.app.guillotine:graphql <3>
 
 # Absolute URL to the media API, only needed if media is served from another host (e.g. a CDN)
-#ENONIC_MEDIA_CDN=http://127.0.0.1:8080/api <4>
+#ENONIC_MEDIA_CDN=http://localhost:8080/api <4>
 
 # Absolute URL to Enonic admin, only needed if it differs from the API origin (used for CORS)
-#ENONIC_ADMIN=http://127.0.0.1:8080 <5>
+#ENONIC_ADMIN=http://localhost:8080 <5>
 ----
 
 <1> Mapping an XP project (intro) and site (/hmdb) to the Next.js router.
@@ -109,8 +120,6 @@ Defaults to `com.enonic.app.guillotine:graphql`.
 Base URL for images and attachments.
 Defaults to `ENONIC_API`.
 <5> Optional.
-Admin domain used in the CORS header.
-Defaults to `ENONIC_API` domain.
 Origin of the Enonic admin UI, used for CORS.
 Defaults to the origin of `ENONIC_API`.
 
@@ -140,7 +149,7 @@ Page:
 Common:
 {
   "get": {
-    "displayName": "hmdb",
+    "displayName": "HMDB",
     "_id": "3584c396-25cb-497e-b1f4-dc2bf0de4b5a",
     "type": "portal:site",
     "dataAsJson": {
@@ -149,11 +158,13 @@ Common:
     "xAsJson": {}
   },
   "getSite": {
-    "displayName": "hmdb",
+    "displayName": "HMDB",
     "_path": "/hmdb"
   }
 }
 ----
+
+NOTE: The `_id` values differ from installation to installation.
 
 [TIP]
 ====
@@ -179,7 +190,7 @@ Page:
 Common:
 {
   "get": {
-    "displayName": "s7ven",
+    "displayName": "S7ven",
     "_id": "1cb3dbf4-31d1-4e8a-816a-8cf891de7ad6",
     "type": "tutorial.nxp:movie",
     "dataAsJson": {
@@ -214,7 +225,7 @@ Common:
     }
   },
   "getSite": {
-    "displayName": "hmdb",
+    "displayName": "HMDB",
     "_path": "/hmdb"
   }
 }
@@ -223,7 +234,7 @@ Common:
 .S7ven as seen in Content Studio - internal path is `/hmdb/movies/s7ven`
 image:s7ven-edit.png[title="Editing item in Content Studio - the path /hmdb/movies/s7ven is highlighted",width=768px]
 
-### Task: Visit some more pages
+== Task: Visit some more pages
 
 Give the default rendering a spin by trying out some other URLs, for example: +
 

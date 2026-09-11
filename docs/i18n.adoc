@@ -19,28 +19,28 @@ To demonstrate multi-language, you first need to activate support for translatin
 +
 image:content-studio-settings.png[title="Project list",width=1024px]
 +
-Select existing `intro` project and click `New...` button.
-This will open the layer creation wizard for the `intro` project.
+Select the existing `Intro Project` and click the `New` button.
+This opens the project wizard with `Intro Project` preselected as the parent project, so the new project becomes a layer.
 +
 image:content-studio-create-layer.png[title="Layered project type",width=1024px]
 +
-Fill in the form, using the following values:
+Walk through the wizard steps, using the following values:
 +
-* *Name*: `Film DB`
-* *Identifier*: `intro-no`
 * *Default Language*: `norsk (no)`
-* *Access mode*: `Public`
-* Other fields may be skipped
+* *Display Name*: `Film DB`
+* *Identifier*: `intro-no`
+* *Access Mode*: `Public`
+* The `Roles` and `Applications` steps may be skipped (the `Intro` app is copied from the parent project)
 +
-After saving and closing the wizard, the new project should appear in the list.
+Click `Create Project` in the `Summary` step, and the new layer appears in the list under `Intro Project`.
 +
-. *Verify the new layer* by going back to the content list (via the pencil icon), and then switching context using the context selector in the top bar.
+. *Verify the new layer* by going back to the content list (`Content` in the sidebar), and then switching project with the project selector in the top left corner.
 +
 After switching context, you should see the following:
 +
 image:content-studio-filmdb.png[title="Film DB project",width=1024px]
 +
-. Finally *publish the project* by clicking the `Publish` button in the top bar.
+. Finally *publish the project*: select the `HMDB` site, click `Publish` in the toolbar, toggle `Include child items`, click `Apply` and then `Publish now`.
 
 == Task: Set up i18n in Next.js
 
@@ -55,14 +55,14 @@ Content Studio preview URLs and links rendered with `pageUrl(data, meta)` follow
 ..env
 [source,Properties]
 ----
-// ...
+# ...
 ENONIC_MAPPINGS=en:intro/hmdb,no:intro-no/hmdb
-// ...
+# ...
 ----
 +
 Let's break down the syntax.
 +
-For each comma separated entry, you will find the following pattern: `<locale>:<repository>/<sitekey>`.
+For each comma separated entry, you will find the following pattern: `<locale>:<project>/<sitekey>`.
 In the example above `en:intro/hmdb` and `no:intro-no/hmdb`.
 +
 The first entry will map to the `defaultLocale` that is used in the locale related methods in the NextJS adapter.
@@ -79,6 +79,8 @@ include::{sourcedir}/phrases/no.json[]
 ----
 +
 . Finally *restart your Next.js server* to pick up the changes to environment variables.
++
+NOTE: In prod mode this means running `npm run prod` again. The build calls `generateStaticParams()` for every project in `ENONIC_MAPPINGS`, so publish the new layer first - otherwise the build fails because the site does not exist on the layer's `master` branch yet.
 
 
 == Task: Translate and publish
@@ -94,9 +96,9 @@ NOTE: You may need to restart/rebuild your Next.js server for the changes to be 
 +
 Content Studio should automatically be able to detect the correct Next.js locale for the project. Select an item, and you should get a preview.
 +
-. *Translate the site content* by selecting the site content, then click `localize` (rather than edit..). This effectively takes you to the edit form. You may now show off your skills while translating the page to Norwegian.
+. *Translate the site content* by selecting the site and clicking `Edit`. The editor opens with a `Localize` button in place of `Save`: click it to create a local copy in the layer (the item switches from `Not localised` to `Localised` and gets the layer's language). You may now show off your skills while translating the page to Norwegian.
 +
-. Once finished, click `Mark as Ready` and proceed to *publish the entire site* structure.
+. Once finished, click `Mark as ready` and proceed to *publish the entire site* structure.
 +
 [TIP]
 ====
@@ -194,7 +196,7 @@ Here is how you can localize texts in your views:
 
 . Remember, we added file for every locale to the `src/phrases` folder earlier ?
 
-. Use `useLocaleContext` from `@enonic/nextjs-adapter` to access current locale in client-side components:
+. Use `useLocaleContext` from `@enonic/nextjs-adapter/client` to access current locale in client-side components:
 +
 [source,TypeScript]
 ----

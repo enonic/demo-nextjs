@@ -1,4 +1,5 @@
-import {APP_NAME, ComponentRegistry, richTextQuery} from '@enonic/nextjs-adapter'
+import {APP_NAME, CATCH_ALL, ComponentRegistry, richTextQuery} from '@enonic/nextjs-adapter'
+import PropsView from '@enonic/nextjs-adapter/views/PropsView';
 import TwoColumnLayout from './layouts/TwoColumnLayout';
 import MainPage from './pages/Main';
 import ChildList, {childListProcessor, getChildList} from './parts/ChildList';

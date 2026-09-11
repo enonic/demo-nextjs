@@ -77,14 +77,16 @@ import {pageUrl} from '@enonic/nextjs-adapter';
 [source,properties]
 ----
 # Before (v5.x)
-ENONIC_API=http://127.0.0.1:8080/site
+ENONIC_API=http://localhost:8080/site
 
 # After (v6.x)
-ENONIC_API=http://127.0.0.1:8080/api
+ENONIC_API=http://localhost:8080/api
 ----
 +
 The Guillotine endpoint is `ENONIC_API` + `/` + `GUILLOTINE_API` (optional, default `com.enonic.app.guillotine:graphql`).
 Media URLs use `ENONIC_MEDIA_CDN` (optional, default `ENONIC_API`).
+
+. *Proxy replaces middleware*: Next.js 16 renamed middleware to proxy. Replace `src/middleware.ts` with `src/proxy.ts` exporting a `proxy` function - copy the demo's `src/proxy.ts`, which validates the `xp` blob, enables draft mode through `/api/preview`, rewrites prefix-less URLs to the internal default-locale route and redirects `/<default locale>/...` to `/...`.
 
 . *Encrypted blob authentication*: API routes now use encrypted blob validation instead of plain token comparison.
 `ENONIC_API_TOKEN` is still required — it is now used as the encryption secret.
@@ -100,7 +102,7 @@ import {decryptParams} from '@enonic/nextjs-adapter';
 ----
 +
 `validateBlob()` returns `{ok: true, params}` on success and `{ok: false, response}` otherwise, so routes can read the decrypted `xpProject`.
-`/api/preview` redirects back to the content path without the `xp` parameter, and the proxy redirects any URL that carries it to the clean form, so the blob never stays in preview URLs.
+`/api/preview` enables draft mode, records the build in a `__next_build_id` cookie and redirects back to the content path without the `xp` parameter; the proxy redirects any URL that carries it to the clean form, going through `/api/preview` first when the draft cookie is missing or from another build. Define `env.BUILD_ID` in `next.config.js` (see the demo) for this check.
 
 . *`/api/mappings` and `/api/revalidate`*: resolve the project's locale mapping from `xpProject` and return `localizeMappings(MAPPINGS, mapping)`; revalidate the internal route path with `pageUrl({path}, {locale})` (no `defaultLocale`, so the prefix is always added).
 See the demo routes for the full code.
@@ -186,6 +188,6 @@ import PageEditorScript from '../../../components/views/PageEditorScript';
 // In your page component's return:
 <>
     <MainView {...data}/>
-    <PageEditorScript mode={data.meta.renderMode}/>
+    <PageEditorScript meta={data.meta}/>
 </>
 ----

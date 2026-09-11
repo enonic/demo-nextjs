@@ -12,15 +12,15 @@ TIP: New to GraphQL as well? Check out the link:https://graphql.org/[GraphQL doc
 
 == Task: GraphQL Playground
 
-For every content project in your sandbox, you will automatically get an API. By clicking the `GraphQL Playground` icon in your Content Studio menu, you should see the following
-+
+For every content project in your sandbox, you will automatically get an API. By clicking `Query Playground` in the Content Studio menu, you should see the following:
+
 image:content-studio-guillotine.png[title="Browsing the Guillotine API using Query Playground",width=1440px]
 
 [NOTE]
 ====
-The API can be accessed directly following URL: http://localhost:8080/api/com.enonic.app.guillotine:graphql[http://localhost:8080/api/com.enonic.app.guillotine:graphql^].
-
-`intro` is the name of your Content Studio project.
+The API can also be called directly at http://localhost:8080/api/com.enonic.app.guillotine:graphql[http://localhost:8080/api/com.enonic.app.guillotine:graphql^].
+Direct calls must pass the `branch` argument (`draft` or `master`) to the `guillotine()` field, e.g. `guillotine(project: "intro", branch: "master")`.
+The playground adds it for you, based on its Draft/Master toggle.
 ====
 
 == Task: Run a simple query
@@ -168,8 +168,8 @@ query($path:ID!){
   }
 }
 ----
-
-<1> Notice how `imageUrl` is requested with parameters of its own?
++
+Notice how `imageUrl` is requested with parameters of its own?
 Type introspections can expose certain link:https://developer.enonic.com/docs/guillotine/next/api[functions for processing data^] before returning it.
 Such URL functions return objects: `url` holds the URL as XP resolves it, while `path`, `queryString` and the other fields let you build your own.
 In the Next.js app you will not write this selection by hand: the `imageUrlQuery()` helper from the adapter generates it with every field, and `imageUrl()` turns the result into an absolute URL to the media API.

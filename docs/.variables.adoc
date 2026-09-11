@@ -7,7 +7,7 @@
 :nextxp-version: 6
 
 // Enonic stack
-:xp-version: 8
+:xp-version: 8.1
 :guillotine-version: 9
 :cli-version: latest
 

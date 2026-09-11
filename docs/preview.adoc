@@ -8,6 +8,8 @@ In this chapter, you'll enable Content Studio to load the preview directly from 
 
 Install the `Next.XP` app that adds a new preview widget, titled "Next.js Preview", to Content Studio.
 
+NOTE: The Next.XP app requires Enonic XP 8.1 or later.
+
 . **Install the Next.XP app**:
 +
 From `XP menu` -> `Applications` -> `Install` and search for `Next.XP`
@@ -27,7 +29,8 @@ The Next.XP app automatically adds its configured Next.js origins to this policy
 The default `http://localhost:3000` origin is only allowed when XP runs in dev mode - like your sandbox.
 In production, only explicitly configured URLs are allowed.
 +
-. After applying and saving the changes, you should be able to see the live preview in Content Studio when selecting any content in the "Persons" folder.
+. Select any content in the "Persons" folder: the preview pane now shows the page rendered by Next.js.
+The preview toolbar's widget selector is set to `Automatic`, which picks the first preview that can render the item - choose `Next.js Preview` explicitly if another preview shows up.
 +
 image:morgan-floatman-preview.png[title="Next.js-rendered preview in Content Studio",width=1072px]
 
@@ -41,7 +44,8 @@ When an editor selects a content item, the widget:
 . Encrypts request parameters with the shared secret and sends a request
 . Loads the resolved page in the preview pane
 
-On the Next.js side, the proxy (`src/proxy.ts`) validates the encrypted `xp` parameter once, lets `/api/preview` enable Next.js draft mode, and redirects to the same URL without the parameter.
+On the Next.js side, the proxy (`src/proxy.ts`) validates the encrypted `xp` parameter once: the first request goes through `/api/preview`, which enables Next.js draft mode and redirects to the same URL without the parameter.
+Later requests carrying the parameter are redirected straight to the clean URL, as long as the draft cookie belongs to the running build: `/api/preview` records the `BUILD_ID` defined in `next.config.js` in a second cookie, so a cookie issued by another build (dev vs prod, a redeploy), which Next would ignore, is refreshed automatically.
 From then on the preview runs on clean public URLs (no prefix for the default locale): the project follows from the locale in the URL and draft mode from Next's cookie, so the page renders unpublished content.
 Only the iframe `src` set by Content Studio carries the parameter; the iframe location and every later request do not.
 The proxy also routes prefix-less URLs to the internal `[locale]` segment and redirects `/en/...` to `/...`.
@@ -52,31 +56,29 @@ The app also extends Content Studio's Content Security Policy with every Next.js
 
 In addition to preview, Content Studio supports live page editing - where editors can drag-and-drop components, edit text inline, and select components directly within the rendered page.
 
-All you need to do as a frontend developer is to add the `PageEditorScript` component to your app, that handles all interaction!
-
-Add the following import to your page component:
+All you need as a frontend developer is the `PageEditorScript` client component, which handles all interaction - and the starter already includes it.
+Have a look at the page component to see how it is wired up:
 
 .src/app/[locale]/[[...contentPath]]/page.tsx
 [source,TypeScript]
-```
+----
 import PageEditorScript from '../../../components/views/PageEditorScript';
-```
 
-And then *replace the return statement* with the following code:
+// ...
 
-.src/app/[locale]/[[...contentPath]]/page.tsx
-```
 return (
     <>
         <MainView {...data}/>
         <PageEditorScript meta={data.meta}/>
     </>
 )
-```
+----
+
+`PageEditorScript` (in `src/components/views`) initializes `@enonic/page-editor` in edit mode and loads single components on request, so Content Studio can update a component without reloading the whole page.
 
 == Link handling
 
-Since the preview widget loads pages directly from the Next.js server, links within the rendered page need to work correctly inside Content Studio's as well.
+Since the preview widget loads pages directly from the Next.js server, links within the rendered page need to work correctly inside Content Studio's preview as well.
 
 Media fields (`imageUrl`, `mediaUrl`, `attachmentUrl`) are queried with the `*UrlQuery()` helpers and rendered with the matching `imageUrl()`, `mediaUrl()` and `attachmentUrl()` functions, which build absolute URLs to XP's media API (`ENONIC_MEDIA_CDN`, defaulting to `ENONIC_API`).
 Content links use `pageUrlQuery()` and `pageUrl(data, meta)`, which returns a relative URL prefixed with the current locale unless it is the default one, so links work both in standalone mode and inside the Content Studio preview.

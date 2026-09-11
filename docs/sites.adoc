@@ -18,7 +18,7 @@ TIP: Before you continue, clear all selections in the Content Studio list view (
 . **Give the site a name** by filling in a display name for the site, "HMDB" (short for Headless Movie DB) will do fine. 
 +
 NOTE: If you choose a different name, make sure the site path name (seen below the Display name) is set to `hmdb` - as this will be used throughout the tutorial.
-. **Add your app** to the site - by selecting it in the `Applications` form field.
+. **Add your app** to the site - by selecting it in the `Applications` form field and clicking `Apply`.
 +
 NOTE: Sites acts as scopes in the content structure. By adding an app to the site, you effectively allow editors to create content based on the app within this scope.
 +
@@ -38,12 +38,11 @@ Return back to the Content Studio tab, and follow these steps:
 +
 image:content-studio-move.png[title="Move the folder into the site", width=1024px]
 +
-. Wrap up by **publishing the changes**. Select the site (root item) in the tree structure, and click `Mark as ready...` in the top right action button. This will bring up the Publishing Wizard.
+. Wrap up by **publishing the changes**. Select the site (root item) in the tree structure, and click `Mark as ready` in the top right. This marks the item as ready and opens the Publishing Wizard.
 +
 image:content-studio-mark-as-ready.png[title="Mark as ready", width=1024px]
 +
-. To **publish the entire new tree structure** select the include child items checkbox, then apply in the notification bar.
-Then click `Publish Now`
+. To **publish the entire new tree structure** toggle `Include child items`, click `Apply` in the wizard header, then click `Publish now`.
 +
 image:content-studio-publish.png[title="Publish entire tree structure", width=1024px]
 
@@ -65,7 +64,8 @@ Back in Query Playground, add the `siteKey` parameter to your previous query, an
 ----
 query($path:ID!){
   guillotine(project: "intro", siteKey: "/hmdb") {
-  ...
+    ...
+  }
 }
 ----
 +

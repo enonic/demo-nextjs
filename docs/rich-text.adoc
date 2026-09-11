@@ -36,7 +36,7 @@ Add a new query file to your project with the following content:
 include::{sourcedir}/components/queries/getPersonWithBio.ts[]
 ----
 +
-IMPORTANT: Since we use `${richTextQuery('bio')}`` now, that is dependant on registered macros, `getPerson` query must now be a function!
+IMPORTANT: Since `${richTextQuery('bio')}` depends on the registered macros, the `getPersonWithBio` query is a function!
 This guarantees that it is executed when querying for data, and all the macros are already registered.
 +
 NOTE: `RichTextView` rewrites media `src`, `srcset` and `href` attributes to absolute XP media URLs and content links to locale-prefixed Next.js routes, so no URL handling is needed in your views.
