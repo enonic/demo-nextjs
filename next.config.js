@@ -68,6 +68,10 @@ async function getEnonicHeaders() {
 }
 
 const config = {
+    env: {
+        // Evaluated once per build (or dev server start): lets the proxy recognise a draft cookie issued by another build
+        BUILD_ID: Date.now().toString(36),
+    },
     reactStrictMode: true,
     trailingSlash: false,
     transpilePackages: ['@enonic/nextjs-adapter'],

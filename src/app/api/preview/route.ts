@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { draftMode } from 'next/headers';
-import { validatePath, validateBlob } from '../../../utils';
+import { BUILD_COOKIE, BUILD_ID, validateBlob, validatePath } from '../../../utils';
 
 export function HEAD(req: NextRequest) {
     return processRequest(req);
@@ -31,6 +31,14 @@ export async function processRequest(request: NextRequest): Promise<NextResponse
     // Redirect back to the clean content page: draft mode lives in the cookie, the project follows from the URL locale
     const redirectUrl = new URL(path, request.nextUrl.origin);
     const response = NextResponse.redirect(redirectUrl);
+
+    // Same options Next uses for __prerender_bypass, used to tie prerender cookie to the next.js build
+    response.cookies.set(BUILD_COOKIE, BUILD_ID ?? '', {
+        httpOnly: true,
+        sameSite: process.env.NODE_ENV !== 'development' ? 'none' : 'lax',
+        secure: process.env.NODE_ENV !== 'development',
+        path: '/',
+    });
 
     console.info(`Preview route: set draft cookie and redirecting to '${redirectUrl.pathname}'...`);
 

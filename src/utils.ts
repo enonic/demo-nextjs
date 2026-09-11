@@ -4,6 +4,11 @@ import { decryptParams, getLocaleMappingByProjectId } from '@enonic/nextjs-adapt
 
 export type XpParams = Record<string, string> & { xpProject?: string };
 
+// Next's draft mode cookie, plus our cookie naming the build that issued it (BUILD_ID comes from next.config.js)
+export const DRAFT_COOKIE = '__prerender_bypass';
+export const BUILD_COOKIE = '__next_build_id';
+export const BUILD_ID = process.env.BUILD_ID;
+
 export type BlobResult = { ok: true; params: XpParams } | { ok: false; response: NextResponse };
 
 export function validateBlob(blob: string | null): BlobResult {

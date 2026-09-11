@@ -6,8 +6,7 @@ import {
     FROM_XP_PARAM,
     JSESSIONID_HEADER,
 } from '@enonic/nextjs-adapter';
-
-const DRAFT_COOKIE = '__prerender_bypass';
+import { BUILD_COOKIE, BUILD_ID, DRAFT_COOKIE } from './utils';
 
 type LocaleInfo = ReturnType<typeof getRequestLocaleInfo>;
 type Url = NextRequest['nextUrl'];
@@ -30,14 +29,14 @@ export function proxy(request: NextRequest): NextResponse {
         addLocalePrefix(url, { ...localeInfo, locale: projectLocale });
     }
 
-    if (xpBlob && params && !request.cookies.has(DRAFT_COOKIE)) {
+    if (xpBlob && params && !hasDraftCookieForThisBuild(request)) {
         // First Content Studio request: /api/preview validates the blob, enables draft mode and lands on the canonical URL
         const draftUrl = request.nextUrl.clone();
         draftUrl.pathname = '/api/preview';
         draftUrl.search = '';
         draftUrl.searchParams.set(FROM_XP_PARAM, xpBlob);
         draftUrl.searchParams.set('path', url.pathname + url.search);
-        console.debug(`Proxy at '${pathname}': no draft cookie, redirecting to '${draftUrl.pathname}'`);
+        console.debug(`Proxy at '${pathname}': no draft cookie for this build, redirecting to '${draftUrl.pathname}'`);
         return NextResponse.redirect(draftUrl);
     }
 
@@ -55,6 +54,11 @@ export function proxy(request: NextRequest): NextResponse {
 
     console.debug(`Proxy at '${pathname}': rewriting to '${url.pathname}'`);
     return NextResponse.rewrite(url, { request });
+}
+
+// Next ignores a draft cookie issued by another build (dev vs prod, redeploy), so /api/preview must run again for it
+function hasDraftCookieForThisBuild(request: NextRequest): boolean {
+    return request.cookies.has(DRAFT_COOKIE) && request.cookies.get(BUILD_COOKIE)?.value === BUILD_ID;
 }
 
 function decryptXpParams(xpBlob: string): Record<string, string> | null {
