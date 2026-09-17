@@ -4,7 +4,6 @@ import { fetchContent } from '@enonic/nextjs-adapter/server';
 import StaticContent from '@enonic/nextjs-adapter/views/StaticContent';
 import { ReactNode } from 'react';
 
-import '../../../styles/globals.css';
 import Footer from '../../../components/views/Footer';
 import Header from '../../../components/views/Header';
 
