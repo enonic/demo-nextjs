@@ -4,77 +4,190 @@
 
 == Guillotine application
 
-IMPORTANT: Guillotine version 7 is required if you need to modify graphql schema in your application.
+IMPORTANT: Guillotine version 9 is required for v6.x.
 
-== Upgrading from v2.x
+== Upgrading from v5.x
 
-. You need to use Next.js app router to be able to use v3.x.
-See https://nextjs.org/docs/pages/building-your-application/upgrading/app-router-migration[upgrade instructions] from pages router here.
-
-. `_renderable` page is now an API route at `src/api/renderable/route.ts`.
-
-. `@enonic/nextjs-adapter` methods renamed:
+. *Guillotine 9 query syntax*: GraphQL queries must use the new `guillotine()` field with explicit parameters:
 +
-- getLocaleProjectConfig() -> getLocaleMapping()
-- getProjectLocaleConfigById -> getLocaleMappingById()
-
-. `@enonic/nextjs-adapter` method signature changes:
-- `fetchFromApi` method changed to :
-+
- fetchFromApi(
-    apiUrl: string,
-    projectConfig: ProjectLocaleConfig,
-    options?: FetchOptions): Promise<GuillotineResponseJson>
-+
-- `fetchGuillotine` method signature changes:
-+
- fetchGuillotine(
-    contentApiUrl: string,
-    projectConfig: ProjectLocaleConfig,
-    options?: FetchOptions): Promise<GuillotineResult>
-+
-. `@enonic/nextjs-adapter` exports rearranged:
-+
-Exports working both on the server and client sides are now available from `@enonic/nextjs-adapter` package root.
-Client-only exports are available from `@enonic/nextjs-adapter/client` package.
-Server-only exports are available from `@enonic/nextjs-adapter/server` package.
-Views are available at `@enonic/nextjs-adapter/views/<ViewName>`.
-
-. `ENONIC_PROJECTS` environmental variable change:
-+
- ENONIC_PROJECTS -> ENONIC_MAPPINGS
-+
-.Language is now required for every project config:
-
-    ENONIC_MAPPINGS=<lang>:<repo-name>/site/path[,<lang>:<repo-name>/site/path,...]
-+
-TIP: First config in the list is used as default.
-+
-. `next.config.js` config changes:
-+
-.Remove i18n block from next.js config:
-[source,language="javascript"]
+[source,graphql]
 ----
-i18n: {
-    locales: ['en', 'no'],
-    defaultLocale: 'en',
+# Before (v5.x)
+query($path:ID!) {
+  guillotine {
+    get(key: $path) { ... }
+  }
+}
+
+# After (v6.x)
+query {
+  guillotine(siteKey: $siteKey, branch: $branch, project: $project) {
+    get(key: $path) { ... }
+  }
 }
 ----
 +
-.Add phrases block to webpack config:
-[source,language="javascript"]
+The variables `$siteKey`, `$branch`, `$project`, and `$path` are automatically provided by the adapter.
+You can override them or add custom variables by returning new values from a variables function:
++
+[source,TypeScript]
 ----
-config.resolve.alias = {
-    ...config.resolve.alias,
-    "@phrases": path.resolve(__dirname, "./src/phrases"),
+import type {GlobalVariables} from '@enonic/nextjs-adapter';
+
+export function commonVariables(vars: GlobalVariables) {
+    return vars;
 }
 ----
 
-. *Add* `src/phrases` folder to your project root.
-This folder should contain static translations for every language from `ENONIC_MAPPINGS` env var in the following format: `src/phrases/<lang>.json`
+. *Guillotine 9 media URLs*: `imageUrl`, `mediaUrl` and `attachmentUrl` fields now return objects and require a subselection.
+The `type` argument (e.g. `type: absolute`) is gone, and so is the `type` field of the `processHtml` input:
++
+[source,graphql]
+----
+# Before (v5.x)
+imageUrl: imageUrl(type: absolute, scale: "width(500)")
 
-    src/phrases/en.json
-    src/phrases/no.json
+# After (v6.x)
+${imageUrlQuery({scale: 'width(500)'})}
+----
++
+Render the returned object with the matching string function, which builds an absolute URL from `ENONIC_MEDIA_CDN` (defaults to `ENONIC_API`):
++
+[source,TypeScript]
+----
+import {imageUrl} from '@enonic/nextjs-adapter';
 
-. Middleware file has been updated to support new i18n config.
-If you have custom proxy, you need to update it to support new i18n config.
+<img src={imageUrl(photo.imageUrl)}/>
+----
++
+The same pattern applies to `mediaUrl`, `attachmentUrl` and `pageUrl`.
+No `media.defaultBaseUrl` configuration in XP is needed.
+
+. *Content links*: query with `pageUrlQuery()` and render with `pageUrl(data, meta)`, which returns a relative URL prefixed with the current locale unless it is the default one:
++
+[source,TypeScript]
+----
+import {pageUrl} from '@enonic/nextjs-adapter';
+
+<Link href={pageUrl(parent.pageUrl, meta)}>Back</Link>
+----
+
+. *ENONIC_API environment variable*: The API URL now points to the XP API root instead of the old `/site` path:
++
+[source,properties]
+----
+# Before (v5.x)
+ENONIC_API=http://localhost:8080/site
+
+# After (v6.x)
+ENONIC_API=http://localhost:8080/api
+----
++
+The Guillotine endpoint is `ENONIC_API` + `/` + `GUILLOTINE_API` (optional, default `com.enonic.app.guillotine:graphql`).
+Media URLs use `ENONIC_MEDIA_CDN` (optional, default `ENONIC_API`).
+
+. *Proxy replaces middleware*: Next.js 16 renamed middleware to proxy. Replace `src/middleware.ts` with `src/proxy.ts` exporting a `proxy` function - copy the demo's `src/proxy.ts`, which validates the `xp` blob, enables draft mode through `/api/preview`, rewrites prefix-less URLs to the internal default-locale route and redirects `/<default locale>/...` to `/...`.
+
+. *Encrypted blob authentication*: API routes now use encrypted blob validation instead of plain token comparison.
+`ENONIC_API_TOKEN` is still required — it is now used as the encryption secret.
++
+[source,TypeScript]
+----
+// Before (v5.x)
+import {validateToken} from '../../../utils';
+
+// After (v6.x)
+import {validateBlob} from '../../../utils';
+import {decryptParams} from '@enonic/nextjs-adapter';
+----
++
+`validateBlob()` returns `{ok: true, params}` on success and `{ok: false, response}` otherwise, so routes can read the decrypted `xpProject`.
+`/api/preview` enables draft mode, records the build in a `__next_build_id` cookie and redirects back to the content path without the `xp` parameter; the proxy redirects any URL that carries it to the clean form, going through `/api/preview` first when the draft cookie is missing or from another build. Define `env.BUILD_ID` in `next.config.js` (see the demo) for this check.
+
+. *`/api/mappings` and `/api/revalidate`*: resolve the project's locale mapping from `xpProject` and return `localizeMappings(MAPPINGS, mapping)`; revalidate the internal route path with `pageUrl({path}, {locale})` (no `defaultLocale`, so the prefix is always added).
+See the demo routes for the full code.
+
+. *MetaData type changes*:
++
+[source,TypeScript]
+----
+// Removed
+apiUrl: string;
+
+// Added
+branch: string;
+project: string;
+site: string;
+----
+
+. *`@enonic/nextjs-adapter` API changes*:
++
+- `getContentApiUrl()` removed
+- `getUrl()` and `UrlProcessor` removed — use the `*UrlQuery()`/`*Url()` pairs (`imageUrl`, `mediaUrl`, `attachmentUrl`, `pageUrl`)
+- `localizeMappings()` added
+- `getContentBranch()` added
+- `BaseMacro` no longer accepts `renderInEditMode` prop
+- `getRenderMode()` context parameter is now optional
+- `JSX.Element` replaced with `ReactElement` in component types
+
+. *next.config.js*: Add CORS headers so the Content Studio widget can talk to the Next.js server.
+The allowed origin is derived from the optional `ENONIC_ADMIN` environment variable, falling back to `ENONIC_API`:
++
+[source,javascript]
+----
+function getOrigin(urlString) {
+    try {
+        return new URL(urlString).origin.replace('127.0.0.1', 'localhost');
+    } catch {
+        return undefined;
+    }
+}
+
+function getXpOrigin() {
+    const adminOrigin = getOrigin(process.env.ENONIC_ADMIN);
+    if (adminOrigin) {
+        return adminOrigin;
+    }
+    return getOrigin(process.env.ENONIC_API);
+}
+
+const xpOrigin = getXpOrigin();
+
+headers: [
+    {
+        key: 'Access-Control-Allow-Origin',
+        value: xpOrigin // Can't be '*' when credentials are allowed
+    },
+    {
+        key: 'Access-Control-Allow-Credentials',
+        value: 'true' // Needed for cookies to be sent in cross-origin requests
+    },
+    {
+        key: 'Access-Control-Allow-Methods',
+        value: 'GET, POST, PUT, DELETE, PATCH, OPTIONS'
+    }
+],
+----
++
+Set `ENONIC_ADMIN` to the URL of the Enonic admin UI when it is served from a different domain than the API.
+
+. *Next.XP app 6.x*: The `Next.XP` app (`com.enonic.app.nextxp`) now adds a preview widget, titled "Next.js Preview" in Content Studio, that loads pages directly from the Next.js server instead of proxying requests.
+It fetches URL mappings from the front-end's `/api/mappings` endpoint and caches them per project.
+The `/api/renderable` endpoint is no longer used and has been removed from the demo; delete it from your project too.
+The configuration file is still `com.enonic.app.nextxp.cfg` (same property format).
+
+. *New API route*: Add `/api/mappings` endpoint — used by the Next.XP app to resolve content items to Next.js URLs.
+
+. *Page Editor*: The `@enonic/page-editor` package is now required for Content Studio's live page editing (drag-and-drop, inline editing, component selection).
+Add it as a dependency and include `PageEditorScript` in your page rendering:
++
+[source,TypeScript]
+----
+import PageEditorScript from '../../../components/views/PageEditorScript';
+
+// In your page component's return:
+<>
+    <MainView {...data}/>
+    <PageEditorScript meta={data.meta}/>
+</>
+----

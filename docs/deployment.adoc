@@ -42,20 +42,19 @@ enonic cloud app install
 
 == Task: Expose API via route
 
-The purpose of routes is to expose APIs and other endpoints in Enonic XP like `:8080/site/<project>/<branch>` to the internet.
+The purpose of routes is to expose APIs and other endpoints in Enonic XP, like the `:8080/api` API root, to the internet.
 
 . **Create a new ingress called "API"** from `Solution` -> `Ingresses`.
 +
 Use the following settings:
 +
-Target path:: `/site`
+Target path:: `/api`
 Public path:: `/api`
 ID provider:: -empty-
 +
 . **Make a note of the route URL** - you will find it in the route details.
 
 NOTE: The URL should look something like this: `https://account-solution-environment.enonic.net/api`.
-
 
 == Task: Add your front-end to Git
 
@@ -74,7 +73,9 @@ You are now ready to deploy the the front-end application.
 . **Add the following environment variables** to the project (name: value):
 +
 * ENONIC_APP_NAME: <enonic app name (`tutorial.nxp` in this guide)>
-* ENONIC_API: <enonic ingress URL>
+* ENONIC_API: <route URL from the previous task, ending with /api>
+* ENONIC_ADMIN: <enonic admin URL> (optional, only if admin is on a different domain than the API)
+* ENONIC_MEDIA_CDN: <media URL> (optional, only if images and attachments are served from a different domain than the API)
 * ENONIC_API_TOKEN: <yourSecret>
 * ENONIC_MAPPINGS: en:intro/hmdb,no:intro-no/hmdb
 
@@ -92,7 +93,7 @@ With the front-end running, you can link it to Content Studio to activate the pr
 
 TIP: To save time, you may export content from your local machine and import it to the server using the https://market.enonic.com/vendors/glenn-ricaud/data-toolbox[Data Toolbox app].
 
-. **Install the Next.XP app** `Solution` -> `Applications` -> `Install` -> Search for `Next.XP`, select it an click install
+. **Install the `Next.XP` app** `Solution` -> `Applications` -> `Install` -> Search for `Next.XP`, select it and click install
 . **Add configuration**.
 +
 image:console-configure-app.png[title="Configure the Next.XP application in the solution console",width=769px]
@@ -106,8 +107,15 @@ nextjs.default.secret = <yourSecret>
 +
 TIP: Remember, you can also create named configurations if needed.
 +
+NOTE: The app automatically adds the configured front-end origins to Content Studio's Content Security Policy, so the preview from your Vercel URL works without any Content Studio configuration.
+Unlike your local sandbox, a production server allows only explicitly configured URLs - the `http://localhost:3000` default applies to dev mode only, so this configuration step is required.
++
 NOTE: If you imported content from your local environment, the following two steps can be skipped
-. **Add the Next.XP app to the site** to activate preview.
++
+NOTE: The Next.XP app adds a preview widget that works without adding the app to the site.
+However, adding it to the site lets you select a named configuration from the app config file.
++
+. Optionally, **add the Next.XP app to the site** to select a named configuration.
 . **Save and verify** that the configuration is working by testing the Content Studio preview.
 
 == Task: Publish a page

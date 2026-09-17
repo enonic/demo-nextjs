@@ -1,6 +1,101 @@
 = Release Notes
 :toc: right
 
+== Next.XP Demo 6
+
+=== Framework upgrades
+
+* Next.js 16 and React 19
+* TypeScript 5.9
+* ESLint 9 with flat config (`eslint.config.mjs`)
+
+=== Guillotine 9 query syntax
+
+GraphQL queries now use explicit `siteKey`, `project`, and `branch` parameters passed directly to the `guillotine()` field, instead of relying on the API URL path to determine project and branch.
+
+=== Guillotine 9 media URLs
+
+The `imageUrl`, `mediaUrl` and `attachmentUrl` fields now return objects and must be queried with a subselection, e.g. `imageUrl(scale: "width(500)") { url }`.
+See the https://developer.enonic.com/docs/guillotine/next/api[Guillotine API reference^] for details.
+
+The returned object contains the following fields:
+
+* `url` — the ready-made URL, with the base URL resolved by XP
+* `path` — the full media API path with a leading slash, ready to append to a base URL of your own
+* `queryString` — URL-escaped query string, with a `?` prefix
+* `context` — project context segment
+* `id` — content ID
+* `fingerprint` — media fingerprint
+* `name` — file name (for `imageUrl`, with the requested format extension)
+* `scale` — processed scale segment (`imageUrl` only)
+* `intent` — `download` or `inline` (`mediaUrl`/`attachmentUrl` only)
+
+The `type: absolute` argument and the `type` field of the `processHtml` input have been removed.
+The demo queries the full URL objects through the adapter's `imageUrlQuery()`, `mediaUrlQuery()` and `attachmentUrlQuery()` helpers and builds absolute URLs with `imageUrl()`, `mediaUrl()` and `attachmentUrl()`, using `ENONIC_MEDIA_CDN` (defaults to `ENONIC_API`) as the base.
+No XP-side `media.defaultBaseUrl` configuration is needed.
+
+=== New API URL format
+
+`ENONIC_API` now points to the XP API root (e.g. `http://localhost:8080/api`) instead of the old `/site` path.
+The Guillotine endpoint is derived by appending `GUILLOTINE_API` (default `com.enonic.app.guillotine:graphql`), and media URLs are built from `ENONIC_MEDIA_CDN`, which defaults to `ENONIC_API`.
+
+=== Proxy replaces middleware
+
+The `src/middleware.ts` file has been replaced by `src/proxy.ts`.
+It validates Content Studio requests (encrypted `xp` blob), enables draft mode through `/api/preview` when the draft cookie is missing or belongs to another build (`BUILD_ID` from `next.config.js`), and redirects to the same URL without the parameter, so preview URLs never show it; it rewrites URLs without a locale prefix to the internal default-locale route and redirects `/<default locale>/...` to `/...`; public URLs carry a prefix only for non-default locales.
+
+=== Encrypted blob authentication
+
+API routes (`/api/revalidate`, `/api/preview`, `/api/mappings`) now use encrypted blob validation instead of plain token comparison.
+The `decryptParams` and `encryptParams` functions are available from `@enonic/nextjs-adapter`.
+
+=== New `/api/mappings` endpoint
+
+Returns routing mapping configuration to Content Studio, secured with blob validation.
+Targets are prefixed with the locale of the project carried in the encrypted blob unless it is the default locale (`localizeMappings()`), and the Next.XP app caches the response per project; unknown projects get a 404.
+`/api/revalidate` likewise resolves the locale from the project and revalidates locale-prefixed paths.
+
+=== Automatic Content Studio CSP allow listing
+
+The Next.XP app now automatically adds its configured front-end origins to Content Studio's Content Security Policy, together with `'self'` (`frame-src`, `connect-src` and `style-src`), so the preview iframe can load pages from those servers out of the box.
+The manual `contentSecurityPolicy.header` setup in `com.enonic.app.contentstudio.cfg` is no longer needed.
+When nothing is configured, the default `http://localhost:3000` origin is allowed only in dev mode - in production, only explicitly configured URLs are added.
+Requires Enonic XP 8.1 or later.
+
+=== CORS headers for Content Studio
+
+`next.config.js` now sets the CORS headers needed by the Content Studio widget.
+The allowed origin is derived from the new optional `ENONIC_ADMIN` environment variable, falling back to the origin of `ENONIC_API` when it is not set or not a valid URL.
+Set `ENONIC_ADMIN` when the Enonic admin UI is served from a different domain than the API.
+
+=== Content Studio live editing with `@enonic/page-editor`
+
+The new `@enonic/page-editor` package brings full compatibility with Content Studio's live page editing.
+It enables features like component drag-and-drop, inline text editing, and click-to-select directly within the Next.js-rendered preview.
+
+The `PageEditorScript` client component initializes the page editor on every page and handles communication between Content Studio and the Next.js frontend.
+It is included automatically via the main page handler.
+
+=== MetaData type changes
+
+`MetaData.apiUrl` has been replaced with `branch`, `project`, and `site` fields.
+
+=== Adapter API changes
+
+* `getContentApiUrl()` removed
+* `getUrl()` and `UrlProcessor` removed
+* Added `imageUrlQuery()`/`imageUrl()`, `mediaUrlQuery()`/`mediaUrl()`, `attachmentUrlQuery()`/`attachmentUrl()` and `pageUrlQuery()`/`pageUrl()` pairs, plus `localizeMappings()`
+* `richTextQuery()` now selects the full `imageUrl`, `mediaUrl` and `pageUrl` objects for images and links
+* `getContentBranch()` added
+* `BaseMacro` no longer accepts `renderInEditMode` prop
+* `getRenderMode()` context parameter is now optional
+
+=== Other improvements
+
+* Next.js 16 async params: route params are now `Promise` and must be awaited
+* The adapter automatically sets `renderMode` to `EDIT` when Next.js draft mode is enabled
+* `JSX.Element` replaced with `ReactElement` for more precise TypeScript typing
+
 == Next.XP Demo 3
 
 === App router structure

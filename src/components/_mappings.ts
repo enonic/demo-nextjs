@@ -1,4 +1,5 @@
-import {APP_NAME, ComponentRegistry} from '@enonic/nextjs-adapter'
+import {APP_NAME, CATCH_ALL, ComponentRegistry, richTextQuery} from '@enonic/nextjs-adapter'
+import PropsView from '@enonic/nextjs-adapter/views/PropsView';
 import TwoColumnLayout from './layouts/TwoColumnLayout';
 import MainPage from './pages/Main';
 import ChildList, {childListProcessor, getChildList} from './parts/ChildList';
@@ -10,6 +11,7 @@ import FactBox from './macros/FactBox';
 import "@enonic/nextjs-adapter/baseMappings";
 import getPersonWithBio from './queries/getPersonWithBio';
 import PersonWithBio from './views/PersonWithBio';
+import Paragraph from './parts/Paragraph';
 
 // You can set common query for all views here
 ComponentRegistry.setCommonQuery([commonQuery, commonVariables]);
@@ -69,6 +71,10 @@ ComponentRegistry.addPart(`${APP_NAME}:child-list`, {
     processor: childListProcessor,
     view: ChildList,
     configQuery: `{sorting}`
+});
+ComponentRegistry.addPart(`${APP_NAME}:paragraph`, {
+    view: Paragraph,
+    configQuery: `{${richTextQuery('text')}}`
 });
 
 

@@ -1,43 +1,85 @@
 /** @type {import('next').NextConfig} */
 const path = require('path');
 
-function getEnonicWebpackConfig(config, {buildId, dev, isServer, defaultLoaders, nextRuntime, webpack}) {
+function getEnonicWebpackConfig(config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) {
     config.resolve.fallback = {
         ...config.resolve.fallback,
         // client-side resolution for node modules
-        fs: false
-    }
+        fs: false,
+    };
     config.resolve.alias = {
         ...config.resolve.alias,
-        "@phrases": path.resolve(__dirname, "src", "phrases"),
-    }
+        '@phrases': path.resolve(__dirname, 'src', 'phrases'),
+    };
     return config;
 }
 
+function getOrigin(urlString) {
+    try {
+        // Cast 127.0.0.1 to localhost to avoid CORS issues when running XP locally
+        return new URL(urlString).origin.replace('127.0.0.1', 'localhost');
+    } catch {
+        return undefined;
+    }
+}
+
+function getXpOrigin() {
+    // Admin may be served from a different domain than the API
+    const adminOrigin = getOrigin(process.env.ENONIC_ADMIN);
+    if (adminOrigin) {
+        return adminOrigin;
+    }
+    return getOrigin(process.env.ENONIC_API);
+}
+
 async function getEnonicHeaders() {
+
+    const xpOrigin = getXpOrigin();
+    const headers = [
+        {
+            key: 'Content-Security-Policy',
+            value: `script-src 'self' 'unsafe-eval' 'unsafe-inline';`,
+        },
+    ];
+    if (xpOrigin) {
+        headers.push(
+            {
+                key: 'Access-Control-Allow-Origin',
+                value: xpOrigin, // Can't be '*' when credentials are allowed
+            },
+            {
+                key: 'Access-Control-Allow-Credentials',
+                value: 'true', // Needed for cookies to be sent in cross-origin requests
+            },
+            {
+                key: 'Access-Control-Allow-Methods',
+                value: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+            },
+        );
+    }
+
     return [
         {
             // Apply these headers to all routes in your application.
             source: '/:path*',
-            headers: [
-                {
-                    key: 'Content-Security-Policy',
-                    value: `script-src 'self' 'unsafe-eval' 'unsafe-inline';`
-                }
-            ],
+            headers,
         },
-    ]
+    ];
 }
 
 const config = {
+    env: {
+        // Evaluated once per build (or dev server start): lets the proxy recognise a draft cookie issued by another build
+        BUILD_ID: Date.now().toString(36),
+    },
     reactStrictMode: true,
     trailingSlash: false,
     transpilePackages: ['@enonic/nextjs-adapter'],
     webpack: getEnonicWebpackConfig,
     turbopack: {
         resolveAlias: {
-            "@phrases": path.resolve(__dirname, "src", "phrases"),
-        }
+            '@phrases': path.resolve(__dirname, 'src', 'phrases'),
+        },
     },
     headers: getEnonicHeaders,
 };

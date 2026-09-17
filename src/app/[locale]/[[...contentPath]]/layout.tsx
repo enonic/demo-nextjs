@@ -1,14 +1,14 @@
-import {getAsset, I18n, RENDER_MODE, XP_REQUEST_TYPE} from '@enonic/nextjs-adapter';
-import {LocaleContextProvider} from '@enonic/nextjs-adapter/client';
-import {fetchContent} from '@enonic/nextjs-adapter/server';
+import { I18n, RENDER_MODE, XP_REQUEST_TYPE } from '@enonic/nextjs-adapter';
+import { LocaleContextProvider } from '@enonic/nextjs-adapter/client';
+import { fetchContent } from '@enonic/nextjs-adapter/server';
 import StaticContent from '@enonic/nextjs-adapter/views/StaticContent';
-import {ReactNode} from 'react';
+import { ReactNode } from 'react';
 
-import '../../../styles/globals.css';
 import Footer from '../../../components/views/Footer';
 import Header from '../../../components/views/Header';
 
-import {PageProps} from './page';
+import { PageProps } from './page';
+import DraftModeIndicator from '@enonic/nextjs-adapter/views/DraftModeIndicator';
 
 type LayoutProps = {
     params: Promise<PageProps>
@@ -43,9 +43,10 @@ export default async function PageLayout({params, children}: LayoutProps) {
     return (
         <LocaleContextProvider locale={resolvedParams.locale}>
             <StaticContent condition={isEdit}>
-                <Header meta={meta} title={I18n.localize('title')} logoUrl={getAsset('/images/xp-shield.svg', meta)}/>
+                <Header meta={meta} title={I18n.localize('title')} logoUrl="/images/xp-shield.svg"/>
                 <main>{children}</main>
                 <Footer/>
+                <DraftModeIndicator label={I18n.localize('draft-mode')}/>
             </StaticContent>
         </LocaleContextProvider>
     )

@@ -35,7 +35,7 @@ When using XP components with Next.js as described in <<page-editor#, the page e
 .$$.$$env
 [source,properties,options="nowrap"]
 ----
-APP_NAME=com.example.myproject
+APP_NAME=tutorial.nxp
 ----
 
 ### Environment-specific constants
@@ -278,7 +278,7 @@ The content type keys map to a **"type selection"** value, which is an object: `
 [[type-selector-key]]
 #### Keys: content type strings
 
-The content type keys must be _full XP content type_ strings, with app name and type name - e.g. `"base:folder"`, `"com.example.myproject:my-content-type"`, etc.
+The content type keys must be _full XP content type_ strings, with app name and type name - e.g. `"base:folder"`, `"tutorial.nxp:my-content-type"`, etc.
 
 Or, when importing the app name to keep that defined in one place:
 
@@ -671,7 +671,7 @@ Overall, the examples here illustrate a simple and fast workflow (and of course,
 
 1. Create a link:https://developer.enonic.com/docs/content-studio/stable/content-types[**content type**] in code in the XP app, with appropriate fields for defining the link:https://developer.enonic.com/docs/xp/stable/cms/input-types[data structure] you need. No other views, controllers, or other XP-side code is needed for now.
 +
-Make a note of the full content type name: a colon-separated string with both <<enonic-setup#new-project, app>> and <<enonic-setup#xp-content, type>> name, for example `'com.example.myproject:my-content-type'`.
+Make a note of the full content type name: a colon-separated string with both <<enonic-setup#new-project, app>> and <<enonic-setup#xp-content, type>> name, for example `'tutorial.nxp:my-content-type'`.
 +
 <<enonic-setup#xp-setup, Redeploy>> the XP app.
 +

@@ -15,7 +15,7 @@ Enonic boasts a https://developer.enonic.com/docs/xp/stable/cms/schemas/input-ty
 Luckily, the sample data set contains everything we need to get going.
 The `Bio` field for persons is a Rich Text input, and some Persons' data is even populated with relevant content, like you see below:
 
-image::rich-text-bio.png[title="Rich text bio field for Lea Seydoux",width=662px]
+image::rich-text-bio.png[title="Rich text bio field for Lea Seydough",width=662px]
 
 
 == Task: Rich text rendering
@@ -36,8 +36,10 @@ Add a new query file to your project with the following content:
 include::{sourcedir}/components/queries/getPersonWithBio.ts[]
 ----
 +
-IMPORTANT: Since we use `${richTextQuery('bio')}`` now, that is dependant on registered macros, `getPerson` query must now be a function!
+IMPORTANT: Since `${richTextQuery('bio')}` depends on the registered macros, the `getPersonWithBio` query is a function!
 This guarantees that it is executed when querying for data, and all the macros are already registered.
++
+NOTE: `RichTextView` rewrites media `src`, `srcset` and `href` attributes to absolute XP media URLs and content links to locale-prefixed Next.js routes, so no URL handling is needed in your views.
 +
 For further insight, visit the https://developer.enonic.com/docs/developer-101/stable/rich-text[rich text chapter] in the Developer 101 tutorial, or have a look at the tutorial covering our standard https://developer.enonic.com/docs/react-spa[react components].
 
@@ -81,7 +83,7 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 +
 . *That's it!*
 +
-The resulting page for http://localhost:3000/persons/lea-seydoux[Lea Seydoux] should look like this:
+The resulting page for http://localhost:3000/persons/lea-seydough[Lea Seydough] should look like this:
 +
 image::rich-text-no-macro.png[title="Person content rendered with rich text",width=1080px]
 

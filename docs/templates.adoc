@@ -5,24 +5,22 @@
 
 Thus far, page rendering has been based on mappings, or editorially composing one page at a time. In this chapter you'll learn how to make page templates - and reuse them across multiple content items.
 
-## Task: Movie details part
+== Task: Movie details part
 
 To complete this section, we'll need one final part for listing movie details. The content type and content for movies already exists in Enonic, so lets get to work.
 
-. **Add the `movie-details` part to Enonic** - same procedure as before...
+. Verify the Enonic app has **the `movie-details` part descriptor** - same procedure as before...
 +
-.src/main/resources/site/parts/movie-details/movie-details.xml
-[source,xml]
+.src/main/resources/cms/parts/movie-details/movie-details.yaml
+[source,yaml]
 ----
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<part xmlns="urn:enonic:xp:model:1.0">
-    <display-name>Movie Details</display-name>
-    <description>Show details of a movie</description>
-    <form/>
-</part>
+kind: "Part"
+title: "Movie Details"
+description: "Show details of a movie"
+form: [ ]
 ----
 +
-. **Redeploy** the Enonic app (happens automatically if you started `enonic project dev`).
+. **Redeploy** the Enonic app if you made any changes (happens automatically if you started `enonic dev`).
 +
 . **Add the Movie query and view** in Next.
 +
@@ -50,28 +48,28 @@ ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
 
 With the new component registered, let's put it to use.
 
-. In Content Studio, select and **edit your favorite movie** (or choose "No time to die" if you have no faviorites).
+. In Content Studio, select and **edit your favorite movie** (or choose "No time to deflate" if you have no favorites).
 +
-. **Activate the page editor** by pressing `Display` icon in the top right screen corner, select the "Main page" descriptor and **add the "Movie details" part** to the page.
+. **Activate the context panel** by pressing its icon in the top right screen corner, select `Page` in the widget dropdown, then `Main` in the Template dropdown, and **add the `Movie Details` part** to the page (drag `Part` from the `Insert` tab into the region and pick it in the part dropdown).
 +
-image:movie-details.png[title="No time to die, configured with movie-details part",width=1440px]
+image:movie-details.png[title="No time to deflate, configured with movie-details part",width=1440px]
 +
 We now have a single movie nicely presented, but it would be cumbersome to manually configure each movie like this - page templates to the rescue.
 +
-. In the page editor, **select the page (root) component** (for instance by clicking on the header).
+. In the `Page` tab of the form on the left, **select the page (root) component** named `Main`.
 +
 image:movie-page.png[title="With page component selected, save as template appears in right hand panel",width=1440px]
 +
-. Click **Save as template** from the right hand panel.
+. Right click it and select **Save as Template** from the context menu.
 +
 This will create a new page template content item, and open it in a new tab for editing.
 +
-. **Give your template a better name**, such as "Movie details" and save the changes.
+. **Give your template a better name**, such as "Movie details" - the change is saved automatically. The template already supports the `Movie` content type.
 +
 image:movie-template.png[title="Content item of type template, configure to support movie items",width=1440px]
 +
 . Try visiting other movie items to **verify they now automatically render**.
 +
-**PS!** Don't forget to publish the changes and the new page template.
+**PS!** Don't forget to publish the changes and the new page template (both the movie and the template are `Mark as ready` -> `Publish now`).
 
-With templates sorted out, let's dive into  <<static.adoc#, production mode and page revalidation>>.
+With templates sorted out, let's dive into  <<static#, production mode and page revalidation>>.

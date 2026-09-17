@@ -1,11 +1,12 @@
-import {FetchContentResult, validateData} from "@enonic/nextjs-adapter";
-import {fetchContent, fetchContentPathsForAllLocales} from "@enonic/nextjs-adapter/server";
+import { FetchContentResult, validateData } from '@enonic/nextjs-adapter';
+import { fetchContent, fetchContentPathsForAllLocales } from '@enonic/nextjs-adapter/server';
 import MainView from '@enonic/nextjs-adapter/views/MainView';
 
-import "../../../components/_mappings";
-import {Metadata} from 'next';
-import {draftMode} from 'next/headers';
+import '../../../components/_mappings';
+import { Metadata } from 'next';
+import { draftMode } from 'next/headers';
 import React from 'react';
+import PageEditorScript from '../../../components/views/PageEditorScript';
 
 // NB. Using this option with default value bails out static generation !!!
 // export const dynamic = 'auto'
@@ -32,10 +33,13 @@ export default async function Page({params}: { params: Promise<PageProps> }) {
 
     validateData(data);
 
-    console.debug(`Rendered ${draft ? 'draft ' : ''}page at [/${data.meta.locale}/${data.meta.path}]`);
+    console.debug(`Rendered ${draft ? 'draft ' : ''}page at '/${data.meta.locale}/${data.meta.path}'`);
 
     return (
-        <MainView {...data}/>
+        <>
+            <MainView {...data}/>
+            <PageEditorScript meta={data.meta}/>
+        </>
     )
 };
 
@@ -51,5 +55,5 @@ export async function generateMetadata({params}: { params: Promise<PageProps> })
 }
 
 export async function generateStaticParams(props: { params: PageProps }): Promise<any[]> {
-    return await fetchContentPathsForAllLocales('\${site}/');
+    return await fetchContentPathsForAllLocales();
 }

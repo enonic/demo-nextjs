@@ -19,48 +19,50 @@ To demonstrate multi-language, you first need to activate support for translatin
 +
 image:content-studio-settings.png[title="Project list",width=1024px]
 +
-Click `New...` button, and select type `Layer`. Then choose the `Movie DB` project as the parent
+Select the existing `Intro Project` and click the `New` button.
+This opens the project wizard with `Intro Project` preselected as the parent project, so the new project becomes a layer.
 +
 image:content-studio-create-layer.png[title="Layered project type",width=1024px]
 +
-Fill in the rest of the form, using the following values:
+Walk through the wizard steps, using the following values:
 +
-* *Name*: `Film DB`
+* *Default Language*: `norsk (no)`
+* *Display Name*: `Film DB`
 * *Identifier*: `intro-no`
-* *Language*: `norsk (no)`
-* *Access mode*: `Public`
-* Other fields may be skipped
+* *Access Mode*: `Public`
+* The `Roles` and `Applications` steps may be skipped (the `Intro` app is copied from the parent project)
 +
-After saving and closing the wizard, the new project should appear in the list.
+Click `Create Project` in the `Summary` step, and the new layer appears in the list under `Intro Project`.
 +
-. *Verify the new layer* by going back to the content list (via the pencil icon), and then switching context using the context selector in the top bar.
+. *Verify the new layer* by going back to the content list (`Content` in the sidebar), and then switching project with the project selector in the top left corner.
 +
 After switching context, you should see the following:
 +
 image:content-studio-filmdb.png[title="Film DB project",width=1024px]
 +
-. Finally *publish the project* by clicking the `Publish` button in the top bar.
+. Finally *publish the project*: select the `HMDB` site, click `Publish` in the toolbar, toggle `Include child items`, click `Apply` and then `Publish now`.
 
 == Task: Set up i18n in Next.js
 
 Next, let's turn on multi-language support in Next.js.
 
-. This template comes with proxy configured to do language detection and redirection.
-Feel free to study the code in `src/proxy.ts` to get a better understanding of how it works.
+. This template comes with a proxy (`src/proxy.ts`) that keeps the default locale out of public URLs: `http://localhost:3000/persons/x` is rendered by the internal `/en/persons/x` route, and `/en/persons/x` itself redirects to `/persons/x`.
+Other locales keep their prefix (`/no/persons/x`).
+Content Studio preview URLs and links rendered with `pageUrl(data, meta)` follow the same rule.
 +
 . But you need to *configure the Enonic adapter*, by specifying which content project to use for each locale:
 +
 ..env
 [source,Properties]
 ----
-// ...
+# ...
 ENONIC_MAPPINGS=en:intro/hmdb,no:intro-no/hmdb
-// ...
+# ...
 ----
 +
 Let's break down the syntax.
 +
-For each comma separated entry, you will find the following pattern: `<locale>:<repository>/<sitekey>`.
+For each comma separated entry, you will find the following pattern: `<locale>:<project>/<sitekey>`.
 In the example above `en:intro/hmdb` and `no:intro-no/hmdb`.
 +
 The first entry will map to the `defaultLocale` that is used in the locale related methods in the NextJS adapter.
@@ -70,12 +72,23 @@ NOTE: The reason for repeating paths, is that the path may be different in each 
 . Next, add the static texts file for every locale to the `src/phrases` folder.
 The file name should be `<locale>.json`, e.g. `no.json` for Norwegian.
 +
+.src/phrases/no.json
+[source,json]
+----
+include::{sourcedir}/phrases/no.json[]
+----
++
 . Finally *restart your Next.js server* to pick up the changes to environment variables.
++
+NOTE: In prod mode this means running `npm run prod` again. The build calls `generateStaticParams()` for every project in `ENONIC_MAPPINGS`, so publish the new layer first - otherwise the build fails because the site does not exist on the layer's `master` branch yet.
 
 
 == Task: Translate and publish
 
 As long as your preview configuration was working before you started, Content Studio should automatically be able to detect the right locale for each project.
+
+NOTE: Every project used for preview must be listed in `ENONIC_MAPPINGS`.
+Otherwise `/api/mappings` answers 404 and Content Studio reports that the content cannot be rendered.
 
 NOTE: You may need to restart/rebuild your Next.js server for the changes to be picked up.
 
@@ -83,9 +96,9 @@ NOTE: You may need to restart/rebuild your Next.js server for the changes to be 
 +
 Content Studio should automatically be able to detect the correct Next.js locale for the project. Select an item, and you should get a preview.
 +
-. *Translate the site content* by selecting the site content, then click `localize` (rather than edit..). This effectively takes you to the edit form. You may now show off your skills while translating the page to Norwegian.
+. *Translate the site content* by selecting the site and clicking `Edit`. The editor opens with a `Localize` button in place of `Save`: click it to create a local copy in the layer (the item switches from `Not localised` to `Localised` and gets the layer's language). You may now show off your skills while translating the page to Norwegian.
 +
-. Once finished, click `Mark as Ready` and proceed to *publish the entire site* structure.
+. Once finished, click `Mark as ready` and proceed to *publish the entire site* structure.
 +
 [TIP]
 ====
@@ -96,7 +109,7 @@ image:content-studio-mark-as-ready.png[title="Click tree icon to include all chi
 +
 . **Verify that your front-end is working**
 +
-Finally, by adding `/no` (i.e. `localhost:4242/no`) to the URL of your Next.js server you should now see the published content from the Norwegian project.
+Finally, by adding `/no` (i.e. `localhost:3000/no`) to the URL of your Next.js server in an *incognito window* you should now see the published content from the Norwegian project.
 
 
 == Multi front-end setup
@@ -105,26 +118,25 @@ In some cases, you may prefer a setup where each language/market is served by a 
 
 Setting up Next.js to do this is just like handling a single language. To enable Content Studio preview to know which Next.js server to use, some additional configuration will be required.
 
-. *Update the Next.xp configuration file* for your Enonic installation by adding multiple entries:
+. *Update the Next.XP configuration file* for your Enonic installation by adding multiple entries:
 +
-NOTE: The sandbox configuration files are located in the sandbox' home directory inside your user's root directory at `.enonic/sandboxes/<your-sandbox-name>/home/config`. 
+NOTE: The sandbox configuration files are located in the sandbox' home directory inside your user's root directory at `.enonic/sandboxes/<your-sandbox-name>/home/config`.
 +
 .com.enonic.app.nextxp.cfg
 [source,properties]
 ----
 # uncomment to override default values
 # nextjs.default.secret=yourSecret
-# nextjs.default.url=http://127.0.0.1:4242
+# nextjs.default.url=http://localhost:3000
 #
-# config 'someName'
-nextjs.someName.secret=yourSecret
-nextjs.someName.url=https://your.next-site.com
+# config 'prod'
+nextjs.prod.secret=yourSecret
+nextjs.prod.url=https://your.next-site.com
 #
-# config 'anotherName'
-nextjs.anotherName.secret=yourOtherSecret
-nextjs.anotherName.url=https://your.other-next-site.com
 # ...
 ----
++
+NOTE: Every configured URL is automatically allowed in Content Studio's Content Security Policy, so the preview works for each front-end without further configuration.
 +
 . *Assign the configuration to your site* by clicking the pencil icon next to the `Next.XP` app name in the site form, and selecting it from the list of named configurations:
 +
@@ -141,11 +153,12 @@ Here are some insight on how to make further use of locales in your Next.js proj
 ----
 export type PageProps = {
     locale: string,
-    contentPath: string[],
+    contentPath?: string[],
 }
 
-export default async function Page({params}: { params: PageProps }) {
-    const {locale, contentPath} = params;
+export default async function Page({params}: { params: Promise<PageProps> }) {
+    const resolvedParams = await params;
+    const {locale, contentPath} = resolvedParams;
     // ...
 }
 ----
@@ -164,7 +177,9 @@ export interface MetaData {
     requestedComponent?: PageComponent;
     canRender: boolean;
     catchAll: boolean;
-    apiUrl: string;
+    branch: string;
+    project: string;
+    site: string;
     baseUrl: string;
     locale: string;
     defaultLocale: string;
@@ -172,6 +187,7 @@ export interface MetaData {
 ----
 
 You can also use `I18n.getLocale()` and `useLocaleContext()` to access locale in server-side and client-side components respectively.
+For links, pass `meta` to `pageUrl(data, meta)` and the locale prefix is added for non-default locales; `pageUrl({path: '/'}, meta)` gives the site root (`/` or `/no`).
 
 == Localizing the views
 
@@ -180,7 +196,7 @@ Here is how you can localize texts in your views:
 
 . Remember, we added file for every locale to the `src/phrases` folder earlier ?
 
-. Use `useLocaleContext` from `@enonic/nextjs-adapter` to access current locale in client-side components:
+. Use `useLocaleContext` from `@enonic/nextjs-adapter/client` to access current locale in client-side components:
 +
 [source,TypeScript]
 ----
@@ -195,9 +211,9 @@ export default function ClientSideComponent() {
 }
 ----
 
-NOTE: The `useLocaleContext` hook is only available in client-side components.
+NOTE: The `useLocaleContext` hook is only available in *client-side* components.
 
-. In server-side components, you can use `I18n.getLocale()` from `@enonic/nextjs-adapter` todo the same:
+. In server-side components, you can use `I18n.getLocale()` from `@enonic/nextjs-adapter` to do the same:
 +
 [source,TypeScript]
 ----

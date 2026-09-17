@@ -2,6 +2,7 @@
 :toc: right
 :toclevels: 3
 :imagesdir: media/
+include::.variables.adoc[]
 
 In this chapter we will create a front-end application that renders content from the Enonic CMS (the app created in the previous chapters).
 
@@ -16,12 +17,12 @@ Create an empty folder, go inside and run the following command:
 
 [source,bash,options="nowrap"]
 ----
-npx degit git@github.com:enonic/nextxp-template.git
+npx degit github:enonic/starter-nextjs
 ----
 
-The "nextxp-template" is based on link:https://nextjs.org/docs/getting-started[Next.js' own introduction app], so if you're familiar with that, you'll recognize the structure of the files.
+*starter-nextjs* is based on link:https://nextjs.org/docs/getting-started[Next.js' own introduction app], so if you're familiar with that, you'll recognize the structure of the files.
 
-The template includes some boilerplate we will customize, and an npm dependency aka ´The Enonic Adapter` that facilitates and simplifies integration with Enonic.
+The template includes some boilerplate we will customize, and an npm dependency aka `The Enonic Adapter` (`@enonic/nextjs-adapter`) that facilitates and simplifies integration with Enonic.
 
 === Code overview
 
@@ -32,35 +33,50 @@ The following file structure should now exist within your new project folder:
 ----
 .env                                // <1>
 src/
-    proxy.ts                   // <2>
-    components/                     // <3>
-    phrases/                        // <4>
+    proxy.ts                        // <2>
+    utils.ts                        // <3>
+    components/                     // <4>
+        _mappings.ts
+        queries/
+            common.ts
+        views/
+            Header.tsx
+            Footer.tsx
+            PageEditorScript.tsx
+    phrases/                        // <5>
         en.json
+    styles/                         // <6>
     app/
-        [locale]
+        layout.tsx                  // <7>
+        [locale]/
+            layout.tsx              // <8>
+            error.tsx               // <9>
+            not-found.tsx           // <10>
             [[...contentPath]]/
-                page.tsx            // <5>
-            layout.tsx              // <6>
-            error.tsx               // <7>
-            not-found.tsx           // <8>
-        api/                        // <9>
+                layout.tsx          // <11>
+                page.tsx            // <12>
+        api/                        // <13>
+            mappings/
+                route.ts
             preview/
-                route.tsx
-            renderable/
-                route.tsx
+                route.ts
             revalidate/
-                route.tsx
+                route.ts
 ----
 
 <1> Environment variables are placed in this file
-<2> Middleware file that routes requests based on locale
-<3> Contains your implementation of CMS components
-<4> Phrase files for multi-language support
-<5> The main rendering file, catching all requests satisfying the pattern `/[locale]/[[...contentPath]]`
-<6> Layout file that wraps all pages and adds common structures (eg. `<Header>`, `<LocaleContextProvider>`, etc.)
-<7> Error page handler
-<8> Not found page handler
-<9> Folder containing API routes
+<2> Proxy: validates Content Studio preview requests (encrypted `xp` blob) and enables draft mode through `/api/preview`, rewrites URLs without a locale prefix to the internal default-locale route and redirects `/<default locale>/...` to `/...`
+<3> Helpers used by the API routes: blob validation and project mapping lookup
+<4> Your implementation of CMS components: the component mappings (`_mappings.ts`), the common query and ready-made views (header, footer and the page editor script)
+<5> Phrase files for multi-language support
+<6> Global styles for the site
+<7> Root layout required by Next.js
+<8> Locale layout: renders `<html>` and `<body>`, sets the locale used for static texts and the page metadata
+<9> Error page handler
+<10> Not found page handler
+<11> Content layout: fetches the content and wraps every page with the locale context, the static content wrapper and the draft mode indicator
+<12> The main rendering file, catching all requests satisfying the pattern `/[locale]/[[...contentPath]]`
+<13> Folder containing API routes
 
 
 == Task: Configure application
@@ -81,12 +97,31 @@ ENONIC_APP_NAME=tutorial.nxp
 # Enonic XP projects configuration for different locales
 ENONIC_MAPPINGS=en:intro/hmdb <1>
 
-# Absolute URL to Content API
-ENONIC_API=http://127.0.0.1:8080/site <2>
+# Absolute URL to the Enonic XP API root
+ENONIC_API=http://localhost:8080/api <2>
+
+# Guillotine API descriptor, appended to ENONIC_API
+#GUILLOTINE_API=com.enonic.app.guillotine:graphql <3>
+
+# Absolute URL to the media API, only needed if media is served from another host (e.g. a CDN)
+#ENONIC_MEDIA_CDN=http://localhost:8080/api <4>
+
+# Absolute URL to Enonic admin, only needed if it differs from the API origin (used for CORS)
+#ENONIC_ADMIN=http://localhost:8080 <5>
 ----
 
 <1> Mapping an XP project (intro) and site (/hmdb) to the Next.js router.
-<2> Base URL of the Guillotine API, but without project and branch.
+<2> Root of the Enonic API.
+The Guillotine endpoint is `ENONIC_API` + `/` + `GUILLOTINE_API`.
+<3> Optional.
+Guillotine API location.
+Defaults to `com.enonic.app.guillotine:graphql`.
+<4> Optional.
+Base URL for images and attachments.
+Defaults to `ENONIC_API`.
+<5> Optional.
+Origin of the Enonic admin UI, used for CORS.
+Defaults to the origin of `ENONIC_API`.
 
 TIP: These configuration values can be overridden later when deploying your app to a live server.
 
@@ -114,7 +149,7 @@ Page:
 Common:
 {
   "get": {
-    "displayName": "hmdb",
+    "displayName": "HMDB",
     "_id": "3584c396-25cb-497e-b1f4-dc2bf0de4b5a",
     "type": "portal:site",
     "dataAsJson": {
@@ -123,11 +158,13 @@ Common:
     "xAsJson": {}
   },
   "getSite": {
-    "displayName": "hmdb",
+    "displayName": "HMDB",
     "_path": "/hmdb"
   }
 }
 ----
+
+NOTE: The `_id` values differ from installation to installation.
 
 [TIP]
 ====
@@ -138,11 +175,11 @@ For more details on booting Next, check out the link:https://nextjs.org/docs/api
 
 == Next URL patterns
 
-The URL structure of your front-end will mirror the structure of the content in the CMS. http://localhost:3000/[http://localhost:3000/^] will be mounted to the site root, which in our case has the internal path `/hmdb`.
+The URL structure of your front-end will mirror the structure of the content in the CMS. http://localhost:3000[http://localhost:3000^] will be mounted to the site root, which in our case has the internal path `/hmdb`.
 
-Using the Movie Se7en as an example:
+Using the Movie s7ven as an example:
 
-.Result when visiting http://localhost:3000/movies/se7en[http://localhost:3000/movies/se7en^]
+.Result when visiting http://localhost:3000/movies/s7ven[http://localhost:3000/movies/s7ven^]
 [source]
 ----
 Page:
@@ -153,7 +190,7 @@ Page:
 Common:
 {
   "get": {
-    "displayName": "Se7en",
+    "displayName": "S7ven",
     "_id": "1cb3dbf4-31d1-4e8a-816a-8cf891de7ad6",
     "type": "tutorial.nxp:movie",
     "dataAsJson": {
@@ -188,22 +225,22 @@ Common:
     }
   },
   "getSite": {
-    "displayName": "hmdb",
+    "displayName": "HMDB",
     "_path": "/hmdb"
   }
 }
 ----
 
-.Se7en as seen in Content Studio - internal path is `/hmdb/movies/se7en`
-image:se7en-edit.png[title="Editing item in Content Studio - the path /hmdb/movies/se7en is highlighted",width=768px]
+.S7ven as seen in Content Studio - internal path is `/hmdb/movies/s7ven`
+image:s7ven-edit.png[title="Editing item in Content Studio - the path /hmdb/movies/s7ven is highlighted",width=768px]
 
-### Task: Visit some more pages
+== Task: Visit some more pages
 
 Give the default rendering a spin by trying out some other URLs, for example: +
 
 * http://localhost:3000/movies[http://localhost:3000/movies^] +
 * http://localhost:3000/persons[http://localhost:3000/persons^] +
-* http://localhost:3000/persons/brad-pitt[http://localhost:3000/persons/brad-pitt^]
+* http://localhost:3000/persons/brad-pittless[http://localhost:3000/persons/brad-pittless^]
 
 ...etc.
 

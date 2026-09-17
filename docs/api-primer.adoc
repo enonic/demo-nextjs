@@ -12,15 +12,15 @@ TIP: New to GraphQL as well? Check out the link:https://graphql.org/[GraphQL doc
 
 == Task: GraphQL Playground
 
-For every content project in your sandbox, you will automatically get an API. By clicking the `GraphQL Playground` icon in your Content Studio menu, you should see the following
-+
+For every content project in your sandbox, you will automatically get an API. By clicking `Query Playground` in the Content Studio menu, you should see the following:
+
 image:content-studio-guillotine.png[title="Browsing the Guillotine API using Query Playground",width=1440px]
 
 [NOTE]
 ====
-The API can be accessed directly following URL: http://localhost:8080/site/intro[http://localhost:8080/site/intro^].
-
-`hmdb` is the name of your Content Studio project.
+The API can also be called directly at http://localhost:8080/api/com.enonic.app.guillotine:graphql[http://localhost:8080/api/com.enonic.app.guillotine:graphql^].
+Direct calls must pass the `branch` argument (`draft` or `master`) to the `guillotine()` field, e.g. `guillotine(project: "intro", branch: "master")`.
+The playground adds it for you, based on its Draft/Master toggle.
 ====
 
 == Task: Run a simple query
@@ -37,7 +37,7 @@ Run this simple query that retrieves the ID and displayName of some movies:
 [source,graphql]
 ----
 {
-    guillotine {
+    guillotine(project: "intro") {
         queryDsl(
           query: {
             boolean: {
@@ -59,7 +59,7 @@ Run this simple query that retrieves the ID and displayName of some movies:
 }
 ----
 +
-NOTE: `tutorial.nxp` refers to the name of the application you created in the previous chapter. `movie` is a specific content type within the app.
+NOTE: `intro` is the name of the Content Studio project. `tutorial.nxp` refers to the name of the application you created in the previous chapter. `movie` is a specific content type within the app.
 +
 . **View the Result**
 +
@@ -76,7 +76,7 @@ Query variables enable you to re-use the same query, but for instance fetch diff
 [source,graphql]
 ----
 query($path:ID!){               // <1>
-  guillotine {
+  guillotine(project: "intro") {
     get(key:$path) {            // <2>
       type
       _id
@@ -90,12 +90,12 @@ query($path:ID!){               // <1>
 +
 . **Add query Variables**. In the bottom left of Query Playground, you will find a the `Query variables`tab. Add the following JSON to the field.
 +
-NOTE: Tthe `path` field in the JSON corresponds to the `$path` in the query string above:
+NOTE: The `path` field in the JSON corresponds to the `$path` in the query string above:
 +
 [source,JSON]
 ----
 {
-    "path": "/movies/se7en"
+    "path": "/movies/s7ven"
 }
 ----
 +
@@ -108,18 +108,18 @@ The queries above only specify fields like `_id` and `displayName` for each cont
 
 Content types may also define their own link:https://developer.enonic.com/docs/xp/stable/cms/content-types[custom fields]. These are stored under the `data` field. In the headless API, deeper data and functionality belonging to a content type is accessed through **introspection**.
 
-For example, you may introspect the fields that are exclusive to the `com.example.myproject:movie` content type like this:
+For example, you may introspect the fields that are exclusive to the `tutorial.nxp:movie` content type like this:
 
 .Content type introspection:
 [source,options="nowrap"]
 ----
-... on com_example_myproject_Movie
+... on tutorial_nxp_Movie
 ----
 NOTE: The fully-qualified content type name is used, dots are replaced with underscores, and the name is capitalized `Movie`.
 
 . **Fetch a complex data set**
 +
-Lets get content for a movie, the referenced _image_ items `media:image` and _person_ items `com.example.myproject:person` in a single query:
+Lets get content for a movie, the referenced _image_ items `media:image` and _person_ items `tutorial.nxp:person` in a single query:
 +
 Paste this query into the GraphQL Playground:
 +
@@ -127,7 +127,7 @@ Paste this query into the GraphQL Playground:
 [source,graphql]
 ----
 query($path:ID!){
-  guillotine {
+  guillotine(project: "intro") {
     get(key:$path) {
       type
       displayName
@@ -139,7 +139,9 @@ query($path:ID!){
           release
           photos {
             ... on media_Image {
-                imageUrl: imageUrl(type: absolute, scale: "width(500)")
+                imageUrl(scale: "width(500)") {
+                  url
+                }
             }
           }
           cast {
@@ -151,7 +153,9 @@ query($path:ID!){
                 data {
                   photos {
                     ... on media_Image {
-                      imageUrl: imageUrl(type: absolute, scale: "block(100,100)")
+                      imageUrl(scale: "block(100,100)") {
+                        url
+                      }
                     }
                   }
                 }
@@ -164,14 +168,18 @@ query($path:ID!){
   }
 }
 ----
-<1> Notice how `imageUrl` is requested with parameters of its own? Type introspections can expose certain link:https://developer.enonic.com/docs/guillotine/stable/api[functions for processing data] before returning it.
++
+Notice how `imageUrl` is requested with parameters of its own?
+Type introspections can expose certain link:https://developer.enonic.com/docs/guillotine/next/api[functions for processing data^] before returning it.
+Such URL functions return objects: `url` holds the URL as XP resolves it, while `path`, `queryString` and the other fields let you build your own.
+In the Next.js app you will not write this selection by hand: the `imageUrlQuery()` helper from the adapter generates it with every field, and `imageUrl()` turns the result into an absolute URL to the media API.
 +
 . Keep the **query variables** from the previous step:
 +
 [source,JSON]
 ----
 {
-    "path": "/movies/se7en"
+    "path": "/movies/s7ven"
 }
 ----
 +

@@ -18,7 +18,7 @@ TIP: Before you continue, clear all selections in the Content Studio list view (
 . **Give the site a name** by filling in a display name for the site, "HMDB" (short for Headless Movie DB) will do fine. 
 +
 NOTE: If you choose a different name, make sure the site path name (seen below the Display name) is set to `hmdb` - as this will be used throughout the tutorial.
-. **Add your app** to the site - by selecting it in the `Applications` form field.
+. **Add your app** to the site - by selecting it in the `Applications` form field and clicking `Apply`.
 +
 NOTE: Sites acts as scopes in the content structure. By adding an app to the site, you effectively allow editors to create content based on the app within this scope.
 +
@@ -31,17 +31,18 @@ NOTE: This will leave the item in `In progress` state, which is ok for now.
 == Add content
 
 To quickly get some content and structure within the site, let's move the Movie DB content into the site.
+Return back to the Content Studio tab, and follow these steps:
 
 . **Select the folders** in the list, and click `Move` from the toolbar. 
 . **Selecting the `HMDB` site** as the target and click `Move` once more.
 +
 image:content-studio-move.png[title="Move the folder into the site", width=1024px]
 +
-. Wrap up by **publishing the changes**. Select the site (root item) in the tree structure, and click `Mark as ready...` in the top right action button. This will bring up the Publishing Wizard.
+. Wrap up by **publishing the changes**. Select the site (root item) in the tree structure, and click `Mark as ready` in the top right. This marks the item as ready and opens the Publishing Wizard.
 +
 image:content-studio-mark-as-ready.png[title="Mark as ready", width=1024px]
 +
-. To **publish the entire new tree structure** select the hierarchy icon to the left of the site. This will expand to include all items that have been moved as well. Then click `Publish Now`
+. To **publish the entire new tree structure** toggle `Include child items`, click `Apply` in the wizard header, then click `Publish now`.
 +
 image:content-studio-publish.png[title="Publish entire tree structure", width=1024px]
 
@@ -52,17 +53,19 @@ Sweet, you should now have a site with content and a basic tree structure.
 
 == Task: Site contextual queries
 
-In GraphQL queries, you may use a so-called "site context". This is activated by passing an HTTP header along with the query. 
+In GraphQL queries, you may use a so-called "site context".
+This is achieved by adding another parameter to the guillotine query called `siteKey`.
 
-. Specify header
+. Specify `siteKey` parameter
 +
-Back in Query Playground, open the `Request Headers` panel at the bottom, and add the following configuration:
+Back in Query Playground, add the `siteKey` parameter to your previous query, and set it to the path of your site:
 +
-.Configure HTTP headers
-[source,JSON]
+[source,graphql]
 ----
-{
-  "X-Guillotine-SiteKey": "/hmdb"
+query($path:ID!){
+  guillotine(project: "intro", siteKey: "/hmdb") {
+    ...
+  }
 }
 ----
 +
@@ -74,10 +77,10 @@ One of the new features you get from the site context is the `${site}` placehold
 [source,JSON]
 ----
 {
-    "path": "${site}/movies/se7en"
+    "path": "${site}/movies/s7ven"
 }
 ----
 
-NOTE: Here, `${site}` will resolve to the path of the site and expand - in this case the full path will be expanded to `/hmdb/movies/se7en`.
+NOTE: Here, `${site}` will resolve to the path of the site and expand - in this case the full path will be expanded to `/hmdb/movies/s7ven`.
 
 Coming up - get your <<nextjs-setup#, your Next.js developer environment>> up and running.
