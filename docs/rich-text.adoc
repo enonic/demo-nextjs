@@ -41,6 +41,9 @@ This guarantees that it is executed when querying for data, and all the macros a
 +
 NOTE: `RichTextView` rewrites media `src`, `srcset` and `href` attributes to absolute XP media URLs and content links to locale-prefixed Next.js routes, so no URL handling is needed in your views.
 +
+Guillotine 9's processed HTML contains placeholders. The adapter matches `data-link-ref` and `data-image-ref` with the structured links and images, preserving page-link query strings and fragments.
+Apps providing macros and image styles must be configured on the selected site or project.
++
 For further insight, visit the https://developer.enonic.com/docs/developer-101/stable/rich-text[rich text chapter] in the Developer 101 tutorial, or have a look at the tutorial covering our standard https://developer.enonic.com/docs/react-spa[react components].
 
 . *The RichTextView component*

@@ -11,16 +11,16 @@
 
 === Guillotine 9 query syntax
 
-GraphQL queries now use explicit `siteKey`, `project`, and `branch` parameters passed directly to the `guillotine()` field, instead of relying on the API URL path to determine project and branch.
+Requires Guillotine 9.0.0 or newer on Enonic XP 8.1.0 or newer.
+GraphQL queries now use explicit `scopeKey`, `project`, and `branch` parameters passed directly to the `guillotine()` field, instead of relying on the API URL path to determine project and branch.
 
 === Guillotine 9 media URLs
 
-The `imageUrl`, `mediaUrl` and `attachmentUrl` fields now return objects and must be queried with a subselection, e.g. `imageUrl(scale: "width(500)") { url }`.
-See the https://developer.enonic.com/docs/guillotine/next/api[Guillotine API reference^] for details.
+The `imageUrl`, `mediaUrl` and `attachmentUrl` fields now return objects and must be queried with a subselection, e.g. `imageUrl(scale: "width(500)") { path queryString }`.
+See the https://developer.enonic.com/docs/guillotine/stable/api[Guillotine API reference^] for details.
 
 The returned object contains the following fields:
 
-* `url` — the ready-made URL, with the base URL resolved by XP
 * `path` — the full media API path with a leading slash, ready to append to a base URL of your own
 * `queryString` — URL-escaped query string, with a `?` prefix
 * `context` — project context segment
@@ -33,6 +33,9 @@ The returned object contains the following fields:
 The `type: absolute` argument and the `type` field of the `processHtml` input have been removed.
 The demo queries the full URL objects through the adapter's `imageUrlQuery()`, `mediaUrlQuery()` and `attachmentUrlQuery()` helpers and builds absolute URLs with `imageUrl()`, `mediaUrl()` and `attachmentUrl()`, using `ENONIC_MEDIA_CDN` (defaults to `ENONIC_API`) as the base.
 No XP-side `media.defaultBaseUrl` configuration is needed.
+
+`pageUrl` returns `baseUrl`, `path` and `queryString`; the demo uses its own locale-aware frontend routes.
+Rich-text HTML contains placeholders: the adapter resolves images and responsive sources from `Image.src` and `Image.srcset`, page links from `Link.pageUrl` plus `Link.fragment`, and media links from `Link.media.mediaUrl`.
 
 === New API URL format
 

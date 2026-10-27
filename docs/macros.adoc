@@ -53,11 +53,11 @@ ComponentRegistry.addMacro(`${APP_NAME}:factbox`, {
 });
 ----
 +
-NOTE: Macros do not support the regular queries, but you may use `configQuery`. This specifically operates on the form values for the component, and the result will automatically be available in the React component's `config` prop. 
+NOTE: Macros do not support the regular queries, but you may use `configQuery`. This specifically operates on the form values for the component, and the result will automatically be available in the React component's `config` prop.
 +
 TIP: You do not need to ask for the macro body, as this implicitly passed to the Macro component.
 +
-IMPORTANT: Macros must be registered before any other component that uses RichTextView! Best practice is to register it at the top of the `_mappings.ts` file.
+IMPORTANT: Macros must be registered before the adapter prepares the outgoing query. Register the macro in `_mappings.ts` so it is available when requests are handled.
 +
 . *Sweet!*
 +

@@ -6,7 +6,7 @@ In this chapter, you'll enable Content Studio to load the preview directly from 
 
 == Task: Enable preview
 
-Install the `Next.XP` app that adds a new preview widget, titled "Next.js Preview", to Content Studio.
+Install version 6 of the `Next.XP` app that adds a new preview widget, titled "Next.js Preview", to Content Studio.
 
 NOTE: The Next.XP app requires Enonic XP 8.1 or later.
 

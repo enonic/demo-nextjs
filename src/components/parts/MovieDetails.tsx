@@ -15,7 +15,7 @@ import Link from 'next/link';
 
 export const getMovie = `
 query {
-  guillotine(siteKey: $siteKey, branch: $branch, project: $project) {
+  guillotine(scopeKey: $scopeKey, branch: $branch, project: $project) {
     get(key: $path) {
       type
       displayName

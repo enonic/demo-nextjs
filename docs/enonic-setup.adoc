@@ -13,7 +13,7 @@ https://developer.enonic.com/start[*Install the Enonic CLI*] (follow link for in
 
 . Create a sandbox called `nxptutorial` by running this command in your terminal:
 +
-  enonic sandbox create nxptutorial -t essentials -f
+  enonic sandbox create nxptutorial -t essentials -v 8.1.1 -f
 +
 NOTE: `-f` forces the use of default values for remaining options
 
@@ -79,6 +79,8 @@ NOTE: If things don't look exactly the same, don't worry. In every new version o
 == Task: Open Content Studio
 
 https://market.enonic.com/vendors/enonic/content-studio[Content Studio^] is the editorial interface used to create and manage content. It was pre-installed from https://market.enonic.com[Enonic Market^] as a part of the `Essentials` template when you started the sandbox, and can now be accessed from the XP menu.
+
+Before continuing, verify that `Guillotine` is version 9 or later in `XP menu` -> `Applications`. If the Essentials template installed version 8, update it to version 9 using `Install` before running the queries in the next chapter.
 
 *Click btn:[Content Studio]* in the XP menu to launch it.
 

@@ -28,11 +28,11 @@ include::{sourcedir}/components/queries/getPerson.ts[]
 +
 This file defines a graphQL query 'getPerson' that will fetch data from the Enonic API.
 +
-NOTE: Query uses variables `siteKey`, `branch`, `project` and `path` that are automatically populated by the Enonic next.js adapter.
+NOTE: Query uses variables `scopeKey`, `branch`, `project` and `path` that are automatically populated by the Enonic next.js adapter.
 +
 TIP: You may validate the query by copying it to the GraphQL playground.
 Replace `APP_NAME_UNDERSCORED` with `tutorial_nxp` and set the query variables, try this for instance:
-`{"path": "/hmdb/persons/brad-pittless", "project": "intro", "branch": "draft", "siteKey": "/hmdb"}`
+`{"path": "/hmdb/persons/brad-pittless", "project": "intro", "branch": "draft", "scopeKey": "/hmdb"}`
 +
 . **Add the following imports** to the component mappings file:
 +
@@ -63,7 +63,7 @@ image:morgan-floatman-props.png[title="Page showing data props for Morgan Floatm
 
 == Media URLs
 
-The `getPerson` query requests the image with `${imageUrlQuery({scale: 'width(500)'})}`, a Next.XP helper that selects the URL object (`url`, `path`, `queryString` and the media components) of a scaled version of the image.
+The `getPerson` query requests the image with `${imageUrlQuery({scale: 'width(500)'})}`, a Next.XP helper that selects the URL object (`path`, `queryString` and the media components) of a scaled version of the image.
 Its `path` is server-relative, so the view turns it into an absolute URL pointing at XP's media API with `imageUrl(photo.imageUrl)`.
 The base URL comes from `ENONIC_MEDIA_CDN` and defaults to `ENONIC_API`, so no XP configuration is needed.
 

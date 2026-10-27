@@ -44,7 +44,7 @@ export default ChildList;
 export const getChildList = {
     query: function (vars: GlobalVariables, context?: Context, config?: any): string {
         return `query($order: String) {
-              guillotine(siteKey: $siteKey, branch: $branch, project: $project) {
+              guillotine(scopeKey: $scopeKey, branch: $branch, project: $project) {
                 getSite {
                   displayName
                 }

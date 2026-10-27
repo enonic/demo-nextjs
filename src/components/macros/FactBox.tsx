@@ -5,7 +5,7 @@ import styles from './FactBox.module.css';
 
 const FactBox = ({name, children, config, meta}: MacroProps) => {
     // macro is used inside a <p> tag so we can't use any dom tags
-    const header = config.header.length ? config.header : 'Fact Box';
+    const header = typeof config.header === 'string' && config.header.length ? config.header : 'Fact Box';
     return <>
 
         <ins className={styles.factbox}>

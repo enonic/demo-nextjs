@@ -54,22 +54,26 @@ Sweet, you should now have a site with content and a basic tree structure.
 == Task: Site contextual queries
 
 In GraphQL queries, you may use a so-called "site context".
-This is achieved by adding another parameter to the guillotine query called `siteKey`.
+This is achieved by selecting your site with the `scopeKey` parameter of the guillotine query.
 
-. Specify `siteKey` parameter
+. Specify `scopeKey` parameter
 +
-Back in Query Playground, add the `siteKey` parameter to your previous query, and set it to the path of your site:
+Back in Query Playground, add the `scopeKey` parameter to your previous query, and set it to the path of your site:
 +
 [source,graphql]
 ----
 query($path:ID!){
-  guillotine(project: "intro", siteKey: "/hmdb") {
+  guillotine(project: "intro", scopeKey: "/hmdb") {
     ...
   }
 }
 ----
 +
-NOTE: SiteKey can be either path, or the site's unique ID. A benefit of using the ID is that you can change the name and path of the site, without affecting your queries.
+NOTE: `scopeKey` can be either a path or a content ID. A benefit of using the site's ID is that you can change its name and path without affecting your queries.
++
+Without `scopeKey`, URLs are project-relative and `getSite` returns `null`.
+Scope selects the context for URLs, macros and image styles; it does not restrict searches to a subtree.
+Add explicit path conditions to DSL queries when needed. Page URLs for content outside the selected scope produce a field error.
 +
 . Run a query with the site context
 +

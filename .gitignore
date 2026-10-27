@@ -60,6 +60,7 @@ crashlytics-build.properties
 
 # dependencies
 node_modules/
+*.tgz
 .pnp
 .pnp.js
 

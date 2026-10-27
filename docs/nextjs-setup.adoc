@@ -24,6 +24,8 @@ npx degit github:enonic/starter-nextjs
 
 The template includes some boilerplate we will customize, and an npm dependency aka `The Enonic Adapter` (`@enonic/nextjs-adapter`) that facilitates and simplifies integration with Enonic.
 
+IMPORTANT: This tutorial requires the Next.XP 6 starter, with `@enonic/nextjs-adapter` 6 and `@enonic/page-editor` 2. Check `package.json` before continuing: a starter using adapter 5 is not compatible with the Guillotine 9 examples in this tutorial.
+
 === Code overview
 
 The following file structure should now exist within your new project folder:

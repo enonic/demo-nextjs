@@ -3,9 +3,9 @@ import {PartProps} from '@enonic/nextjs-adapter';
 import RichTextView from '@enonic/nextjs-adapter/views/RichTextView';
 
 const Paragraph = (props: PartProps) => {
-    return (
+    return props.part.config.text ? (
         <RichTextView data={props.part.config.text} meta={props.meta}/>
-    );
+    ) : null;
 };
 
 export default Paragraph;

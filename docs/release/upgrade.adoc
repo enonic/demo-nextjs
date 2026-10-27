@@ -4,7 +4,7 @@
 
 == Guillotine application
 
-IMPORTANT: Guillotine version 9 is required for v6.x.
+IMPORTANT: Guillotine 9.0.0 or newer and Enonic XP 8.1.0 or newer are required for v6.x.
 
 == Upgrading from v5.x
 
@@ -21,13 +21,13 @@ query($path:ID!) {
 
 # After (v6.x)
 query {
-  guillotine(siteKey: $siteKey, branch: $branch, project: $project) {
+  guillotine(scopeKey: $scopeKey, branch: $branch, project: $project) {
     get(key: $path) { ... }
   }
 }
 ----
 +
-The variables `$siteKey`, `$branch`, `$project`, and `$path` are automatically provided by the adapter.
+The variables `$scopeKey`, `$branch`, `$project`, and `$path` are automatically provided by the adapter.
 You can override them or add custom variables by returning new values from a variables function:
 +
 [source,TypeScript]
@@ -62,6 +62,12 @@ import {imageUrl} from '@enonic/nextjs-adapter';
 +
 The same pattern applies to `mediaUrl`, `attachmentUrl` and `pageUrl`.
 No `media.defaultBaseUrl` configuration in XP is needed.
++
+The URL objects do not have a `url` field. Use `path` and `queryString`, plus `baseUrl` for page URLs when appropriate.
+
+. *Rich text*: update the adapter together with the frontend. `processedHtml` contains placeholders, not usable internal URLs.
+`RichTextView` resolves the structured `Link.pageUrl`, `Link.fragment`, `Link.media.mediaUrl`, `Image.src` and `Image.srcset` fields.
+Configure apps providing macros and image styles on the selected site or project, not only in the installed applications list.
 
 . *Content links*: query with `pageUrlQuery()` and render with `pageUrl(data, meta)`, which returns a relative URL prefixed with the current locale unless it is the default one:
 +

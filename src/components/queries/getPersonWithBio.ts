@@ -2,7 +2,7 @@ import { APP_NAME_UNDERSCORED, imageUrlQuery, pageUrlQuery, richTextQuery } from
 
 const getPersonWithBio = () => `
 query {
-  guillotine(siteKey: $siteKey, branch: $branch, project: $project) {
+  guillotine(scopeKey: $scopeKey, branch: $branch, project: $project) {
     get(key:$path) {
       displayName
       ... on ${APP_NAME_UNDERSCORED}_Person {

@@ -75,9 +75,9 @@ Query variables enable you to re-use the same query, but for instance fetch diff
 +
 [source,graphql]
 ----
-query($path:ID!){               // <1>
+query($path:ID!){               # <1>
   guillotine(project: "intro") {
-    get(key:$path) {            // <2>
+    get(key:$path) {            # <2>
       type
       _id
       displayName
@@ -140,7 +140,8 @@ query($path:ID!){
           photos {
             ... on media_Image {
                 imageUrl(scale: "width(500)") {
-                  url
+                  path
+                  queryString
                 }
             }
           }
@@ -154,7 +155,8 @@ query($path:ID!){
                   photos {
                     ... on media_Image {
                       imageUrl(scale: "block(100,100)") {
-                        url
+                        path
+                        queryString
                       }
                     }
                   }
@@ -170,8 +172,8 @@ query($path:ID!){
 ----
 +
 Notice how `imageUrl` is requested with parameters of its own?
-Type introspections can expose certain link:https://developer.enonic.com/docs/guillotine/next/api[functions for processing data^] before returning it.
-Such URL functions return objects: `url` holds the URL as XP resolves it, while `path`, `queryString` and the other fields let you build your own.
+Type introspections can expose certain link:https://developer.enonic.com/docs/guillotine/stable/api[functions for processing data^] before returning it.
+Such URL functions return objects: combine `path` and `queryString` with your public media API base URL. They do not return a ready-made `url` field.
 In the Next.js app you will not write this selection by hand: the `imageUrlQuery()` helper from the adapter generates it with every field, and `imageUrl()` turns the result into an absolute URL to the media API.
 +
 . Keep the **query variables** from the previous step:

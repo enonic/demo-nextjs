@@ -18,8 +18,8 @@
 :react-version: 19
 :typescript-version: 5.9
 
-// Minimum tooling requirements (from @enonic/nextjs-adapter engines)
-:node-minimum: 24.15.0
+// Minimum tooling requirements (adapter, page editor and Intro app)
+:node-minimum: 24.16.0
 :npm-minimum: 10.9.2
 
 

@@ -70,7 +70,6 @@ Finally, register it in the component mappings by adding the following lines to 
 [source,TypeScript]
 ----
 import MainPage from './pages/Main';
-import {APP_NAME} from '@enonic/nextjs-adapter';
 
 // Page mappings
 ComponentRegistry.addPage(`${APP_NAME}:main`, {
