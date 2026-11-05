@@ -101,7 +101,7 @@ interface MovieInfoProps {
 
 // Main movie info: release year, poster image and abstract text.
 const MovieInfo = (props: MovieInfoProps) => {
-    const posterSrc = imageUrl((props.photos || [])[0]?.imageUrl);
+    const posterSrc = imageUrl((props.photos || [])[0]?.imageUrl, props.meta);
     return (
         <>
             {props.release && (
@@ -158,7 +158,7 @@ const Cast = (props: CastProps) => (
 const CastMember = (props: CastMemberProps & { meta: MetaData }) => {
     const { character, actor } = props;
     const { displayName, pageUrl: actorPageUrl, data, _path } = actor;
-    const photoSrc = imageUrl((data.photos || [])[0]?.imageUrl);
+    const photoSrc = imageUrl((data.photos || [])[0]?.imageUrl, props.meta);
 
     return (
         <li style={{marginRight: "15px"}}>
