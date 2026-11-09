@@ -82,9 +82,9 @@ Content Studio will ask every widget if it supports preview, and if so, it will 
 When asked, the Next.js preview widget will do following sequence:
 
 . send encrypted request to the configured Next.js front-end to fetch XP path to frontend URL mappings
-. during that request it will also initialize the Next.js preview mode if necessary
 . use those mappings to generate a frontend URL for a given content
-. return it back to Content Studio for rendering it directly
+. return it back to Content Studio with the encrypted `xp` parameter for rendering it directly
+. when Content Studio loads the URL, the frontend proxy goes through `/api/preview` if the draft/build or XP-session cookies need synchronization, then redirects to the clean content URL
 
 Your edits will only be visible in Content Studio, until published.
 

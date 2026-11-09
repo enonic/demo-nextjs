@@ -31,7 +31,7 @@ The returned object contains the following fields:
 * `intent` — `download` or `inline` (`mediaUrl`/`attachmentUrl` only)
 
 The `type: absolute` argument and the `type` field of the `processHtml` input have been removed.
-The demo queries the full URL objects through the adapter's `imageUrlQuery()`, `mediaUrlQuery()` and `attachmentUrlQuery()` helpers and builds absolute URLs with `imageUrl()`, `mediaUrl()` and `attachmentUrl()`, using `ENONIC_MEDIA_CDN` (defaults to `ENONIC_API`) as the base.
+The demo queries the full URL objects through the adapter's `imageUrlQuery()`, `mediaUrlQuery()` and `attachmentUrlQuery()` helpers and renders them with `imageUrl(data, meta)`, `mediaUrl(data, meta)` and `attachmentUrl(data, meta)`. Published media uses `ENONIC_MEDIA_CDN` (defaults to `ENONIC_API`) as the base; draft media uses same-origin `/api/media/...` URLs handled by `proxyMedia()`.
 No XP-side `media.defaultBaseUrl` configuration is needed.
 
 `pageUrl` returns `baseUrl`, `path` and `queryString`; the demo uses its own locale-aware frontend routes.
@@ -45,7 +45,7 @@ The Guillotine endpoint is derived by appending `GUILLOTINE_API` (default `com.e
 === Proxy replaces middleware
 
 The `src/middleware.ts` file has been replaced by `src/proxy.ts`.
-It validates Content Studio requests (encrypted `xp` blob), enables draft mode through `/api/preview` when the draft cookie is missing or belongs to another build (`BUILD_ID` from `next.config.js`), and redirects to the same URL without the parameter, so preview URLs never show it; it rewrites URLs without a locale prefix to the internal default-locale route and redirects `/<default locale>/...` to `/...`; public URLs carry a prefix only for non-default locales.
+It validates Content Studio requests (encrypted `xp` blob), enables draft mode through `/api/preview` when the draft cookie is missing or belongs to another build (`BUILD_ID` from `next.config.js`), or the frontend XP-session cookie is missing or differs from the payload, and redirects to the same URL without the parameter, so preview URLs never show it; it rewrites URLs without a locale prefix to the internal default-locale route and redirects `/<default locale>/...` to `/...`; public URLs carry a prefix only for non-default locales.
 
 === Encrypted blob authentication
 

@@ -51,13 +51,13 @@ imageUrl: imageUrl(type: absolute, scale: "width(500)")
 ${imageUrlQuery({scale: 'width(500)'})}
 ----
 +
-Render the returned object with the matching string function, which builds an absolute URL from `ENONIC_MEDIA_CDN` (defaults to `ENONIC_API`):
+Render the returned object with the matching string function and content metadata. Published media uses `ENONIC_MEDIA_CDN` (defaults to `ENONIC_API`); draft media uses the same-origin media proxy:
 +
 [source,TypeScript]
 ----
 import {imageUrl} from '@enonic/nextjs-adapter';
 
-<img src={imageUrl(photo.imageUrl)}/>
+<img src={imageUrl(photo.imageUrl, meta)}/>
 ----
 +
 The same pattern applies to `mediaUrl`, `attachmentUrl` and `pageUrl`.
@@ -103,12 +103,11 @@ Media URLs use `ENONIC_MEDIA_CDN` (optional, default `ENONIC_API`).
 import {validateToken} from '../../../utils';
 
 // After (v6.x)
-import {validateBlob} from '../../../utils';
-import {decryptParams} from '@enonic/nextjs-adapter';
+import {validateXpPayload, validatePreviewPayload} from '@enonic/nextjs-adapter/server';
 ----
 +
-`validateBlob()` returns `{ok: true, params}` on success and `{ok: false, response}` otherwise, so routes can read the decrypted `xpProject`.
-`/api/preview` enables draft mode, records the build in a `__next_build_id` cookie and redirects back to the content path without the `xp` parameter; the proxy redirects any URL that carries it to the clean form, going through `/api/preview` first when the draft cookie is missing or from another build. Define `env.BUILD_ID` in `next.config.js` (see the demo) for this check.
+`validateXpPayload({blob, secret})` returns `{ok: true, payload}` on success and `{ok: false, reason}` otherwise; each route chooses its error response and reads `payload.xpProject` on success. Preview handlers and the proxy use `validatePreviewPayload()` instead, which also validates the XP session and payload timestamp.
+`/api/preview` enables draft mode, records the build in a `__next_build_id` cookie and redirects back to the content path without the `xp` parameter; the proxy redirects valid preview URLs to the clean form, going through `/api/preview` first when the draft cookie is missing or from another build, or the XP session cookie is missing or differs from the payload. Define `env.BUILD_ID` in `next.config.js` (see the demo) and read `process.env.BUILD_ID` directly where needed.
 
 . *`/api/mappings` and `/api/revalidate`*: resolve the project's locale mapping from `xpProject` and return `localizeMappings(MAPPINGS, mapping)`; revalidate the internal route path with `pageUrl({path}, {locale})` (no `defaultLocale`, so the prefix is always added).
 See the demo routes for the full code.

@@ -36,8 +36,7 @@ The following file structure should now exist within your new project folder:
 .env                                // <1>
 src/
     proxy.ts                        // <2>
-    utils.ts                        // <3>
-    components/                     // <4>
+    components/                     // <3>
         _mappings.ts
         queries/
             common.ts
@@ -45,19 +44,19 @@ src/
             Header.tsx
             Footer.tsx
             PageEditorScript.tsx
-    phrases/                        // <5>
+    phrases/                        // <4>
         en.json
-    styles/                         // <6>
+    styles/                         // <5>
     app/
-        layout.tsx                  // <7>
+        layout.tsx                  // <6>
         [locale]/
-            layout.tsx              // <8>
-            error.tsx               // <9>
-            not-found.tsx           // <10>
+            layout.tsx              // <7>
+            error.tsx               // <8>
+            not-found.tsx           // <9>
             [[...contentPath]]/
-                layout.tsx          // <11>
-                page.tsx            // <12>
-        api/                        // <13>
+                layout.tsx          // <10>
+                page.tsx            // <11>
+        api/                        // <12>
             mappings/
                 route.ts
             preview/
@@ -68,17 +67,16 @@ src/
 
 <1> Environment variables are placed in this file
 <2> Proxy: validates Content Studio preview requests (encrypted `xp` blob) and enables draft mode through `/api/preview`, rewrites URLs without a locale prefix to the internal default-locale route and redirects `/<default locale>/...` to `/...`
-<3> Helpers used by the API routes: blob validation and project mapping lookup
-<4> Your implementation of CMS components: the component mappings (`_mappings.ts`), the common query and ready-made views (header, footer and the page editor script)
-<5> Phrase files for multi-language support
-<6> Global styles for the site
-<7> Root layout required by Next.js
-<8> Locale layout: renders `<html>` and `<body>`, sets the locale used for static texts and the page metadata
-<9> Error page handler
-<10> Not found page handler
-<11> Content layout: fetches the content and wraps every page with the locale context, the static content wrapper and the draft mode indicator
-<12> The main rendering file, catching all requests satisfying the pattern `/[locale]/[[...contentPath]]`
-<13> Folder containing API routes
+<3> Your implementation of CMS components: the component mappings (`_mappings.ts`), the common query and ready-made views (header, footer and the page editor script)
+<4> Phrase files for multi-language support
+<5> Global styles for the site
+<6> Root layout required by Next.js
+<7> Locale layout: renders `<html>` and `<body>`, sets the locale used for static texts and the page metadata
+<8> Error page handler
+<9> Not found page handler
+<10> Content layout: fetches the content and wraps every page with the locale context, the static content wrapper and the draft mode indicator
+<11> The main rendering file, catching all requests satisfying the pattern `/[locale]/[[...contentPath]]`
+<12> Folder containing API routes
 
 
 == Task: Configure application

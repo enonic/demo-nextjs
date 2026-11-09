@@ -44,10 +44,10 @@ When an editor selects a content item, the widget:
 . Encrypts request parameters with the shared secret and sends a request
 . Loads the resolved page in the preview pane
 
-On the Next.js side, the proxy (`src/proxy.ts`) validates the encrypted `xp` parameter once: the first request goes through `/api/preview`, which enables Next.js draft mode and redirects to the same URL without the parameter.
-Later requests carrying the parameter are redirected straight to the clean URL, as long as the draft cookie belongs to the running build: `/api/preview` records the `BUILD_ID` defined in `next.config.js` in a second cookie, so a cookie issued by another build (dev vs prod, a redeploy), which Next would ignore, is refreshed automatically.
+On the Next.js side, the proxy (`src/proxy.ts`) validates the encrypted `xp` parameter on every handoff: when preview setup is needed, the request goes through `/api/preview`, which enables Next.js draft mode and redirects to the same URL without the parameter.
+Later requests carrying the parameter are redirected straight to the clean URL, as long as the payload is valid, the draft cookie belongs to the running build, and the frontend XP-session cookie matches the payload: `/api/preview` records the `BUILD_ID` defined in `next.config.js` in a second cookie, so a cookie issued by another build (dev vs prod, a redeploy), which Next would ignore, is refreshed automatically. The route also stores the XP session in an HTTP-only cookie and refreshes it on the next handoff if the session changes after an XP logout/login.
 From then on the preview runs on clean public URLs (no prefix for the default locale): the project follows from the locale in the URL and draft mode from Next's cookie, so the page renders unpublished content.
-Only the iframe `src` set by Content Studio carries the parameter; the iframe location and every later request do not.
+The iframe `src` set by Content Studio carries the parameter; after the redirect, the iframe location and ordinary navigation use clean URLs.
 The proxy also routes prefix-less URLs to the internal `[locale]` segment and redirects `/en/...` to `/...`.
 
 The app also extends Content Studio's Content Security Policy with every Next.js origin from its configuration plus `'self'` (the `frame-src`, `connect-src` and `style-src` directives), allowing the preview iframe to load pages from those servers.
@@ -80,9 +80,9 @@ return (
 
 Since the preview widget loads pages directly from the Next.js server, links within the rendered page need to work correctly inside Content Studio's preview as well.
 
-Media fields (`imageUrl`, `mediaUrl`, `attachmentUrl`) are queried with the `*UrlQuery()` helpers and rendered with the matching `imageUrl()`, `mediaUrl()` and `attachmentUrl()` functions, which build absolute URLs to XP's media API (`ENONIC_MEDIA_CDN`, defaulting to `ENONIC_API`).
+Media fields (`imageUrl`, `mediaUrl`, `attachmentUrl`) are queried with the `*UrlQuery()` helpers and rendered with the matching `imageUrl()`, `mediaUrl()` and `attachmentUrl()` functions, passing the content metadata (e.g. `imageUrl(photo.imageUrl, meta)`). Published media uses absolute URLs to XP's media API (`ENONIC_MEDIA_CDN`, defaulting to `ENONIC_API`); draft media uses same-origin `/api/media/...` URLs.
 Content links use `pageUrlQuery()` and `pageUrl(data, meta)`, which returns a relative URL prefixed with the current locale unless it is the default one, so links work both in standalone mode and inside the Content Studio preview.
 
-NOTE: In preview, the browser loads draft media directly from XP using the Content Studio session, so the media host must match the Content Studio host (use `localhost` rather than `127.0.0.1`, or set `ENONIC_MEDIA_CDN` explicitly).
+NOTE: In preview, the browser loads draft media through the Next.js `/api/media/[...path]` route, which delegates to `proxyMedia()`. The server forwards the frontend XP-session cookie to the configured media endpoint while draft mode is enabled.
 
 That completes the preview setup; moving forward, we'll look into rendering <<rich-text#, Html Area>> fields.
