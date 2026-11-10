@@ -63,16 +63,6 @@
         {
             "title": "Demo",
             "document": "demo"
-        },
-        {
-            "title": "Release Notes",
-            "document": "release",
-            "menuItems": [
-                {
-                    "title": "Upgrade Notes",
-                    "document": "release/upgrade"
-                }
-            ]
         }
     ]
 }
