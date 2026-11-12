@@ -503,7 +503,7 @@ If you choose a different name, make sure the site path name (seen below the Dis
 </div>
 </li>
 <li>
-<p><strong>Add your app</strong> to the site - by selecting it in the <code>Applications</code> form field.</p>
+<p><strong>Add your app</strong> to the site - by selecting it in the <code>Applications</code> form field and clicking <code>Apply</code>.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -558,14 +558,13 @@ Return back to the Content Studio tab, and follow these steps:</p>
 </div>
 </li>
 <li>
-<p>Wrap up by <strong>publishing the changes</strong>. Select the site (root item) in the tree structure, and click <code>Mark as ready&#8230;&#8203;</code> in the top right action button. This will bring up the Publishing Wizard.</p>
+<p>Wrap up by <strong>publishing the changes</strong>. Select the site (root item) in the tree structure, and click <code>Mark as ready</code> in the top right. This marks the item as ready and opens the Publishing Wizard.</p>
 <div class="paragraph">
 <p><span class="image"><img src="media/content-studio-mark-as-ready.png" alt="content studio mark as ready" width="1024px" title="Mark as ready"></span></p>
 </div>
 </li>
 <li>
-<p>To <strong>publish the entire new tree structure</strong> select the include child items checkbox, then apply in the notification bar.
-Then click <code>Publish Now</code></p>
+<p>To <strong>publish the entire new tree structure</strong> toggle <code>Include child items</code>, click <code>Apply</code> in the wizard header, then click <code>Publish now</code>.</p>
 <div class="paragraph">
 <p><span class="image"><img src="media/content-studio-publish.png" alt="content studio publish" width="1024px" title="Publish entire tree structure"></span></p>
 </div>
@@ -581,20 +580,22 @@ Then click <code>Publish Now</code></p>
 <h2 id="task_site_contextual_queries"><a class="link" href="#task_site_contextual_queries">Task: Site contextual queries</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In GraphQL queries, you may use a so-called "site context". This is activated by passing an HTTP header along with the query.</p>
+<p>In GraphQL queries, you may use a so-called "site context".
+This is achieved by selecting your site with the <code>scopeKey</code> parameter of the guillotine query.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Specify header</p>
+<p>Specify <code>scopeKey</code> parameter</p>
 <div class="paragraph">
-<p>Back in Query Playground, open the <code>Request Headers</code> panel at the bottom, and add the following configuration:</p>
+<p>Back in Query Playground, add the <code>scopeKey</code> parameter to your previous query, and set it to the path of your site:</p>
 </div>
 <div class="listingblock">
-<div class="title">Configure HTTP headers</div>
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
-  "X-Guillotine-SiteKey": "/hmdb"
+<pre class="highlight"><code class="language-graphql" data-lang="graphql">query($path:ID!){
+  guillotine(project: "intro", scopeKey: "/hmdb") {
+    ...
+  }
 }</code></pre>
 </div>
 </div>
@@ -605,10 +606,15 @@ Then click <code>Publish Now</code></p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-SiteKey can be either path, or the site&#8217;s unique ID. A benefit of using the ID is that you can change the name and path of the site, without affecting your queries.
+<code>scopeKey</code> can be either a path or a content ID. A benefit of using the site&#8217;s ID is that you can change its name and path without affecting your queries.
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>Without <code>scopeKey</code>, URLs are project-relative and <code>getSite</code> returns <code>null</code>.
+Scope selects the context for URLs, macros and image styles; it does not restrict searches to a subtree.
+Add explicit path conditions to DSL queries when needed. Page URLs for content outside the selected scope produce a field error.</p>
 </div>
 </li>
 <li>
@@ -646,7 +652,7 @@ Here, <code>${site}</code> will resolve to the path of the site and expand - in 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 11:48:35 UTC
+Last updated 2026-11-12 11:18:32 UTC
 </div>
 </div>
 </body>

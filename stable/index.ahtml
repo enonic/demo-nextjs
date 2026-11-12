@@ -534,7 +534,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>The <a href="https://developer.enonic.com/start">Enonic CLI</a></p>
 </li>
 <li>
-<p><a href="https://nodejs.org/">Node.js</a> 24.15.0 or newer, with npm 10.9.2 or newer</p>
+<p><a href="https://nodejs.org/">Node.js</a> 24.16.0 or newer, with npm 10.9.2 or newer</p>
 </li>
 <li>
 <p><a href="https://git-scm.com/">Git</a>, and a GitHub account for the <a href="deployment.ahtml">live deployment</a> chapter</p>
@@ -545,7 +545,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 <div class="paragraph">
-<p>This version of the tutorial is based on NextXP 5, consisting of:</p>
+<p>This version of the tutorial is based on NextXP 6, consisting of:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -561,15 +561,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Enonic XP</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8.1</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Guillotine</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>@enonic/nextjs-adapter</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>@enonic/page-editor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Next.js</p></td>
@@ -588,7 +592,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Using an older setup? Select the matching tutorial version from the version menu on this page.
+Using an older setup?
+Select the matching tutorial version from the version menu on this page.
 </td>
 </tr>
 </table>
@@ -601,7 +606,7 @@ Using an older setup? Select the matching tutorial version from the version menu
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 11:48:35 UTC
+Last updated 2026-11-12 11:18:32 UTC
 </div>
 </div>
 </body>

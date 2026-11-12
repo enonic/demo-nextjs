@@ -543,7 +543,7 @@ Both Enonic and Next.js are open source software projects and can be deployed mo
 <h2 id="task_expose_api_via_route"><a class="link" href="#task_expose_api_via_route">Task: Expose API via route</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The purpose of routes is to expose APIs and other endpoints in Enonic XP like <code>:8080/site/&lt;project&gt;/&lt;branch&gt;</code> to the internet.</p>
+<p>The purpose of routes is to expose APIs and other endpoints in Enonic XP, like the <code>:8080/api</code> API root, to the internet.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -556,7 +556,7 @@ Both Enonic and Next.js are open source software projects and can be deployed mo
 <dl>
 <dt class="hdlist1">Target path</dt>
 <dd>
-<p><code>/site</code></p>
+<p><code>/api</code></p>
 </dd>
 <dt class="hdlist1">Public path</dt>
 <dd>
@@ -628,7 +628,13 @@ The URL should look something like this: <code><a href="https://account-solution
 <p>ENONIC_APP_NAME: &lt;enonic app name (<code>tutorial.nxp</code> in this guide)&gt;</p>
 </li>
 <li>
-<p>ENONIC_API: &lt;enonic ingress URL&gt;</p>
+<p>ENONIC_API: &lt;route URL from the previous task, ending with /api&gt;</p>
+</li>
+<li>
+<p>ENONIC_ADMIN: &lt;enonic admin URL&gt; (optional, only if admin is on a different domain than the API)</p>
+</li>
+<li>
+<p>ENONIC_MEDIA_CDN: &lt;media URL&gt; (optional, only if images and attachments are served from a different domain than the API)</p>
 </li>
 <li>
 <p>ENONIC_API_TOKEN: &lt;yourSecret&gt;</p>
@@ -695,7 +701,7 @@ To save time, you may export content from your local machine and import it to th
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Install the Next.XP app</strong> <code>Solution</code> &#8594; <code>Applications</code> &#8594; <code>Install</code> &#8594; Search for <code>Next.XP</code>, select it and click install</p>
+<p><strong>Install the <code>Next.XP</code> app</strong> <code>Solution</code> &#8594; <code>Applications</code> &#8594; <code>Install</code> &#8594; Search for <code>Next.XP</code>, select it and click install</p>
 </li>
 <li>
 <p><strong>Add configuration</strong>.</p>
@@ -728,14 +734,40 @@ Remember, you can also create named configurations if needed.
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
+The app automatically adds the configured front-end origins to Content Studio&#8217;s Content Security Policy, so the preview from your Vercel URL works without any Content Studio configuration.
+Unlike your local sandbox, a production server allows only explicitly configured URLs - the <code><a href="http://localhost:3000" class="bare">http://localhost:3000</a></code> default applies to dev mode only, so this configuration step is required.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
 If you imported content from your local environment, the following two steps can be skipped
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The preview widget and the revalidation hook only work for sites the Next.XP app has been added to.
+Adding it to the site also lets you select a named configuration from the app config file.
 </td>
 </tr>
 </table>
 </div>
 </li>
 <li>
-<p><strong>Add the Next.XP app to the site</strong> to activate preview.</p>
+<p><strong>Add the Next.XP app to the site</strong>, in addition to your own app.</p>
 </li>
 <li>
 <p><strong>Save and verify</strong> that the configuration is working by testing the Content Studio preview.</p>
@@ -792,7 +824,7 @@ If you imported content from your local environment, the following two steps can
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 11:48:35 UTC
+Last updated 2026-11-12 11:18:32 UTC
 </div>
 </div>
 </body>

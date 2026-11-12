@@ -481,11 +481,10 @@ New to GraphQL as well? Check out the <a href="https://graphql.org/">GraphQL doc
 <h2 id="task_graphql_playground"><a class="link" href="#task_graphql_playground">Task: GraphQL Playground</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>For every content project in your sandbox, you will automatically get an API. By clicking the <code>GraphQL Playground</code> icon in your Content Studio menu, you should see the following</p>
+<p>For every content project in your sandbox, you will automatically get an API. By clicking <code>Query Playground</code> in the Content Studio menu, you should see the following:</p>
 </div>
 <div class="paragraph">
-<p>+
-<span class="image"><img src="media/content-studio-guillotine.png" alt="content studio guillotine" width="1440px" title="Browsing the Guillotine API using Query Playground"></span></p>
+<p><span class="image"><img src="media/content-studio-guillotine.png" alt="content studio guillotine" width="1440px" title="Browsing the Guillotine API using Query Playground"></span></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -495,10 +494,9 @@ New to GraphQL as well? Check out the <a href="https://graphql.org/">GraphQL doc
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The API can be accessed directly following URL: <a href="http://localhost:8080/site/intro" target="_blank" rel="noopener">http://localhost:8080/site/intro</a>.</p>
-</div>
-<div class="paragraph">
-<p><code>intro</code> is the name of your Content Studio project.</p>
+<p>The API can also be called directly at <a href="http://localhost:8080/api/com.enonic.app.guillotine:graphql" target="_blank" rel="noopener">http://localhost:8080/api/com.enonic.app.guillotine:graphql</a>.
+Direct calls must pass the <code>branch</code> argument (<code>draft</code> or <code>master</code>) to the <code>guillotine()</code> field, e.g. <code>guillotine(project: "intro", branch: "master")</code>.
+The playground adds it for you, based on its Draft/Master toggle.</p>
 </div>
 </td>
 </tr>
@@ -525,7 +523,7 @@ Run this simple query that retrieves the ID and displayName of some movies:</p>
 <div class="title">Query to fetch movies from the Headless API:</div>
 <div class="content">
 <pre class="highlight"><code class="language-graphql" data-lang="graphql">{
-    guillotine {
+    guillotine(project: "intro") {
         queryDsl(
           query: {
             boolean: {
@@ -554,7 +552,7 @@ Run this simple query that retrieves the ID and displayName of some movies:</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<code>tutorial.nxp</code> refers to the name of the application you created in the previous chapter. <code>movie</code> is a specific content type within the app.
+<code>intro</code> is the name of the Content Studio project. <code>tutorial.nxp</code> refers to the name of the application you created in the previous chapter. <code>movie</code> is a specific content type within the app.
 </td>
 </tr>
 </table>
@@ -585,7 +583,7 @@ Query variables enable you to re-use the same query, but for instance fetch diff
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-graphql" data-lang="graphql">query($path:ID!){               <i class="conum" data-value="1"></i><b>(1)</b>
-  guillotine {
+  guillotine(project: "intro") {
     get(key:$path) {            <i class="conum" data-value="2"></i><b>(2)</b>
       type
       _id
@@ -681,7 +679,7 @@ The fully-qualified content type name is used, dots are replaced with underscore
 <div class="title">A query with nested introspections</div>
 <div class="content">
 <pre class="highlight"><code class="language-graphql" data-lang="graphql">query($path:ID!){
-  guillotine {
+  guillotine(project: "intro") {
     get(key:$path) {
       type
       displayName
@@ -693,7 +691,10 @@ The fully-qualified content type name is used, dots are replaced with underscore
           release
           photos {
             ... on media_Image {
-                imageUrl: imageUrl(type: absolute, scale: "width(500)")
+                imageUrl(scale: "width(500)") {
+                  path
+                  queryString
+                }
             }
           }
           cast {
@@ -705,7 +706,10 @@ The fully-qualified content type name is used, dots are replaced with underscore
                 data {
                   photos {
                     ... on media_Image {
-                      imageUrl: imageUrl(type: absolute, scale: "block(100,100)")
+                      imageUrl(scale: "block(100,100)") {
+                        path
+                        queryString
+                      }
                     }
                   }
                 }
@@ -719,13 +723,11 @@ The fully-qualified content type name is used, dots are replaced with underscore
 }</code></pre>
 </div>
 </div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Notice how <code>imageUrl</code> is requested with parameters of its own? Type introspections can expose certain <a href="https://developer.enonic.com/docs/guillotine/stable/api">functions for processing data</a> before returning it.</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>Notice how <code>imageUrl</code> is requested with parameters of its own?
+Type introspections can expose certain <a href="https://developer.enonic.com/docs/guillotine/stable/api" target="_blank" rel="noopener">functions for processing data</a> before returning it.
+Such URL functions return objects: combine <code>path</code> and <code>queryString</code> with your public media API base URL. They do not return a ready-made <code>url</code> field.
+In the Next.js app you will not write this selection by hand: the <code>imageUrlQuery()</code> helper from the adapter generates it with every field, and <code>imageUrl()</code> turns the result into an absolute URL to the media API.</p>
 </div>
 </li>
 <li>
@@ -754,7 +756,7 @@ The fully-qualified content type name is used, dots are replaced with underscore
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 11:48:35 UTC
+Last updated 2026-11-12 11:18:32 UTC
 </div>
 </div>
 </body>

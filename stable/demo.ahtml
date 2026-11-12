@@ -545,7 +545,13 @@ If you are using Github, simply press the <code>Fork</code> button at the top ri
 <p>ENONIC_APP_NAME: com.enonic.app.hmdb</p>
 </li>
 <li>
-<p>ENONIC_API: &lt;URL to Enonic API&gt;</p>
+<p>ENONIC_API: &lt;URL to the Enonic API root, e.g. <a href="https://&lt;environment&gt;/api&gt" class="bare">https://&lt;environment&gt;/api&gt</a>;</p>
+</li>
+<li>
+<p>ENONIC_ADMIN: &lt;enonic admin URL&gt; (optional, only if admin is on a different domain than the API)</p>
+</li>
+<li>
+<p>ENONIC_MEDIA_CDN: &lt;media URL&gt; (optional, only if images and attachments are served from a different domain than the API)</p>
 </li>
 <li>
 <p>ENONIC_API_TOKEN: &lt;yourSecret&gt;</p>
@@ -608,26 +614,19 @@ Check the Vercel function logs if you are not getting the expected result.
 <p><strong>Launch Enonic XP admin</strong> from the solution dashboard.</p>
 </li>
 <li>
-<p><strong>Open Content Studio</strong> from the top right <code>XP menu &#8594; Content Studio</code>.</p>
+<p><strong>No changes needed in Content Studio</strong> because Next.js preview widget is already installed in the solution.</p>
 </li>
 <li>
-<p>Choose the <code>Headless Movie DB</code> project, then click the root item in the tree structure <code>/hmdb</code> and click <code>Edit</code>.</p>
+<p>We only need to instruct Next.js preview widget where to find the frontend server:</p>
 <div class="paragraph">
-<p><span class="image"><img src="media/content-studio-edit-site.png" alt="content studio edit site" width="650px" title="Select and edit the site"></span></p>
+<p><span class="red">TODO: Screenshot needs attention — Next.js Preview App</span></p>
 </div>
-</li>
-<li>
-<p>Add the <code>Next.XP</code> app to the list of applications on the site.
-It will override the default preview for the content within the site.</p>
 <div class="paragraph">
-<p><span class="image"><img src="media/content-studio-add-nextxp.png" alt="content studio add nextxp" width="779px" title="Add the Next.XP application to the site."></span></p>
-</div>
-</li>
-<li>
-<p>Now, instruct Next.XP where to find the frontend server:</p>
-<div class="paragraph">
-<div class="title">Go to Applications tab in Enonic Cloud and select Next.XP app:</div>
+<div class="title">Go to Applications tab in Enonic Cloud and select Next.js preview app:</div>
 <p><span class="image"><img src="media/cloud-next-app-edit.png" alt="cloud next app edit" width="937px" title="Select the Next.XP application"></span></p>
+</div>
+<div class="paragraph">
+<p><span class="red">TODO: Screenshot needs attention — Next.js Preview App</span></p>
 </div>
 <div class="paragraph">
 <div class="title">Press <code>Edit&#8230;&#8203;</code> button in the app context menu and add the URL and secret of the Vercel app you deployed in step 3:</div>
@@ -660,13 +659,30 @@ We are overriding default preview configuration for all sites using the Next.XP 
 <h2 id="how_does_it_work"><a class="link" href="#how_does_it_work">How does it work?</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The Next.XP app acts as a proxy, and forwards the token from the configuration to activate Next.js' preview mode.</p>
+<p>Content Studio will ask every widget if it supports preview, and if so, it will ask the widget to render a preview of the content.
+When asked, the Next.js preview widget will do following sequence:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>send encrypted request to the configured Next.js front-end to fetch XP path to frontend URL mappings</p>
+</li>
+<li>
+<p>use those mappings to generate a frontend URL for a given content</p>
+</li>
+<li>
+<p>return it back to Content Studio with the encrypted <code>xp</code> parameter for rendering it directly</p>
+</li>
+<li>
+<p>when Content Studio loads the URL, the frontend proxy goes through <code>/api/preview</code> if the draft/build or XP-session cookies need synchronization, then redirects to the clean content URL</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
 <p>Your edits will only be visible in Content Studio, until published.</p>
 </div>
 <div class="paragraph">
-<p>When publishing changes, Next.XP should automatically trigger revalidation of all pages in the front-end, and the changes will go live.</p>
+<p>When publishing changes, Next.js preview widget should automatically trigger revalidation of all pages in the front-end, and the changes will go live.</p>
 </div>
 <div class="paragraph">
 <p>Congratulations, you now have a Next.js site powered by Enonic! 🚀</p>
@@ -676,7 +692,7 @@ We are overriding default preview configuration for all sites using the Next.XP 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 11:48:35 UTC
+Last updated 2026-11-12 11:18:32 UTC
 </div>
 </div>
 </body>

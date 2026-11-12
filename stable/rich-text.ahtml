@@ -500,11 +500,11 @@ The <code>Bio</code> field for persons is a Rich Text input, and some Persons' d
 <div class="listingblock">
 <div class="title">src/components/queries/getPersonWithBio.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-Typescript" data-lang="Typescript">import {APP_NAME_UNDERSCORED, richTextQuery} from '@enonic/nextjs-adapter';
+<pre class="highlight"><code class="language-Typescript" data-lang="Typescript">import { APP_NAME_UNDERSCORED, imageUrlQuery, pageUrlQuery, richTextQuery } from '@enonic/nextjs-adapter';
 
 const getPersonWithBio = () =&gt; `
-query($path:ID!){
-  guillotine {
+query {
+  guillotine(scopeKey: $scopeKey, branch: $branch, project: $project) {
     get(key:$path) {
       displayName
       ... on ${APP_NAME_UNDERSCORED}_Person {
@@ -513,7 +513,7 @@ query($path:ID!){
           dateofbirth
           photos {
            ... on media_Image {
-              imageUrl: imageUrl(type: absolute, scale: "width(500)")
+              ${imageUrlQuery({ scale: 'width(500)' })}
               attachments {
                 name
               }
@@ -522,7 +522,8 @@ query($path:ID!){
         }
       }
       parent {
-        _path(type: siteRelative)
+        _path
+        ${pageUrlQuery()}
       }
     }
   }
@@ -538,11 +539,27 @@ export default getPersonWithBio;</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Since we use <code>${richTextQuery('bio')}`</code> now, that is dependant on registered macros, <code>getPerson</code> query must now be a function!
+Since <code>${richTextQuery('bio')}</code> depends on the registered macros, the <code>getPersonWithBio</code> query is a function!
 This guarantees that it is executed when querying for data, and all the macros are already registered.
 </td>
 </tr>
 </table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>RichTextView</code> rewrites media <code>src</code>, <code>srcset</code> and <code>href</code> attributes to absolute XP media URLs and content links to locale-prefixed Next.js routes, so no URL handling is needed in your views.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Guillotine 9&#8217;s processed HTML contains placeholders. The adapter matches <code>data-link-ref</code> and <code>data-image-ref</code> with the structured links and images, preserving page-link query strings and fragments.
+Apps providing macros and image styles must be configured on the selected site or project.</p>
 </div>
 <div class="paragraph">
 <p>For further insight, visit the <a href="https://developer.enonic.com/docs/developer-101/stable/rich-text">rich text chapter</a> in the Developer 101 tutorial, or have a look at the tutorial covering our standard <a href="https://developer.enonic.com/docs/react-spa">react components</a>.</p>
@@ -560,8 +577,8 @@ All we need to do is pass value of the <code>bio</code> field from the query res
 <div class="listingblock">
 <div class="title">src/components/views/PersonWithBio.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-tsx" data-lang="tsx">import React from 'react'
-import {FetchContentResult, getUrl, I18n} from '@enonic/nextjs-adapter';
+<pre class="highlight"><code class="language-tsx" data-lang="tsx">import React from 'react';
+import { FetchContentResult, I18n, imageUrl, pageUrl } from '@enonic/nextjs-adapter';
 import Link from 'next/link';
 import RichTextView from '@enonic/nextjs-adapter/views/RichTextView';
 import styles from './PersonWithBio.module.css';
@@ -581,9 +598,9 @@ const PersonWithBio = (props: FetchContentResult) =&gt; {
                 }
                 &lt;div className={styles.photos}&gt;
                     {
-                        photos.map((photo: any, i: number) =&gt; (
+                        photos.filter((p: any) =&gt; !!p).map((photo: any, i: number) =&gt; (
                             &lt;img key={i}
-                                 src={getUrl(photo.imageUrl, meta)}
+                                 src={imageUrl(photo.imageUrl, meta)}
                                  title={getTitle(photo, displayName)}
                                  alt={getTitle(photo, displayName)}
                                  width="500"
@@ -592,7 +609,8 @@ const PersonWithBio = (props: FetchContentResult) =&gt; {
                     }
                 &lt;/div&gt;
             &lt;/div&gt;
-            &lt;p&gt;&lt;Link href={getUrl(`/${parent._path}`, meta)}&gt;{I18n.localize('back')}&lt;/Link&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;Link href={pageUrl(parent.pageUrl, meta)} data-content-path={parent._path}&gt;{I18n.localize(
+                'back')}&lt;/Link&gt;&lt;/p&gt;
         &lt;/&gt;
     )
 }
@@ -697,7 +715,7 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 11:48:35 UTC
+Last updated 2026-11-12 11:18:32 UTC
 </div>
 </div>
 </body>

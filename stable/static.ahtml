@@ -520,6 +520,7 @@ Only this time, they will be much faster. <strong>Sweet!</strong></p>
 <td class="content">
 Since prod mode now runs on the default port 3000 (same as dev mode), Content Studio preview should continue to work without any configuration changes.
 Just remember to stop your dev server before starting prod mode.
+The draft cookie issued by the dev server belongs to another build, so the proxy sends the first preview request through <code>/api/preview</code> again and draft mode is re-enabled for the prod build.
 </td>
 </tr>
 </table>
@@ -532,9 +533,17 @@ Just remember to stop your dev server before starting prod mode.
 <div class="paragraph">
 <p>With all pages now being cached as files, Next.js must be instructed to re-generate the pages when a change is published.</p>
 </div>
-<div class="paragraph">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Verify that the <code>Next.XP</code> app is added to your site, and that the site is published</strong>. You added the app in the <a href="preview.ahtml">Preview</a> chapter, and published the site in the <a href="pages.ahtml">Pages</a> chapter.
+This will ensure that the revalidation hook is triggered when you publish content.</p>
+</li>
+<li>
 <p><strong>Edit your front-page, and publish the changes</strong>.
 This will trigger a revalidation hook, which is built into the Next.XP app.</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
 <p>The page should now get updated at <a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a> - more or less instantly.🎉</p>
@@ -542,7 +551,8 @@ This will trigger a revalidation hook, which is built into the Next.XP app.</p>
 <div class="sect2">
 <h3 id="what_happened"><a class="link" href="#what_happened">What happened?</a></h3>
 <div class="paragraph">
-<p>In addition to handling previews, the Next.XP app automatically triggers revalidation of all pages when it detects the publishing event in the site it is added to.</p>
+<p>In addition to handling previews, the Next.XP app automatically triggers revalidation of all pages when it detects the publishing event in the site it is added to.
+The <code>/api/revalidate</code> route resolves the locale from the publishing project, so a specific path is revalidated as its locale-prefixed page; without a path everything is revalidated.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -579,16 +589,17 @@ You should also be able to tell from the Next.js log that the revalidation was t
 <p>Below, we explain the details of the code:</p>
 </div>
 <div class="listingblock">
-<div class="title">src/app/[locale]/[[&#8230;&#8203;contentPath]]/page.ts</div>
+<div class="title">src/app/[locale]/[[&#8230;&#8203;contentPath]]/page.tsx</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-TypeScript" data-lang="TypeScript">import {FetchContentResult, validateData} from "@enonic/nextjs-adapter";
-import {fetchContent, fetchContentPathsForAllLocales} from "@enonic/nextjs-adapter/server";
+<pre class="highlight nowrap"><code class="language-TypeScript" data-lang="TypeScript">import { FetchContentResult, validateData } from '@enonic/nextjs-adapter';
+import { fetchContent, fetchContentPathsForAllLocales } from '@enonic/nextjs-adapter/server';
 import MainView from '@enonic/nextjs-adapter/views/MainView';
 
-import "../../../components/_mappings";
-import {Metadata} from 'next';
-import {draftMode} from 'next/headers';
+import '../../../components/_mappings';
+import { Metadata } from 'next';
+import { draftMode } from 'next/headers';
 import React from 'react';
+import PageEditorScript from '../../../components/views/PageEditorScript';
 
 // NB. Using this option with default value bails out static generation !!!
 // export const dynamic = 'auto'
@@ -615,10 +626,13 @@ export default async function Page({params}: { params: Promise&lt;PageProps&gt; 
 
     validateData(data);
 
-    console.debug(`Rendered ${draft ? 'draft ' : ''}page at [/${data.meta.locale}/${data.meta.path}]`);
+    console.debug(`Rendered ${draft ? 'draft ' : ''}page at '/${data.meta.locale}/${data.meta.path}'`);
 
     return (
-        &lt;MainView {...data}/&gt;
+        &lt;&gt;
+            &lt;MainView {...data}/&gt;
+            &lt;PageEditorScript meta={data.meta}/&gt;
+        &lt;/&gt;
     )
 };
 
@@ -634,7 +648,7 @@ export async function generateMetadata({params}: { params: Promise&lt;PageProps&
 }
 
 export async function generateStaticParams(props: { params: PageProps }): Promise&lt;any[]&gt; {
-    return await fetchContentPathsForAllLocales('\${site}/');
+    return await fetchContentPathsForAllLocales();
 }</code></pre>
 </div>
 </div>
@@ -649,7 +663,7 @@ export async function generateStaticParams(props: { params: PageProps }): Promis
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 11:48:35 UTC
+Last updated 2026-11-12 11:18:32 UTC
 </div>
 </div>
 </body>

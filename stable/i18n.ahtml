@@ -484,40 +484,40 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><span class="image"><img src="media/content-studio-settings.png" alt="content studio settings" width="1024px" title="Project list"></span></p>
 </div>
 <div class="paragraph">
-<p>Select existing <code>intro</code> project and click <code>New&#8230;&#8203;</code> button.
-This will open the layer creation wizard for the <code>intro</code> project.</p>
+<p>Select the existing <code>Intro Project</code> and click the <code>New</code> button.
+This opens the project wizard with <code>Intro Project</code> preselected as the parent project, so the new project becomes a layer.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="media/content-studio-create-layer.png" alt="content studio create layer" width="1024px" title="Layered project type"></span></p>
 </div>
 <div class="paragraph">
-<p>Fill in the form, using the following values:</p>
+<p>Walk through the wizard steps, using the following values:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Name</strong>: <code>Film DB</code></p>
+<p><strong>Default Language</strong>: <code>norsk (no)</code></p>
+</li>
+<li>
+<p><strong>Display Name</strong>: <code>Film DB</code></p>
 </li>
 <li>
 <p><strong>Identifier</strong>: <code>intro-no</code></p>
 </li>
 <li>
-<p><strong>Default Language</strong>: <code>norsk (no)</code></p>
+<p><strong>Access Mode</strong>: <code>Public</code></p>
 </li>
 <li>
-<p><strong>Access mode</strong>: <code>Public</code></p>
-</li>
-<li>
-<p>Other fields may be skipped</p>
+<p>The <code>Roles</code> and <code>Applications</code> steps may be skipped (the <code>Intro</code> app is copied from the parent project)</p>
 <div class="paragraph">
-<p>After saving and closing the wizard, the new project should appear in the list.</p>
+<p>Click <code>Create Project</code> in the <code>Summary</code> step, and the new layer appears in the list under <code>Intro Project</code>.</p>
 </div>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><strong>Verify the new layer</strong> by going back to the content list (via the pencil icon), and then switching context using the context selector in the top bar.</p>
+<p><strong>Verify the new layer</strong> by going back to the content list (<code>Content</code> in the sidebar), and then switching project with the project selector in the top left corner.</p>
 <div class="paragraph">
 <p>After switching context, you should see the following:</p>
 </div>
@@ -526,7 +526,7 @@ This will open the layer creation wizard for the <code>intro</code> project.</p>
 </div>
 </li>
 <li>
-<p>Finally <strong>publish the project</strong> by clicking the <code>Publish</code> button in the top bar.</p>
+<p>Finally <strong>publish the project</strong>: select the <code>HMDB</code> site, click <code>Publish</code> in the toolbar, toggle <code>Include child items</code>, click <code>Apply</code> and then <code>Publish now</code>.</p>
 </li>
 </ol>
 </div>
@@ -541,24 +541,25 @@ This will open the layer creation wizard for the <code>intro</code> project.</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>This template comes with proxy configured to do language detection and redirection.
-Feel free to study the code in <code>src/proxy.ts</code> to get a better understanding of how it works.</p>
+<p>This template comes with a proxy (<code>src/proxy.ts</code>) that keeps the default locale out of public URLs: <code><a href="http://localhost:3000/persons/x" class="bare">http://localhost:3000/persons/x</a></code> is rendered by the internal <code>/en/persons/x</code> route, and <code>/en/persons/x</code> itself redirects to <code>/persons/x</code>.
+Other locales keep their prefix (<code>/no/persons/x</code>).
+Content Studio preview URLs and links rendered with <code>pageUrl(data, meta)</code> follow the same rule.</p>
 </li>
 <li>
 <p>But you need to <strong>configure the Enonic adapter</strong>, by specifying which content project to use for each locale:</p>
 <div class="listingblock">
 <div class="title">.env</div>
 <div class="content">
-<pre class="highlight"><code class="language-Properties" data-lang="Properties">// ...
+<pre class="highlight"><code class="language-Properties" data-lang="Properties"># ...
 ENONIC_MAPPINGS=en:intro/hmdb,no:intro-no/hmdb
-// ...</code></pre>
+# ...</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s break down the syntax.</p>
 </div>
 <div class="paragraph">
-<p>For each comma separated entry, you will find the following pattern: <code>&lt;locale&gt;:&lt;repository&gt;/&lt;sitekey&gt;</code>.
+<p>For each comma separated entry, you will find the following pattern: <code>&lt;locale&gt;:&lt;project&gt;/&lt;sitekey&gt;</code>.
 In the example above <code>en:intro/hmdb</code> and <code>no:intro-no/hmdb</code>.</p>
 </div>
 <div class="paragraph">
@@ -587,13 +588,26 @@ The file name should be <code>&lt;locale&gt;.json</code>, e.g. <code>no.json</co
   "title": "Next.XP",
   "back": "Tilbake",
   "built-with": "Laget med",
-  "powered-by": "Drevet av"
+  "powered-by": "Drevet av",
+  "draft-mode": "Utkast modus"
 }</code></pre>
 </div>
 </div>
 </li>
 <li>
 <p>Finally <strong>restart your Next.js server</strong> to pick up the changes to environment variables.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+In prod mode this means running <code>npm run prod</code> again. The build calls <code>generateStaticParams()</code> for every project in <code>ENONIC_MAPPINGS</code>, so publish the new layer first - otherwise the build fails because the site does not exist on the layer&#8217;s <code>master</code> branch yet.
+</td>
+</tr>
+</table>
+</div>
 </li>
 </ol>
 </div>
@@ -604,6 +618,19 @@ The file name should be <code>&lt;locale&gt;.json</code>, e.g. <code>no.json</co
 <div class="sectionbody">
 <div class="paragraph">
 <p>As long as your preview configuration was working before you started, Content Studio should automatically be able to detect the right locale for each project.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Every project used for preview must be listed in <code>ENONIC_MAPPINGS</code>.
+Otherwise <code>/api/mappings</code> answers 404 and Content Studio reports that the content cannot be rendered.
+</td>
+</tr>
+</table>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -626,10 +653,10 @@ You may need to restart/rebuild your Next.js server for the changes to be picked
 </div>
 </li>
 <li>
-<p><strong>Translate the site content</strong> by selecting the site content, then click <code>localize</code> (rather than edit..). This effectively takes you to the edit form. You may now show off your skills while translating the page to Norwegian.</p>
+<p><strong>Translate the site content</strong> by selecting the site and clicking <code>Edit</code>. The editor opens with a <code>Localize</code> button in place of <code>Save</code>: click it to create a local copy in the layer (the item switches from <code>Not localised</code> to <code>Localised</code> and gets the layer&#8217;s language). You may now show off your skills while translating the page to Norwegian.</p>
 </li>
 <li>
-<p>Once finished, click <code>Mark as Ready</code> and proceed to <strong>publish the entire site</strong> structure.</p>
+<p>Once finished, click <code>Mark as ready</code> and proceed to <strong>publish the entire site</strong> structure.</p>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -668,7 +695,7 @@ You may need to restart/rebuild your Next.js server for the changes to be picked
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Update the Next.xp configuration file</strong> for your Enonic installation by adding multiple entries:</p>
+<p><strong>Create the Next.XP configuration file</strong> for your Enonic installation, and add an entry for each front-end:</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -676,7 +703,7 @@ You may need to restart/rebuild your Next.js server for the changes to be picked
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The sandbox configuration files are located in the sandbox' home directory inside your user&#8217;s root directory at <code>.enonic/sandboxes/&lt;your-sandbox-name&gt;/home/config</code>.
+The sandbox configuration files are located in the sandbox' home directory inside your user&#8217;s root directory at <code>.enonic/sandboxes/&lt;your-sandbox-name&gt;/home/config</code>. The full path is also listed on the sandbox Welcome page at <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a>, together with the existing configuration files. Create the file <code>com.enonic.app.nextxp.cfg</code> in this folder.
 </td>
 </tr>
 </table>
@@ -695,11 +722,23 @@ nextjs.prod.url=https://your.next-site.com
 # ...</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Every configured URL is automatically allowed in Content Studio&#8217;s Content Security Policy, so the preview works for each front-end without further configuration.
+</td>
+</tr>
+</table>
+</div>
 </li>
 <li>
 <p><strong>Assign the configuration to your site</strong> by clicking the pencil icon next to the <code>Next.XP</code> app name in the site form, and selecting it from the list of named configurations:</p>
 <div class="paragraph">
-<p><span class="image"><img src="media/content-studio-configure-nextxp.png" alt="content studio configure nextxp" width="771px" title="Form with fields for server url and nextjs token"></span></p>
+<p><span class="image"><img src="media/content-studio-configure-nextxp.png" alt="content studio configure nextxp" width="771px" title="Selecting a named configuration for the Next.XP app in the site form"></span></p>
 </div>
 </li>
 </ol>
@@ -746,7 +785,9 @@ export interface MetaData {
     requestedComponent?: PageComponent;
     canRender: boolean;
     catchAll: boolean;
-    apiUrl: string;
+    branch: string;
+    project: string;
+    site: string;
     baseUrl: string;
     locale: string;
     defaultLocale: string;
@@ -757,7 +798,8 @@ export interface MetaData {
 </ol>
 </div>
 <div class="paragraph">
-<p>You can also use <code>I18n.getLocale()</code> and <code>useLocaleContext()</code> to access locale in server-side and client-side components respectively.</p>
+<p>You can also use <code>I18n.getLocale()</code> and <code>useLocaleContext()</code> to access locale in server-side and client-side components respectively.
+For links, pass <code>meta</code> to <code>pageUrl(data, meta)</code> and the locale prefix is added for non-default locales; <code>pageUrl({path: '/'}, meta)</code> gives the site root (<code>/</code> or <code>/no</code>).</p>
 </div>
 </div>
 </div>
@@ -774,7 +816,7 @@ Here is how you can localize texts in your views:</p>
 <p>Remember, we added file for every locale to the <code>src/phrases</code> folder earlier ?</p>
 </li>
 <li>
-<p>Use <code>useLocaleContext</code> from <code>@enonic/nextjs-adapter</code> to access current locale in client-side components:</p>
+<p>Use <code>useLocaleContext</code> from <code>@enonic/nextjs-adapter/client</code> to access current locale in client-side components:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">'use client';
@@ -829,7 +871,7 @@ export default function ServerSideComponent() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 11:48:35 UTC
+Last updated 2026-11-12 11:18:32 UTC
 </div>
 </div>
 </body>

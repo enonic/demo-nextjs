@@ -525,7 +525,7 @@ The definition of the region <code>main</code>, allows Content Studio editors to
 </table>
 </div>
 <div class="paragraph">
-<p><strong>Redeploy the Enonic app</strong> to register the page component if it didn&#8217;t have it (happens automatically if you started <code>enonic project dev</code>).</p>
+<p><strong>Redeploy the Enonic app</strong> to register the page component if it didn&#8217;t have it (happens automatically if you started <code>enonic dev</code>).</p>
 </div>
 </li>
 <li>
@@ -591,7 +591,6 @@ The &lt;RegionsView&gt; element is referring to the 'main' region we defined in 
 <div class="title">src/components/_mappings.ts</div>
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import MainPage from './pages/Main';
-import {APP_NAME} from '@enonic/nextjs-adapter';
 
 // Page mappings
 ComponentRegistry.addPage(`${APP_NAME}:main`, {
@@ -619,7 +618,7 @@ ComponentRegistry.addPage(`${APP_NAME}:main`, {
 <p><strong>Turn the site into a page</strong></p>
 <div class="paragraph">
 <p>From Content Studio, select and edit the <code>/hmdb</code> content item.
-From the edit view, activate the Context Panel by clicking the <code>Show Context Menu</code> icon in the top right corner, and select <code>Main page</code> extension from the dropdown menu.</p>
+From the edit view, open the Context Panel by clicking the <code>Show Context Panel</code> icon in the top right corner, and select <code>Page</code> in the widget dropdown at the top of the panel.</p>
 </div>
 <div class="paragraph">
 <p>You should now see the following:</p>
@@ -628,7 +627,7 @@ From the edit view, activate the Context Panel by clicking the <code>Show Contex
 <p><span class="image"><img src="media/page-setup.png" alt="page setup" width="1440px" title="Selecting the page component in the page view"></span></p>
 </div>
 <div class="paragraph">
-<p>In the preview area, select the <code>Main</code> component we created earlier from the Template dropdown menu.</p>
+<p>In the <code>Inspect</code> tab of the panel, select the <code>Main</code> component we created earlier from the <code>Template</code> dropdown (it shows <code>Automatic</code> until then).</p>
 </div>
 <div class="paragraph">
 <p>You should then see a page with a single "dropzone" inside (the region we specified earlier).</p>
@@ -669,11 +668,15 @@ Deeper dive into parts and components will be covered in the next chapter.
 <div class="content">
 <pre class="highlight"><code class="language-yaml" data-lang="yaml">kind: "Part"
 title: "Paragraph"
-description: "Rich text paragraph"
+description: "A rich text component"
 form:
-- type: "HtmlArea"
-  name: "text"
-  label: "Text"</code></pre>
+  - name: "text"
+    type: "HtmlArea"
+    label: "Text"
+    occurrences:
+      min: 1
+      max: 1
+    allowHeadings: "h1 h2 h3"</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -689,7 +692,7 @@ The <a href="https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types
 </table>
 </div>
 <div class="paragraph">
-<p><strong>Redeploy the Enonic app</strong> if it didn&#8217;t have it to register the part (happens automatically if you started <code>enonic project dev</code>).</p>
+<p><strong>Redeploy the Enonic app</strong> if it didn&#8217;t have it to register the part (happens automatically if you started <code>enonic dev</code>).</p>
 </div>
 </li>
 <li>
@@ -702,9 +705,9 @@ import {PartProps} from '@enonic/nextjs-adapter';
 import RichTextView from '@enonic/nextjs-adapter/views/RichTextView';
 
 const Paragraph = (props: PartProps) =&gt; {
-    return (
-        &lt;RichTextView data={props.part.config.text || ''} meta={props.meta}/&gt;
-    );
+    return props.part.config.text ? (
+        &lt;RichTextView data={props.part.config.text} meta={props.meta}/&gt;
+    ) : null;
 };
 
 export default Paragraph;</code></pre>
@@ -745,8 +748,8 @@ ComponentRegistry.addPart(`${APP_NAME}:paragraph`, {
 <li>
 <p><strong>Add the part to your page</strong></p>
 <div class="paragraph">
-<p>Back in Content Studio, from the Insert tab on the right hand side, drag a part component into the region and select <code>Paragraph</code> in the Context Window.
-Use the <a href="https://developer.enonic.com/docs/content-studio/stable/editor/component-types#htmlarea">rich-text editor</a> to write and format text, as well as insert images or macros.</p>
+<p>Back in Content Studio, drag <code>Part</code> from the <code>Insert</code> tab on the right hand side into the region, then select <code>Paragraph</code> in the part dropdown of the <code>Inspect</code> tab.
+Use the <a href="https://developer.enonic.com/docs/content-studio/stable/editor/component-types#htmlarea">rich-text editor</a> to write and format text, as well as insert images or macros, and click <code>Apply</code>.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="media/paragraph-component.png" alt="paragraph component" width="1440px" title="Next.js-rendered paragraph part with an image"></span></p>
@@ -773,7 +776,7 @@ This is because preview mode is off in incognito window and only published chang
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Publish the page</strong> by clicking <code>Mark as ready&#8230;&#8203;</code>, and then <code>Publish</code>.</p>
+<p><strong>Publish the page</strong> by clicking <code>Mark as ready</code>, and then <code>Publish now</code> in the Publishing Wizard.</p>
 <div class="paragraph">
 <p><span class="image"><img src="media/publish.png" alt="publish" width="810px" title="Publishing wizard"></span></p>
 </div>
@@ -791,7 +794,7 @@ This is because preview mode is off in incognito window and only published chang
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 11:48:35 UTC
+Last updated 2026-11-12 11:18:32 UTC
 </div>
 </div>
 </body>

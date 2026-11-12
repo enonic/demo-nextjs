@@ -453,7 +453,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this chapter you will create create a local Enonic developer environment, create and deploy an Enonic app.</p>
+<p>In this chapter you will create a local Enonic developer environment, create and deploy an Enonic app.</p>
 </div>
 </div>
 </div>
@@ -474,7 +474,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Create a sandbox called <code>nxptutorial</code> by running this command in your terminal:</p>
 <div class="literalblock">
 <div class="content">
-<pre>enonic sandbox create nxptutorial -t essentials -f</pre>
+<pre>enonic sandbox create nxptutorial -t essentials -v 8.1.1 -f</pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -515,7 +515,7 @@ Leave the sandbox running in the first terminal window, and open a new terminal 
 <p><strong>Create a new project</strong> using the <code>Introduction</code> app as a starter, by running the following command in your terminal:</p>
 <div class="literalblock">
 <div class="content">
-<pre>enonic create tutorial.nxp -r tutorial-intro --s nxptutorial -f</pre>
+<pre>enonic create tutorial.nxp -r tutorial-intro -s nxptutorial -f</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -530,7 +530,7 @@ Leave the sandbox running in the first terminal window, and open a new terminal 
 <p>to create an app called <code>tutorial.nxp</code></p>
 </li>
 <li>
-<p>and link it to the <code>nxptutorial</code></p>
+<p>and link it to the <code>nxptutorial</code> sandbox</p>
 </li>
 </ul>
 </div>
@@ -538,7 +538,7 @@ Leave the sandbox running in the first terminal window, and open a new terminal 
 <li>
 <p><strong>Deploy the application</strong></p>
 <div class="paragraph">
-<p>To build and run your application, execute these commands:</p>
+<p>To build and run your application, execute these commands (the CLI placed the project in a folder named after the last part of the app name):</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -613,7 +613,7 @@ When you see the following output in your terminal then your app has been succes
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="media/xp-dashboard.png" alt="The XP admin dashboard" width="{image-xl}">
+<img src="media/xp-dashboard.png" alt="The XP admin dashboard" width="1085w">
 </div>
 <div class="title">Figure 2. The XP admin dashboard</div>
 </div>
@@ -643,10 +643,13 @@ If things don&#8217;t look exactly the same, don&#8217;t worry. In every new ver
 <p><a href="https://market.enonic.com/vendors/enonic/content-studio" target="_blank" rel="noopener">Content Studio</a> is the editorial interface used to create and manage content. It was pre-installed from <a href="https://market.enonic.com" target="_blank" rel="noopener">Enonic Market</a> as a part of the <code>Essentials</code> template when you started the sandbox, and can now be accessed from the XP menu.</p>
 </div>
 <div class="paragraph">
+<p>Before continuing, verify that <code>Guillotine</code> is version 9 or later in <code>XP menu</code> &#8594; <code>Applications</code>. If the Essentials template installed version 8, update it to version 9 using <code>Install</code> before running the queries in the next chapter.</p>
+</div>
+<div class="paragraph">
 <p><strong>Click <b class="button">Content Studio</b></strong> in the XP menu to launch it.</p>
 </div>
 <div class="paragraph">
-<p>The first time your application was deployed to the sandbox, it automatically created a content project called <code>Intro Project</code> and populated it with content. Since this is the only available project at the moment, Content Studio will automatically open it, revealing the list of sample content items.</p>
+<p>The first time your application was deployed to the sandbox, it automatically created a content project called <code>Intro Project</code> (id <code>intro</code>) and populated it with content. Since this is the only available project at the moment, Content Studio will automatically open it, revealing the list of sample content items.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -686,7 +689,7 @@ Some of the content items will have a default preview. That&#8217;s okay for now
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 11:48:35 UTC
+Last updated 2026-11-12 11:18:32 UTC
 </div>
 </div>
 </body>

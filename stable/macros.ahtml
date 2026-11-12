@@ -462,7 +462,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="intro"><a class="link" href="#intro">Intro</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Occationaly, you may require rich components, even within your rich text. This is enabled via a component type called Macros. Macros follow the same pattern as we have seen for other components</p>
+<p>Occasionally, you may require rich components, even within your rich text. This is enabled via a component type called Macros. Macros follow the same pattern as we have seen for other components</p>
 </div>
 </div>
 </div>
@@ -496,7 +496,7 @@ import styles from './FactBox.module.css';
 
 const FactBox = ({name, children, config, meta}: MacroProps) =&gt; {
     // macro is used inside a &lt;p&gt; tag so we can't use any dom tags
-    const header = config.header.length ? config.header : 'Fact Box';
+    const header = typeof config.header === 'string' &amp;&amp; config.header.length ? config.header : 'Fact Box';
     return &lt;&gt;
 
         &lt;ins className={styles.factbox}&gt;
@@ -618,7 +618,7 @@ You do not need to ask for the macro body, as this implicitly passed to the Macr
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Macros must be registered before any other component that uses RichTextView! Best practice is to register it at the top of the <code>_mappings.ts</code> file.
+Macros must be registered before the adapter prepares the outgoing query. Register the macro in <code>_mappings.ts</code> so it is available when requests are handled.
 </td>
 </tr>
 </table>
@@ -647,7 +647,7 @@ Macros must be registered before any other component that uses RichTextView! Bes
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 11:48:35 UTC
+Last updated 2026-11-12 11:18:32 UTC
 </div>
 </div>
 </body>

@@ -463,7 +463,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Verify Enonic app hs <strong>the <code>movie-details</code> part descriptor</strong> at - same procedure as before&#8230;&#8203;</p>
+<p>Verify the Enonic app has <strong>the <code>movie-details</code> part descriptor</strong> - same procedure as before&#8230;&#8203;</p>
 <div class="listingblock">
 <div class="title">src/main/resources/cms/parts/movie-details/movie-details.yaml</div>
 <div class="content">
@@ -475,26 +475,37 @@ form: [ ]</code></pre>
 </div>
 </li>
 <li>
-<p><strong>Redeploy</strong> the Enonic app if you made any changes (happens automatically if you started <code>enonic project dev</code>).</p>
+<p><strong>Redeploy</strong> the Enonic app if you made any changes (happens automatically if you started <code>enonic dev</code>).</p>
 </li>
 <li>
 <p><strong>Add the Movie query and view</strong> in Next.</p>
 <div class="listingblock">
 <div class="title">src/components/parts/MovieDetails.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-JavaScript" data-lang="JavaScript">import React from 'react'
-import {APP_NAME_UNDERSCORED, getUrl, I18n, MetaData, PartProps} from '@enonic/nextjs-adapter';
+<pre class="highlight"><code class="language-JavaScript" data-lang="JavaScript">import React from 'react';
+import type { ImageUrl, PageUrl } from '@enonic/nextjs-adapter';
+import {
+    APP_NAME_UNDERSCORED,
+    I18n,
+    MetaData,
+    PartProps,
+    imageUrl,
+    imageUrlQuery,
+    pageUrl,
+    pageUrlQuery,
+} from '@enonic/nextjs-adapter';
 import Link from 'next/link';
 
 
 export const getMovie = `
-query($path:ID!){
-  guillotine {
-    get(key:$path) {
+query {
+  guillotine(scopeKey: $scopeKey, branch: $branch, project: $project) {
+    get(key: $path) {
       type
       displayName
       parent {
-        _path(type: siteRelative)
+        _path
+        ${pageUrlQuery()}
       }
       ... on ${APP_NAME_UNDERSCORED}_Movie {
         data {
@@ -504,7 +515,7 @@ query($path:ID!){
           release
           photos {
             ... on media_Image {
-              imageUrl: imageUrl(type: absolute, scale: "width(500)")
+              ${imageUrlQuery({ scale: 'width(500)' })}
               attachments {
                 name
               }
@@ -514,12 +525,13 @@ query($path:ID!){
             character
             actor {
               ... on ${APP_NAME_UNDERSCORED}_Person {
-                _path(type: siteRelative)
+                _path
+                ${pageUrlQuery()}
                 displayName
                 data {
                   photos {
                     ... on media_Image {
-                      imageUrl: imageUrl(type: absolute, scale: "block(200,200)")
+                      ${imageUrlQuery({ scale: 'block(200,200)' })}
                       attachments {
                         name
                       }
@@ -540,7 +552,8 @@ query($path:ID!){
 const MovieView = (props: PartProps) =&gt; {
     const data = props.data?.get.data as MovieInfoProps;
     const meta = props.meta;
-    const {displayName, parent = {}} = props.data.get;
+    const {displayName, parent} = props.data.get;
+    const href = pageUrl(parent?.pageUrl, meta);
     return (
         &lt;&gt;
             &lt;div&gt;
@@ -548,9 +561,11 @@ const MovieView = (props: PartProps) =&gt; {
                 {data &amp;&amp; &lt;MovieInfo {...data} meta={meta}/&gt;}
                 {data?.cast &amp;&amp; &lt;Cast cast={data.cast} meta={meta}/&gt;}
             &lt;/div&gt;
-            &lt;p&gt;
-                &lt;Link href={getUrl(`/${parent._path}`, meta)}&gt;{I18n.localize('back')}&lt;/Link&gt;
+            {href &amp;&amp;
+             &lt;p&gt;
+                 &lt;Link href={href} data-content-path={parent?._path}&gt;{I18n.localize('back')}&lt;/Link&gt;
             &lt;/p&gt;
+            }
         &lt;/&gt;
     );
 };
@@ -564,20 +579,20 @@ interface MovieInfoProps {
     abstract: string;
     cast: CastMemberProps[],
     photos: {
-        imageUrl: string;
+        imageUrl: ImageUrl;
     }[];
 }
 
 // Main movie info: release year, poster image and abstract text.
 const MovieInfo = (props: MovieInfoProps) =&gt; {
-    const posterPhoto = (props.photos || [])[0] || {};
+    const posterSrc = imageUrl((props.photos || [])[0]?.imageUrl, props.meta);
     return (
         &lt;&gt;
             {props.release &amp;&amp; (
                 &lt;p&gt;({new Date(props.release).getFullYear()})&lt;/p&gt;
             )}
-            {posterPhoto.imageUrl &amp;&amp; (
-                &lt;img src={getUrl(posterPhoto.imageUrl, props.meta)}
+            {posterSrc &amp;&amp; (
+                &lt;img src={posterSrc}
                      title={props.subtitle}
                      alt={props.subtitle}
                 /&gt;
@@ -596,10 +611,11 @@ interface CastMemberProps {
     character: string;
     actor: {
         _path: string;
+        pageUrl: PageUrl;
         displayName: string;
         data: {
             photos: {
-                imageUrl: string;
+                imageUrl: ImageUrl;
                 attachments: {
                     name: string
                 }[]
@@ -624,22 +640,22 @@ const Cast = (props: CastProps) =&gt; (
 
 
 const CastMember = (props: CastMemberProps &amp; { meta: MetaData }) =&gt; {
-    const {character, actor, meta} = props;
-    const {displayName, _path, data} = actor;
-    const personPhoto = (data.photos || [])[0] || {};
+    const { character, actor } = props;
+    const { displayName, pageUrl: actorPageUrl, data, _path } = actor;
+    const photoSrc = imageUrl((data.photos || [])[0]?.imageUrl, props.meta);
 
     return (
         &lt;li style={{marginRight: "15px"}}&gt;
             {
-                personPhoto.imageUrl &amp;&amp;
-                &lt;img src={getUrl(personPhoto.imageUrl, meta)}
+                photoSrc &amp;&amp;
+                &lt;img src={photoSrc}
                      title={`${displayName} as ${character}`}
                      alt={`${displayName} as ${character}`}/&gt;
             }
             &lt;div&gt;
                 &lt;p&gt;{character}&lt;/p&gt;
                 &lt;p&gt;
-                    &lt;Link href={getUrl(_path, meta)}&gt;
+                    &lt;Link href={pageUrl(actorPageUrl, props.meta)} data-content-path={_path}&gt;
                         {displayName}
                     &lt;/Link&gt;
                 &lt;/p&gt;
@@ -681,28 +697,28 @@ ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
 <p>In Content Studio, select and <strong>edit your favorite movie</strong> (or choose "No time to deflate" if you have no favorites).</p>
 </li>
 <li>
-<p><strong>Activate the context panel</strong> by pressing its icon in the top right screen corner, select the <code>Page</code> extension, then "Main page" descriptor in dropdown and <strong>add the "Movie details" part</strong> to the page.</p>
+<p><strong>Activate the context panel</strong> by pressing its icon in the top right screen corner, select <code>Page</code> in the widget dropdown, then <code>Main</code> in the Template dropdown, and <strong>add the <code>Movie Details</code> part</strong> to the page (drag <code>Part</code> from the <code>Insert</code> tab into the region and pick it in the part dropdown).</p>
 <div class="paragraph">
-<p><span class="image"><img src="media/movie-details.png" alt="movie details" width="1440px" title="No time to die, configured with movie-details part"></span></p>
+<p><span class="image"><img src="media/movie-details.png" alt="movie details" width="1440px" title="No time to deflate, configured with movie-details part"></span></p>
 </div>
 <div class="paragraph">
 <p>We now have a single movie nicely presented, but it would be cumbersome to manually configure each movie like this - page templates to the rescue.</p>
 </div>
 </li>
 <li>
-<p>In the page tab in the form on the left, <strong>select the page (root) component</strong>.</p>
+<p>In the <code>Page</code> tab of the form on the left, <strong>select the page (root) component</strong> named <code>Main</code>.</p>
 <div class="paragraph">
 <p><span class="image"><img src="media/movie-page.png" alt="movie page" width="1440px" title="With page component selected, save as template appears in right hand panel"></span></p>
 </div>
 </li>
 <li>
-<p>Right click it and select <strong>Save as template</strong> from the context menu.</p>
+<p>Right click it and select <strong>Save as Template</strong> from the context menu.</p>
 <div class="paragraph">
 <p>This will create a new page template content item, and open it in a new tab for editing.</p>
 </div>
 </li>
 <li>
-<p><strong>Give your template a better name</strong>, such as "Movie details" and save the changes.</p>
+<p><strong>Give your template a better name</strong>, such as "Movie details" - the change is saved automatically. The template already supports the <code>Movie</code> content type.</p>
 <div class="paragraph">
 <p><span class="image"><img src="media/movie-template.png" alt="movie template" width="1440px" title="Content item of type template, configure to support movie items"></span></p>
 </div>
@@ -710,7 +726,7 @@ ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
 <li>
 <p>Try visiting other movie items to <strong>verify they now automatically render</strong>.</p>
 <div class="paragraph">
-<p><strong>PS!</strong> Don&#8217;t forget to publish the changes and the new page template.</p>
+<p><strong>PS!</strong> Don&#8217;t forget to publish the changes and the new page template (both the movie and the template are <code>Mark as ready</code> &#8594; <code>Publish now</code>).</p>
 </div>
 </li>
 </ol>
@@ -723,7 +739,7 @@ ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 11:48:35 UTC
+Last updated 2026-11-12 11:18:32 UTC
 </div>
 </div>
 </body>

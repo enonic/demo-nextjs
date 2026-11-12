@@ -443,6 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#task_enable_preview">Task: Enable preview</a></li>
 <li><a href="#how_does_it_work">How does it work?</a></li>
+<li><a href="#live_page_editing">Live page editing</a></li>
 <li><a href="#link_handling">Link handling</a></li>
 </ul>
 </div>
@@ -459,49 +460,80 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="task_enable_preview"><a class="link" href="#task_enable_preview">Task: Enable preview</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Install and configure the <code>Next.XP</code> app on your site.</p>
+<p>To enable the preview, install version 6 of the <code>Next.XP</code> app and add it to your site. The app provides a preview widget, titled "Next.js Preview", for the sites it has been added to.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The Next.XP app requires Enonic XP 8.1 or later.
+</td>
+</tr>
+</table>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Install the NextJS integration app</strong>:</p>
+<p><strong>Install the Next.XP app</strong>:</p>
 <div class="paragraph">
 <p>From <code>XP menu</code> &#8594; <code>Applications</code> &#8594; <code>Install</code> and search for <code>Next.XP</code></p>
 </div>
 </li>
 <li>
-<p><strong>Activate the preview</strong></p>
+<p><strong>Add the Next.XP app to your site</strong>:</p>
 <div class="paragraph">
-<p>In Content Studio, select the <code>HMDB</code> site and click <code>Edit</code>.</p>
+<p>Edit the <code>HMDB</code> site, select <code>Next.XP</code> in the <code>Applications</code> field - in addition to your own app - and click <code>Apply</code>, just like you did in the <a href="sites.ahtml">Sites</a> chapter.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The preview is only available for sites the <code>Next.XP</code> app has been added to.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>Add the Next.XP app to the site by selecting it in the "Applications" combobox.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="media/content-studio-add-nextxp.png" alt="content studio add nextxp" width="597px" title="Open app config by pressing pencil icon"></span></p>
-</div>
-<div class="paragraph">
-<p>Save the site to make all the features of the app available.</p>
-</div>
-<div class="paragraph">
-<p>By default Next.XP preview uses the following values:</p>
+<p>By default Next.XP uses the following values:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>url</strong>: <code><a href="http://127.0.0.1:3000" class="bare">http://127.0.0.1:3000</a></code></p>
+<p><strong>url</strong>: <code><a href="http://localhost:3000" class="bare">http://localhost:3000</a></code></p>
 </li>
 <li>
 <p><strong>secret</strong>: <code>mySecretKey</code></p>
 <div class="paragraph">
-<p>This matches your setup, so everything should work out of the box. We will get back to tuning these values in the <a href="static.ahtml">Static pages</a>, and <a href="deployment.ahtml">Deployment</a> chapters.</p>
+<p>This matches your setup, so no further configuration is needed. We will get back to tuning these values in the <a href="static.ahtml">Static pages</a>, <a href="i18n.ahtml">Multi language</a> and <a href="deployment.ahtml">Deployment</a> chapters.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Content Studio ships with a strict Content Security Policy that blocks loading pages from third-party URLs, including <code><a href="http://localhost:3000" class="bare">http://localhost:3000</a></code>.
+The Next.XP app automatically adds its configured Next.js origins to this policy, so no manual configuration is needed.
+The default <code><a href="http://localhost:3000" class="bare">http://localhost:3000</a></code> origin is only allowed when XP runs in dev mode - like your sandbox.
+In production, only explicitly configured URLs are allowed.
+</td>
+</tr>
+</table>
 </div>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p>After applying and saving the changes, you should be able to see the live preview in Content Studio when selecting any content in the "Persons" folder.</p>
+<p>Select any content in the "Persons" folder: the preview pane now shows the page rendered by Next.js.
+The preview toolbar&#8217;s widget selector is set to <code>Automatic</code>, which picks the first preview that can render the item - choose <code>Next.js Preview</code> explicitly if another preview shows up.</p>
 <div class="paragraph">
 <p><span class="image"><img src="media/morgan-floatman-preview.png" alt="morgan floatman preview" width="1072px" title="Next.js-rendered preview in Content Studio"></span></p>
 </div>
@@ -514,32 +546,64 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="how_does_it_work"><a class="link" href="#how_does_it_work">How does it work?</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>There are several aspects that come into play for the preview to work seamlessly and still remain secure.</p>
+<p>The Next.XP app adds a preview widget, titled "Next.js Preview", to Content Studio that loads pages directly from the Next.js server.
+When an editor selects a content item in a site the app has been added to, the widget:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Fetches URL mapping rules for the current project from the Next.js server&#8217;s <code>/api/mappings</code> endpoint (the request carries the encrypted project id, and the route prefixes the targets with that project&#8217;s locale unless it is the default locale)</p>
+</li>
+<li>
+<p>Resolves the content item to a Next.js URL using those mappings</p>
+</li>
+<li>
+<p>Encrypts request parameters with the shared secret and sends a request</p>
+</li>
+<li>
+<p>Loads the resolved page in the preview pane</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
-<p>The following aspects need to be handled:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Next.js preview mode must be activated</p>
-</li>
-<li>
-<p>API queries from Next.js must have access to the draft content</p>
-</li>
-<li>
-<p>Permissions must be limited to the current editorial user</p>
-</li>
-<li>
-<p>Links in the Next.js response must be processed to work properly in Content Studio</p>
-</li>
-</ul>
+<p>On the Next.js side, the proxy (<code>src/proxy.ts</code>) validates the encrypted <code>xp</code> parameter on every handoff: when preview setup is needed, the request goes through <code>/api/preview</code>, which enables Next.js draft mode and redirects to the same URL without the parameter.
+Later requests carrying the parameter are redirected straight to the clean URL, as long as the payload is valid, the draft cookie belongs to the running build, and the frontend XP-session cookie matches the payload: <code>/api/preview</code> records the <code>BUILD_ID</code> defined in <code>next.config.js</code> in a second cookie, so a cookie issued by another build (dev vs prod, a redeploy), which Next would ignore, is refreshed automatically. The route also stores the XP session in an HTTP-only cookie and refreshes it on the next handoff if the session changes after an XP logout/login.
+From then on the preview runs on clean public URLs (no prefix for the default locale): the project follows from the locale in the URL and draft mode from Next&#8217;s cookie, so the page renders unpublished content.
+The iframe <code>src</code> set by Content Studio carries the parameter; after the redirect, the iframe location and ordinary navigation use clean URLs.
+The proxy also routes prefix-less URLs to the internal <code>[locale]</code> segment and redirects <code>/en/&#8230;&#8203;</code> to <code>/&#8230;&#8203;</code>.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="media/preview-flowchart.png" alt="preview flowchart" width="755px" title="Flowchart demonstrating the preview execution flow"></span></p>
+<p>The app also extends Content Studio&#8217;s Content Security Policy with every Next.js origin from its configuration plus <code>'self'</code> (the <code>frame-src</code>, <code>connect-src</code> and <code>style-src</code> directives), allowing the preview iframe to load pages from those servers.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="live_page_editing"><a class="link" href="#live_page_editing">Live page editing</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In addition to preview, Content Studio supports live page editing - where editors can drag-and-drop components, edit text inline, and select components directly within the rendered page.</p>
 </div>
 <div class="paragraph">
-<p>As you can see from the above flowchart, Next.XP acts as a proxy, but it is also helped by the <code>Enonic Adapter</code> which exists inside the Next.js project.</p>
+<p>All you need as a frontend developer is the <code>PageEditorScript</code> client component, which handles all interaction - and the starter already includes it.
+Have a look at the page component to see how it is wired up:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/app/[locale]/[[&#8230;&#8203;contentPath]]/page.tsx</div>
+<div class="content">
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import PageEditorScript from '../../../components/views/PageEditorScript';
+
+// ...
+
+return (
+    &lt;&gt;
+        &lt;MainView {...data}/&gt;
+        &lt;PageEditorScript meta={data.meta}/&gt;
+    &lt;/&gt;
+)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>PageEditorScript</code> (in <code>src/components/views</code>) initializes <code>@enonic/page-editor</code> in edit mode and loads single components on request, so Content Studio can update a component without reloading the whole page.</p>
 </div>
 </div>
 </div>
@@ -547,16 +611,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="link_handling"><a class="link" href="#link_handling">Link handling</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Content Studio internally uses a set of different relative URLs to handle preview.
-These are: <code>/preview</code>, <code>/inline</code> and <code>/edit</code>.</p>
+<p>Since the preview widget loads pages directly from the Next.js server, links within the rendered page need to work correctly inside Content Studio&#8217;s preview as well.</p>
 </div>
 <div class="paragraph">
-<p>Next.js on the other hand, will use a single basepath, typically <code>/</code> for the site.
-As Next.js does not support dynamically changing the basepath, the <code>getUrl()</code> function that was mentioned earlier needs to be used in the Next.js project. This will take care of all links controlled by the developer&#8217;s code.</p>
+<p>Media fields (<code>imageUrl</code>, <code>mediaUrl</code>, <code>attachmentUrl</code>) are queried with the <code>*UrlQuery()</code> helpers and rendered with the matching <code>imageUrl()</code>, <code>mediaUrl()</code> and <code>attachmentUrl()</code> functions, passing the content metadata (e.g. <code>imageUrl(photo.imageUrl, meta)</code>). Published media uses absolute URLs to XP&#8217;s media API (<code>ENONIC_MEDIA_CDN</code>, defaulting to <code>ENONIC_API</code>); draft media uses same-origin <code>/api/media/&#8230;&#8203;</code> URLs.
+Content links use <code>pageUrlQuery()</code> and <code>pageUrl(data, meta)</code>, which returns a relative URL prefixed with the current locale unless it is the default one, so links work both in standalone mode and inside the Content Studio preview.</p>
 </div>
-<div class="paragraph">
-<p>Additionally, Next.js will "hardcode" links to various static assets and code, which getURL cannot handle().
-The Next.XP proxy then automatically processes these remaining URLs before the result can be seen in Content Studio.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+In preview, the browser loads draft media through the Next.js <code>/api/media/[&#8230;&#8203;path]</code> route, which delegates to <code>proxyMedia()</code>. The server forwards the frontend XP-session cookie to the configured media endpoint while draft mode is enabled.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>That completes the preview setup; moving forward, we&#8217;ll look into rendering <a href="rich-text.ahtml">Html Area</a> fields.</p>
@@ -566,7 +637,7 @@ The Next.XP proxy then automatically processes these remaining URLs before the r
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 11:48:35 UTC
+Last updated 2026-11-12 11:18:32 UTC
 </div>
 </div>
 </body>

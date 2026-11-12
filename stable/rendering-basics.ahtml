@@ -443,6 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#dev_mode_rendering">Dev mode rendering</a></li>
 <li><a href="#task_get_person_content">Task: Get person content</a></li>
+<li><a href="#media_urls">Media URLs</a></li>
 <li><a href="#task_add_person_template">Task: Add person template</a></li>
 <li><a href="#task_add_custom_header_and_footer">Task: Add custom header and footer</a></li>
 <li><a href="#the_common_query">The common query</a></li>
@@ -494,11 +495,11 @@ If you used a different name when creating the Enonic app, update the <code>.env
 <div class="listingblock">
 <div class="title">src/components/queries/getPerson.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {APP_NAME_UNDERSCORED} from '@enonic/nextjs-adapter';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import { APP_NAME_UNDERSCORED, imageUrlQuery, pageUrlQuery } from '@enonic/nextjs-adapter';
 
 const getPerson = () =&gt; `
-query($path:ID!){
-  guillotine {
+query {
+  guillotine(scopeKey: $scopeKey, branch: $branch, project: $project) {
     get(key:$path) {
       displayName
       ... on ${APP_NAME_UNDERSCORED}_Person {
@@ -506,7 +507,7 @@ query($path:ID!){
           dateofbirth
           photos {
            ... on media_Image {
-              imageUrl: imageUrl(type: absolute, scale: "width(500)")
+              ${imageUrlQuery({ scale: 'width(500)' })}
               attachments {
                 name
               }
@@ -515,7 +516,8 @@ query($path:ID!){
         }
       }
       parent {
-        _path(type: siteRelative)
+        _path
+        ${pageUrlQuery()}
       }
     }
   }
@@ -527,6 +529,18 @@ export default getPerson;</code></pre>
 <div class="paragraph">
 <p>This file defines a graphQL query 'getPerson' that will fetch data from the Enonic API.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Query uses variables <code>scopeKey</code>, <code>branch</code>, <code>project</code> and <code>path</code> that are automatically populated by the Enonic next.js adapter.
+</td>
+</tr>
+</table>
+</div>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -535,8 +549,8 @@ export default getPerson;</code></pre>
 </td>
 <td class="content">
 You may validate the query by copying it to the GraphQL playground.
-Replace <code>APP_NAME_UNDERSCORED</code> with <code>tutorial_nxp</code> and set a query variable, try this for instance:
-<code>{"path": "/hmdb/persons/brad-pittless"}</code>
+Replace <code>APP_NAME_UNDERSCORED</code> with <code>tutorial_nxp</code> and set the query variables, try this for instance:
+<code>{"path": "/hmdb/persons/brad-pittless", "project": "intro", "branch": "draft", "scopeKey": "/hmdb"}</code>
 </td>
 </tr>
 </table>
@@ -571,10 +585,24 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 <p>By visiting a person item (like <code><a href="http://localhost:3000/persons/morgan-floatman" target="_blank" rel="noopener">http://localhost:3000/persons/morgan-floatman</a></code>) you should now see data props listed in the view.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="media/morgan-floatman-props.png" alt="morgan floatman props" width="767px" title="Page showing data props for Morgan Freeman content item"></span></p>
+<p><span class="image"><img src="media/morgan-floatman-props.png" alt="morgan floatman props" width="767px" title="Page showing data props for Morgan Floatman content item"></span></p>
 </div>
 </li>
 </ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="media_urls"><a class="link" href="#media_urls">Media URLs</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>getPerson</code> query requests the image with <code>${imageUrlQuery({scale: 'width(500)'})}</code>, a Next.XP helper that selects the URL object (<code>path</code>, <code>queryString</code> and the media components) of a scaled version of the image.
+Its <code>path</code> is server-relative, so the view turns it into an absolute URL pointing at XP&#8217;s media API with <code>imageUrl(photo.imageUrl)</code>.
+The base URL comes from <code>ENONIC_MEDIA_CDN</code> and defaults to <code>ENONIC_API</code>, so no XP configuration is needed.</p>
+</div>
+<div class="paragraph">
+<p>Every Guillotine URL field has such a pair: <code>imageUrlQuery()</code>/<code>imageUrl()</code>, <code>mediaUrlQuery()</code>/<code>mediaUrl()</code>, <code>attachmentUrlQuery()</code>/<code>attachmentUrl()</code> and <code>pageUrlQuery()</code>/<code>pageUrl()</code>.
+The <code>pageUrl(data, meta)</code> function is the one to use for links between content items: it returns a relative URL prefixed with the current locale, except for the default locale which has no prefix.</p>
 </div>
 </div>
 </div>
@@ -591,13 +619,13 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 <div class="listingblock">
 <div class="title">src/components/views/Person.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import React from 'react'
-import {FetchContentResult, getUrl, I18n} from '@enonic/nextjs-adapter';
+<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import React from 'react';
+import { FetchContentResult, I18n, imageUrl, pageUrl } from '@enonic/nextjs-adapter';
 import Link from 'next/link';
 
 const Person = (props: FetchContentResult) =&gt; {
-    const {displayName, data, parent} = props.data?.get as any;
-    const {photos} = data;
+    const { displayName, data, parent } = props.data?.get as any;
+    const { photos } = data;
     const meta = props.meta;
 
     return (
@@ -607,7 +635,7 @@ const Person = (props: FetchContentResult) =&gt; {
                 {
                     photos.map((photo: any, i: number) =&gt; (
                         &lt;img key={i}
-                             src={getUrl(photo.imageUrl, meta)}
+                             src={imageUrl(photo.imageUrl, meta)}
                              title={getTitle(photo, displayName)}
                              alt={getTitle(photo, displayName)}
                              width="500"
@@ -615,10 +643,11 @@ const Person = (props: FetchContentResult) =&gt; {
                     ))
                 }
             &lt;/div&gt;
-            &lt;p&gt;&lt;Link href={getUrl(`/${parent._path}`, meta)}&gt;{I18n.localize('back')}&lt;/Link&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;Link href={pageUrl(parent.pageUrl, meta)} data-content-path={parent._path}&gt;{I18n.localize(
+                'back')}&lt;/Link&gt;&lt;/p&gt;
         &lt;/&gt;
-    )
-}
+    );
+};
 
 export default Person;
 
@@ -662,7 +691,8 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 </ol>
 </div>
 <div class="paragraph">
-<p>The content type mapping applies to every <code>person</code> content item in the site, regardless of its location in the hierarchy. Try looking at some other persons, e.g., <a href="http://localhost:3000/persons/uma-thurman" target="_blank" rel="noopener">http://localhost:3000/persons/uma-thurman</a></p>
+<p>The content type mapping applies to every <code>person</code> content item in the site, regardless of its location in the hierarchy.
+Try looking at some other persons, e.g., <a href="http://localhost:3000/persons/uma-tieoffman" target="_blank" rel="noopener">http://localhost:3000/persons/uma-tieoffman</a></p>
 </div>
 </div>
 </div>
@@ -673,7 +703,7 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 <p>With some styling applied, the header and the footer will make the site more interesting visually. Next.js provides a handy solution to this problem.</p>
 </div>
 <div class="paragraph">
-<p>The <code>src/app/layout.tsx</code> file is called root layout, and by modifying it we can inject the same header and footer components to all pages generated by Next.</p>
+<p>Next.js layouts wrap every page below them. The starter has a root layout (<code>src/app/layout.tsx</code>), a locale layout and a content layout (<code>src/app/[locale]/[[&#8230;&#8203;contentPath]]/layout.tsx</code>); by modifying the last one we can inject the same header and footer components into all content pages.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -682,7 +712,7 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Sample header and footer views are already included in the starter under /<code>src/components/views</code>, so all we need to do is put them to work.
+Sample header and footer views are already included in the starter under <code>src/components/views</code>, so all we need to do is put them to work.
 </td>
 </tr>
 </table>
@@ -693,28 +723,11 @@ Sample header and footer views are already included in the starter under /<code>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Replace first import</strong></p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {RENDER_MODE, XP_REQUEST_TYPE} from '@enonic/nextjs-adapter';</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>With this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {RENDER_MODE, XP_REQUEST_TYPE, I18n} from '@enonic/nextjs-adapter';</code></pre>
-</div>
-</div>
-</li>
-<li>
 <p><strong>Add these imports</strong></p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import Header from '../../../components/views/Header';
-import Footer from '../../../components/views/Footer';
-import {getAsset} from '@enonic/nextjs-adapter';</code></pre>
+import Footer from '../../../components/views/Footer';</code></pre>
 </div>
 </div>
 </li>
@@ -726,6 +739,7 @@ import {getAsset} from '@enonic/nextjs-adapter';</code></pre>
     &lt;LocaleContextProvider locale={resolvedParams.locale}&gt;
         &lt;StaticContent condition={isEdit}&gt;
             &lt;main&gt;{children}&lt;/main&gt;
+            &lt;DraftModeIndicator label={I18n.localize('draft-mode')}/&gt;
         &lt;/StaticContent&gt;
     &lt;/LocaleContextProvider&gt;
 )</code></pre>
@@ -739,9 +753,10 @@ import {getAsset} from '@enonic/nextjs-adapter';</code></pre>
 <pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">return (
     &lt;LocaleContextProvider locale={resolvedParams.locale}&gt;
         &lt;StaticContent condition={isEdit}&gt;
-            &lt;Header meta={meta} title={I18n.localize('title')} logoUrl={getAsset('/images/xp-shield.svg', meta)}/&gt;
+            &lt;Header meta={meta} title={I18n.localize('title')} logoUrl="/images/xp-logo.svg"/&gt;
             &lt;main&gt;{children}&lt;/main&gt;
             &lt;Footer/&gt;
+            &lt;DraftModeIndicator label={I18n.localize('draft-mode')}/&gt;
         &lt;/StaticContent&gt;
     &lt;/LocaleContextProvider&gt;
 )</code></pre>
@@ -750,21 +765,8 @@ import {getAsset} from '@enonic/nextjs-adapter';</code></pre>
 </li>
 </ol>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Pay attention to the <code>getAsset()</code> function.
-It ensures that links to assets are working seamlessly in Next.js, as well as in Content Studio preview mode, as you will see later.
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
-<p>Morgan Freeman&#8217;s page should now look like this</p>
+<p>Morgan Floatman&#8217;s page should now look like this</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="media/morgan-floatman-header-footer.png" alt="morgan floatman header footer" width="768px" title="Rendering with header and footer"></span></p>
@@ -811,7 +813,7 @@ If you do not need any common props, remove it from the mappings to optimize per
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 11:48:35 UTC
+Last updated 2026-11-12 11:18:32 UTC
 </div>
 </div>
 </body>

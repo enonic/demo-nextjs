@@ -449,11 +449,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#task_configure_application">Task: Configure application</a></li>
 <li><a href="#task_boot_the_server">Task: Boot the server</a></li>
-<li><a href="#next_url_patterns">Next URL patterns</a>
-<ul class="sectlevel2">
+<li><a href="#next_url_patterns">Next URL patterns</a></li>
 <li><a href="#task_visit_some_more_pages">Task: Visit some more pages</a></li>
-</ul>
-</li>
 </ul>
 </div>
 </div>
@@ -489,7 +486,19 @@ Next.js supports both client-side rendering and <a href="https://nextjs.org/docs
 <p><strong>starter-nextjs</strong> is based on <a href="https://nextjs.org/docs/getting-started">Next.js' own introduction app</a>, so if you&#8217;re familiar with that, you&#8217;ll recognize the structure of the files.</p>
 </div>
 <div class="paragraph">
-<p>The template includes some boilerplate we will customize, and an npm dependency aka ´The Enonic Adapter` that facilitates and simplifies integration with Enonic.</p>
+<p>The template includes some boilerplate we will customize, and an npm dependency aka <code>The Enonic Adapter</code> (<code>@enonic/nextjs-adapter</code>) that facilitates and simplifies integration with Enonic.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+This tutorial requires the Next.XP 6 starter, with <code>@enonic/nextjs-adapter</code> 6 and <code>@enonic/page-editor</code> 2. Check <code>package.json</code> before continuing: a starter using adapter 5 is not compatible with the Guillotine 9 examples in this tutorial.
+</td>
+</tr>
+</table>
 </div>
 <div class="sect2">
 <h3 id="code_overview"><a class="link" href="#code_overview">Code overview</a></h3>
@@ -503,24 +512,32 @@ Next.js supports both client-side rendering and <a href="https://nextjs.org/docs
 src/
     proxy.ts                        <i class="conum" data-value="2"></i><b>(2)</b>
     components/                     <i class="conum" data-value="3"></i><b>(3)</b>
+        _mappings.ts
+        queries/
+            common.ts
+        views/
+            Header.tsx
+            Footer.tsx
+            PageEditorScript.tsx
     phrases/                        <i class="conum" data-value="4"></i><b>(4)</b>
         en.json
     styles/                         <i class="conum" data-value="5"></i><b>(5)</b>
     app/
-        [locale]
+        layout.tsx                  <i class="conum" data-value="6"></i><b>(6)</b>
+        [locale]/
+            layout.tsx              <i class="conum" data-value="7"></i><b>(7)</b>
+            error.tsx               <i class="conum" data-value="8"></i><b>(8)</b>
+            not-found.tsx           <i class="conum" data-value="9"></i><b>(9)</b>
             [[...contentPath]]/
-                layout.tsx          <i class="conum" data-value="6"></i><b>(6)</b>
-                page.tsx            <i class="conum" data-value="7"></i><b>(7)</b>
-            layout.tsx              <i class="conum" data-value="8"></i><b>(8)</b>
-            error.tsx               <i class="conum" data-value="9"></i><b>(9)</b>
-            not-found.tsx           <i class="conum" data-value="10"></i><b>(10)</b>
-        api/                        <i class="conum" data-value="11"></i><b>(11)</b>
+                layout.tsx          <i class="conum" data-value="10"></i><b>(10)</b>
+                page.tsx            <i class="conum" data-value="11"></i><b>(11)</b>
+        api/                        <i class="conum" data-value="12"></i><b>(12)</b>
+            mappings/
+                route.ts
             preview/
-                route.tsx
-            renderable/
-                route.tsx
+                route.ts
             revalidate/
-                route.tsx</code></pre>
+                route.ts</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -531,11 +548,11 @@ src/
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Middleware file that routes requests based on locale</td>
+<td>Proxy: validates Content Studio preview requests (encrypted <code>xp</code> blob) and enables draft mode through <code>/api/preview</code>, rewrites URLs without a locale prefix to the internal default-locale route and redirects <code>/&lt;default locale&gt;/&#8230;&#8203;</code> to <code>/&#8230;&#8203;</code></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Contains your implementation of CMS components</td>
+<td>Your implementation of CMS components: the component mappings (<code>_mappings.ts</code>), the common query and ready-made views (header, footer and the page editor script)</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
@@ -547,26 +564,30 @@ src/
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Layout file for all pages under the locale/content path</td>
+<td>Root layout required by Next.js</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="7"></i><b>7</b></td>
-<td>The main rendering file, catching all requests satisfying the pattern <code>/[locale]/[[&#8230;&#8203;contentPath]]</code></td>
+<td>Locale layout: renders <code>&lt;html&gt;</code> and <code>&lt;body&gt;</code>, sets the locale used for static texts and the page metadata</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="8"></i><b>8</b></td>
-<td>Global layout file that wraps all pages and adds common structures (eg. <code>&lt;Header&gt;</code>, <code>&lt;LocaleContextProvider&gt;</code>, etc.)</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="9"></i><b>9</b></td>
 <td>Error page handler</td>
 </tr>
 <tr>
-<td><i class="conum" data-value="10"></i><b>10</b></td>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
 <td>Not found page handler</td>
 </tr>
 <tr>
+<td><i class="conum" data-value="10"></i><b>10</b></td>
+<td>Content layout: fetches the content and wraps every page with the locale context, the static content wrapper and the draft mode indicator</td>
+</tr>
+<tr>
 <td><i class="conum" data-value="11"></i><b>11</b></td>
+<td>The main rendering file, catching all requests satisfying the pattern <code>/[locale]/[[&#8230;&#8203;contentPath]]</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="12"></i><b>12</b></td>
 <td>Folder containing API routes</td>
 </tr>
 </table>
@@ -595,8 +616,17 @@ ENONIC_APP_NAME=tutorial.nxp
 # Enonic XP projects configuration for different locales
 ENONIC_MAPPINGS=en:intro/hmdb <i class="conum" data-value="1"></i><b>(1)</b>
 
-# Absolute URL to Content API
-ENONIC_API=http://127.0.0.1:8080/site <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+# Absolute URL to the Enonic XP API root
+ENONIC_API=http://localhost:8080/api <i class="conum" data-value="2"></i><b>(2)</b>
+
+# Guillotine API descriptor, appended to ENONIC_API
+#GUILLOTINE_API=com.enonic.app.guillotine:graphql <i class="conum" data-value="3"></i><b>(3)</b>
+
+# Absolute URL to the media API, only needed if media is served from another host (e.g. a CDN)
+#ENONIC_MEDIA_CDN=http://localhost:8080/api <i class="conum" data-value="4"></i><b>(4)</b>
+
+# Absolute URL to Enonic admin, only needed if it differs from the API origin (used for CORS)
+#ENONIC_ADMIN=http://localhost:8080 <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -607,7 +637,26 @@ ENONIC_API=http://127.0.0.1:8080/site <i class="conum" data-value="2"></i><b>(2)
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Base URL of the Guillotine API, but without project and branch.</td>
+<td>Root of the Enonic API.
+The Guillotine endpoint is <code>ENONIC_API</code> + <code>/</code> + <code>GUILLOTINE_API</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Optional.
+Guillotine API location.
+Defaults to <code>com.enonic.app.guillotine:graphql</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Optional.
+Base URL for images and attachments.
+Defaults to <code>ENONIC_API</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Optional.
+Origin of the Enonic admin UI, used for CORS.
+Defaults to the origin of <code>ENONIC_API</code>.</td>
 </tr>
 </table>
 </div>
@@ -666,7 +715,7 @@ npm run dev</pre>
 Common:
 {
   "get": {
-    "displayName": "hmdb",
+    "displayName": "HMDB",
     "_id": "3584c396-25cb-497e-b1f4-dc2bf0de4b5a",
     "type": "portal:site",
     "dataAsJson": {
@@ -675,11 +724,23 @@ Common:
     "xAsJson": {}
   },
   "getSite": {
-    "displayName": "hmdb",
+    "displayName": "HMDB",
     "_path": "/hmdb"
   }
 }</code></pre>
 </div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>_id</code> values differ from installation to installation.
+</td>
+</tr>
+</table>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -720,7 +781,7 @@ Common:
 Common:
 {
   "get": {
-    "displayName": "s7ven",
+    "displayName": "S7ven",
     "_id": "1cb3dbf4-31d1-4e8a-816a-8cf891de7ad6",
     "type": "tutorial.nxp:movie",
     "dataAsJson": {
@@ -755,7 +816,7 @@ Common:
     }
   },
   "getSite": {
-    "displayName": "hmdb",
+    "displayName": "HMDB",
     "_path": "/hmdb"
   }
 }</code></pre>
@@ -765,8 +826,11 @@ Common:
 <div class="title">S7ven as seen in Content Studio - internal path is <code>/hmdb/movies/s7ven</code></div>
 <p><span class="image"><img src="media/s7ven-edit.png" alt="s7ven edit" width="768px" title="Editing item in Content Studio - the path /hmdb/movies/s7ven is highlighted"></span></p>
 </div>
-<div class="sect2">
-<h3 id="task_visit_some_more_pages"><a class="link" href="#task_visit_some_more_pages">Task: Visit some more pages</a></h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="task_visit_some_more_pages"><a class="link" href="#task_visit_some_more_pages">Task: Visit some more pages</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Give the default rendering a spin by trying out some other URLs, for example:<br></p>
 </div>
@@ -795,10 +859,9 @@ Common:
 </div>
 </div>
 </div>
-</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-10 11:48:35 UTC
+Last updated 2026-11-12 11:18:32 UTC
 </div>
 </div>
 </body>
