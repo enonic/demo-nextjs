@@ -7,6 +7,10 @@
       "latest": true
     },
     {
+      "label": "5.x",
+      "checkout": "5.x"
+    },
+    {
       "label": "4.x",
       "checkout": "4.x"
     },
