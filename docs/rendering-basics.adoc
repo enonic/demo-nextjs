@@ -150,7 +150,7 @@ With this:
 return (
     <LocaleContextProvider locale={resolvedParams.locale}>
         <StaticContent condition={isEdit}>
-            <Header meta={meta} title={I18n.localize('title')} logoUrl="/images/xp-shield.svg"/>
+            <Header meta={meta} title={I18n.localize('title')} logoUrl="/images/xp-logo.svg"/>
             <main>{children}</main>
             <Footer/>
             <DraftModeIndicator label={I18n.localize('draft-mode')}/>
