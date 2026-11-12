@@ -35,7 +35,7 @@ The draft cookie issued by the dev server belongs to another build, so the proxy
 == Task: Test page invalidation
 With all pages now being cached as files, Next.js must be instructed to re-generate the pages when a change is published.
 
-. **Add the `Next.XP` app to your site**, just like you added your own app in the <<sites#, Sites>> chapter (select it in the `Applications` field, click `Apply`, then publish the site).
+. **Verify that the `Next.XP` app is added to your site, and that the site is published**. You added the app in the <<preview#, Preview>> chapter, and published the site in the <<pages#, Pages>> chapter.
 This will ensure that the revalidation hook is triggered when you publish content.
 +
 . *Edit your front-page, and publish the changes*.

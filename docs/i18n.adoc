@@ -118,9 +118,9 @@ In some cases, you may prefer a setup where each language/market is served by a 
 
 Setting up Next.js to do this is just like handling a single language. To enable Content Studio preview to know which Next.js server to use, some additional configuration will be required.
 
-. *Update the Next.XP configuration file* for your Enonic installation by adding multiple entries:
+. *Create the Next.XP configuration file* for your Enonic installation, and add an entry for each front-end:
 +
-NOTE: The sandbox configuration files are located in the sandbox' home directory inside your user's root directory at `.enonic/sandboxes/<your-sandbox-name>/home/config`.
+NOTE: The sandbox configuration files are located in the sandbox' home directory inside your user's root directory at `.enonic/sandboxes/<your-sandbox-name>/home/config`. The full path is also listed on the sandbox Welcome page at http://localhost:8080[http://localhost:8080^], together with the existing configuration files. Create the file `com.enonic.app.nextxp.cfg` in this folder.
 +
 .com.enonic.app.nextxp.cfg
 [source,properties]
@@ -140,7 +140,7 @@ NOTE: Every configured URL is automatically allowed in Content Studio's Content 
 +
 . *Assign the configuration to your site* by clicking the pencil icon next to the `Next.XP` app name in the site form, and selecting it from the list of named configurations:
 +
-image:content-studio-configure-nextxp.png[title="Form with fields for server url and nextjs token",width=771px]
+image:content-studio-configure-nextxp.png[title="Selecting a named configuration for the Next.XP app in the site form",width=771px]
 
 == Accessing locale in views
 

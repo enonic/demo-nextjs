@@ -112,10 +112,10 @@ Unlike your local sandbox, a production server allows only explicitly configured
 +
 NOTE: If you imported content from your local environment, the following two steps can be skipped
 +
-NOTE: The Next.XP app adds a preview widget that works without adding the app to the site.
-However, adding it to the site lets you select a named configuration from the app config file.
+NOTE: The preview widget and the revalidation hook only work for sites the Next.XP app has been added to.
+Adding it to the site also lets you select a named configuration from the app config file.
 +
-. Optionally, **add the Next.XP app to the site** to select a named configuration.
+. **Add the Next.XP app to the site**, in addition to your own app.
 . **Save and verify** that the configuration is working by testing the Content Studio preview.
 
 == Task: Publish a page

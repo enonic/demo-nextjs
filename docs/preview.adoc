@@ -6,7 +6,7 @@ In this chapter, you'll enable Content Studio to load the preview directly from 
 
 == Task: Enable preview
 
-Install version 6 of the `Next.XP` app that adds a new preview widget, titled "Next.js Preview", to Content Studio.
+To enable the preview, install version 6 of the `Next.XP` app and add it to your site. The app provides a preview widget, titled "Next.js Preview", for the sites it has been added to.
 
 NOTE: The Next.XP app requires Enonic XP 8.1 or later.
 
@@ -14,15 +14,18 @@ NOTE: The Next.XP app requires Enonic XP 8.1 or later.
 +
 From `XP menu` -> `Applications` -> `Install` and search for `Next.XP`
 +
-The preview widget will work immediately after installation.
-Optionally, you can add the app to the site to select a named configuration (useful for multi front-end setups, covered in the <<i18n#, Multi language>> chapter).
+. **Add the Next.XP app to your site**:
++
+Edit the `HMDB` site, select `Next.XP` in the `Applications` field - in addition to your own app - and click `Apply`, just like you did in the <<sites#, Sites>> chapter.
++
+NOTE: The preview is only available for sites the `Next.XP` app has been added to.
 +
 By default Next.XP uses the following values:
 +
 * *url*: `http://localhost:3000`
 * *secret*: `mySecretKey`
 +
-This matches your setup, so everything should work out of the box. We will get back to tuning these values in the <<static#, Static pages>>, and <<deployment#, Deployment>> chapters.
+This matches your setup, so no further configuration is needed. We will get back to tuning these values in the <<static#, Static pages>>, <<i18n#, Multi language>> and <<deployment#, Deployment>> chapters.
 +
 NOTE: Content Studio ships with a strict Content Security Policy that blocks loading pages from third-party URLs, including `http://localhost:3000`.
 The Next.XP app automatically adds its configured Next.js origins to this policy, so no manual configuration is needed.
@@ -37,7 +40,7 @@ image:morgan-floatman-preview.png[title="Next.js-rendered preview in Content Stu
 == How does it work?
 
 The Next.XP app adds a preview widget, titled "Next.js Preview", to Content Studio that loads pages directly from the Next.js server.
-When an editor selects a content item, the widget:
+When an editor selects a content item in a site the app has been added to, the widget:
 
 . Fetches URL mapping rules for the current project from the Next.js server's `/api/mappings` endpoint (the request carries the encrypted project id, and the route prefixes the targets with that project's locale unless it is the default locale)
 . Resolves the content item to a Next.js URL using those mappings
