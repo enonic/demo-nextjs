@@ -1,10 +1,6 @@
 {
   "versions": [
     {
-      "label": "next",
-      "checkout": "docs-conventions"
-    },
-    {
       "label": "stable",
       "checkout": "master",
       "displayName": "6.x",
