@@ -667,7 +667,7 @@ Defaults to the origin of <code>ENONIC_API</code>.</td>
 </div>
 </li>
 <li>
-<p><strong>Set the app name</strong> - The starter ships with a different value for <code>ENONIC_APP_NAME</code>. Change it to <code>com.example.tutorial.nextjs</code>, the name of the app you created in the <a href="enonic-setup.ahtml">first chapter</a>. The other values should already match.</p>
+<p><strong>Check the app name</strong> - <code>ENONIC_APP_NAME</code> must match the name of the app you created in the <a href="enonic-setup.ahtml">first chapter</a>: <code>com.example.tutorial.nextjs</code>. Update the value if you used a different name.</p>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -902,7 +902,7 @@ Some sample content, such as the <code>Movies</code> folder, already has a page 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 20:36:43 UTC
+Last updated 2026-11-19 20:47:45 UTC
 </div>
 </div>
 </body>
