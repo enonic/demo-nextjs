@@ -481,7 +481,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="media/cloud-preview.png" alt="Content Studio showing a live preview of the front page rendered by Next.js" width="1419">
+<img src="media/cloud-preview.webp" alt="Content Studio showing a live preview of the front page rendered by Next.js" width="1419">
 </div>
 <div class="title">Figure 1. Editors enjoy WYSIWYG editing and live preview, combined with statically generated pages</div>
 </div>
@@ -612,7 +612,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 20:47:45 UTC
+Last updated 2026-11-19 21:16:25 UTC
 </div>
 </div>
 </body>

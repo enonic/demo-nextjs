@@ -704,7 +704,7 @@ ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
 <p><strong>Add the part to the page</strong> - Open the context panel by pressing its icon in the top right screen corner, select <code>Page</code> in the widget dropdown, then <code>Main</code> in the Template dropdown. Add the <code>Movie Details</code> part to the page: drag <code>Part</code> from the <code>Insert</code> tab into the region and pick it in the part dropdown.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/movie-details.png" alt="No time to deflate, configured with movie-details part" width="1440">
+<img src="media/movie-details.webp" alt="No time to deflate, configured with movie-details part" width="1440">
 </div>
 </div>
 <div class="paragraph">
@@ -715,7 +715,7 @@ ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
 <p><strong>Select the page component</strong> - In the <code>Page</code> tab of the form on the left, select the page (root) component named <code>Main</code>.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/movie-page.png" alt="The Main page component selected in the Page tab of a movie" width="1440">
+<img src="media/movie-page.webp" alt="The Main page component selected in the Page tab of a movie" width="1440">
 </div>
 </div>
 </li>
@@ -757,7 +757,7 @@ ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 20:47:45 UTC
+Last updated 2026-11-19 21:16:25 UTC
 </div>
 </div>
 </body>

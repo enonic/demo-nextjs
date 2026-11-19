@@ -663,7 +663,7 @@ This overrides the default preview configuration for all sites using the Next.XP
 <p><strong>Verify the preview</strong> - Save, then launch Enonic XP Admin from the solution dashboard and open Content Studio. The preview should now show your front-end.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/cloud-preview.png" alt="Front page as seen from Content Studio" width="1419">
+<img src="media/cloud-preview.webp" alt="Front page as seen from Content Studio" width="1419">
 </div>
 </div>
 </li>
@@ -708,7 +708,7 @@ When asked, the Next.js Preview widget does the following:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 20:47:45 UTC
+Last updated 2026-11-19 21:16:25 UTC
 </div>
 </div>
 </body>

@@ -638,7 +638,7 @@ The sample content also uses a <code>filmography</code> macro, for instance in t
 <p><strong>Verify the rendering</strong> - The page for <a href="http://localhost:3000/persons/lea-seydough">Lea Seydough</a> now shows the <code>FactBox</code> macro:</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/rich-text-result.png" alt="Person content rendered with rich text and macro" width="1080">
+<img src="media/rich-text-result.webp" alt="Person content rendered with rich text and macro" width="1080">
 </div>
 </div>
 </li>
@@ -661,7 +661,7 @@ The sample content also uses a <code>filmography</code> macro, for instance in t
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 20:47:45 UTC
+Last updated 2026-11-19 21:16:25 UTC
 </div>
 </div>
 </body>
