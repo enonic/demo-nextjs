@@ -58,7 +58,7 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 
 . *Verify the result* - Visit a person item, like http://localhost:3000/persons/morgan-floatman[http://localhost:3000/persons/morgan-floatman]. The view now lists the data props from your query.
 +
-image::morgan-floatman-props.png[Page showing data props for Morgan Floatman content item,width=767]
+image::morgan-floatman-props.png[Page showing data props for Morgan Floatman content item,width=1024]
 
 == Media URLs
 
@@ -105,7 +105,7 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 
 . *Verify the result* - The page reloads automatically once the changes have been saved:
 +
-image::morgan-floatman-render.png[Person rendering with query and view,width=768]
+image::morgan-floatman-render.png[Person rendering with query and view,width=1024]
 
 The content type mapping applies to every `person` content item in the site, regardless of its location in the hierarchy.
 Try looking at some other persons, such as http://localhost:3000/persons/uma-tieoffman[http://localhost:3000/persons/uma-tieoffman].
@@ -160,7 +160,7 @@ return (
 
 . *Verify the result* - Morgan Floatman's page should now look like this:
 +
-image::morgan-floatman-header-footer.png[Rendering with header and footer,width=768]
+image::morgan-floatman-header-footer.png[Rendering with header and footer,width=1024]
 
 == The common query
 

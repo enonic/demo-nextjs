@@ -63,6 +63,9 @@ src/
         api/                        // <12>
             mappings/
                 route.ts
+            media/
+                [...path]/
+                    route.ts
             preview/
                 route.ts
             revalidate/
@@ -126,7 +129,7 @@ Defaults to `+ENONIC_API+`.
 Origin of the Enonic admin UI, used for CORS.
 Defaults to the origin of `+ENONIC_API+`.
 
-. *Update any value that differs* - In particular, `+ENONIC_APP_NAME+` must match the name of the app you created in the <<enonic-setup#,first chapter>>: `{app-id}`.
+. *Set the app name* - The starter ships with a different value for `+ENONIC_APP_NAME+`. Change it to `{app-id}`, the name of the app you created in the <<enonic-setup#,first chapter>>. The other values should already match.
 +
 TIP: These configuration values can be overridden later when deploying your app to a live server.
 
@@ -208,21 +211,18 @@ Common:
       "cast": [
         {
           "actor": "6414dc62-a3a1-4772-961f-06cb85b1bbb7",
-          "character": "Somerset"
+          "character": "Sumerset"
         },
         {
           "actor": "3a7b833f-3c37-4d55-88ae-cea21c556c68",
-          "character": "Mills"
+          "character": "Mylar"
         }
       ],
       "website": null,
       "release": "1995-09-22",
-      "subtitle": "Chilling thriller with a plot beyond belief",
-      "abstract": "Two detectives, a rookie and a veteran, hunt a serial killer who uses the seven deadly sins as his motives.",
-      "photos": [
-        "6ca58af1-6810-4fae-b51b-f70e01fc4c17",
-        "5cb115db-eb1c-4314-8376-2cb711dea5bd"
-      ]
+      "subtitle": "What's in the box?",
+      "abstract": "Two balloon-headed detectives hunt a serial killer who is using the seven deadly sins to deflate his victims one balloon at a time. The desert finale is famously breathless.",
+      "photos": "6ca58af1-6810-4fae-b51b-f70e01fc4c17"
     },
     "xAsJson": {
       "com-example-tutorial-nextjs": {
@@ -242,7 +242,7 @@ Common:
 ----
 
 .S7ven as seen in Content Studio - internal path is `/hmdb/movies/s7ven`
-image::s7ven-edit.png[Editing item in Content Studio - the path /hmdb/movies/s7ven is highlighted,width=768]
+image::s7ven-edit.png[Editing item in Content Studio - the path /hmdb/movies/s7ven is highlighted,width=1280]
 
 == Task: Visit some more pages
 
@@ -250,11 +250,13 @@ Give the default rendering a spin.
 
 . *Try some other URLs*, for example:
 +
-* http://localhost:3000/movies[http://localhost:3000/movies]
+* http://localhost:3000/movies/pump-fiction[http://localhost:3000/movies/pump-fiction]
 * http://localhost:3000/persons[http://localhost:3000/persons]
 * http://localhost:3000/persons/brad-pittless[http://localhost:3000/persons/brad-pittless]
 
 . *Verify the rendering* - Each page lists the props of the content item at that path.
++
+NOTE: Some sample content, such as the `Movies` folder, already has a page defined. These items show a "Missing component" message until you register the page components later in the tutorial.
 
 == Summary
 

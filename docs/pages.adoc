@@ -25,9 +25,11 @@ ComponentRegistry.addContentType(CATCH_ALL, {
 */
 ----
 
+. *Restart the Next.js dev server* - Stop it with ctrl-c and run `npm run dev` again. Mappings that are removed are not unregistered by hot reloading.
+
 . *Verify that pages no longer render the JSON body* by visiting your site on `http://localhost:3000`.
 +
-The same now applies to Content Studio.
+Content without a mapping, such as the front page and the movies, now responds with "404 page not found", while persons are rendered as before. The same applies to the preview in Content Studio.
 
 == Task: Set up page rendering
 
@@ -154,7 +156,7 @@ NOTE: `richTextQuery` generates the query fragment needed for the adapter to res
 . *Add the part to your page* - Back in Content Studio, drag `Part` from the `Insert` tab on the right hand side into the region, then select `Paragraph` in the part dropdown of the `Inspect` tab.
 Use the {cs-docs}/{cs-docs-version}/editor/rich-text-editor[rich text editor] to write and format text, as well as insert images or macros, and click `Apply`.
 +
-image::paragraph-component.png[Next.js-rendered paragraph part with an image,width=1440]
+image::paragraph-component.png[Next.js-rendered paragraph part on the front page in Content Studio,width=1440]
 
 . *Verify the result* - Click the `Preview` button in Content Studio to see a full-screen version of the page.
 
@@ -168,7 +170,7 @@ Content Studio activates Next.js' preview mode, which in turn uses the drafts AP
 
 . *Publish the page* - Click `Mark as ready`, and then `Publish now` in the Publishing Wizard.
 +
-image::publish.png[Publishing wizard,width=810]
+image::publish.png[Publishing wizard,width=1440]
 
 . *Verify that your page is live* - Visit http://localhost:3000[http://localhost:3000] in an incognito window once again.
 

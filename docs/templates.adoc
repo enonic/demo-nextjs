@@ -61,13 +61,13 @@ You now have a single movie nicely presented, but it would be cumbersome to conf
 
 . *Select the page component* - In the `Page` tab of the form on the left, select the page (root) component named `Main`.
 +
-image::movie-page.png["With page component selected, save as template appears in right hand panel",width=1440]
+image::movie-page.png["The Main page component selected in the Page tab of a movie",width=1440]
 
 . *Save as template* - Right-click the component and select `Save as Template` from the context menu.
 +
 This creates a new page template content item, and opens it in a new tab for editing.
 
-. *Give your template a better name*, such as "Movie details". The change is saved automatically. The template already supports the `Movie` content type.
+. *Give your template a better name*, such as "Movie details", and click `Save`. The template already supports the `Movie` content type.
 +
 image::movie-template.png["Content item of type template, configure to support movie items",width=1440]
 

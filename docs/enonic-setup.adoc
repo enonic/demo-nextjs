@@ -60,14 +60,15 @@ The last command builds and deploys the app to the sandbox, then watches the cod
 
 . *Verify the deployment* - In `dev` mode the CLI keeps watching for changes, so the build process never exits. This is expected behavior. When your terminal shows output like the following, the app has been built and deployed:
 +
-[source,text]
+[source,text,subs="attributes+"]
 ----
-[server] CLI Watching for changes in "."
-[server] CLI Ignoring changes in "**/{.git,node_modules}/**" | "build/resources/main"
-[browserSync] [Browsersync] Reloading Browsers... (buffered 9 events)
-<============-> 94% EXECUTING [17m 31s]
-> :dev
+> Task :deploy
+Deploying 'nextjs.jar' to '.../.enonic/sandboxes/{sandbox-name}/home/deploy'
+BUILD SUCCESSFUL in 1m 16s
+Waiting for changes to input files...
 ----
++
+On its first deployment, the app creates the `Intro Project` content project and publishes its sample content.
 
 Leave `enonic dev` running in this terminal window as well. To stop it, press ctrl-c. To resume the tutorial later, start the sandbox and then run `enonic dev` from the `{enonic-folder}` folder again.
 
@@ -78,14 +79,14 @@ The sandbox has a web interface for managing applications and content.
 . *Open the Welcome page* - Go to http://localhost:8080[http://localhost:8080] in your browser.
 +
 .Welcome page
-image::xp-boot.png[The XP boot page,width=1085]
+image::xp-boot.png[The XP boot page,width=1280]
 +
 The Welcome page provides an overview of the sandbox, including installed applications and {xp-docs}/{xp-docs-version}/config[standard configuration files]. `Intro` should be in the list, together with the other applications that were installed when you created the sandbox.
 
 . *Log in* - Click btn:[Log In as Guest] to open the XP admin dashboard.
 +
 .The XP admin dashboard
-image::xp-dashboard.png[The XP admin dashboard,width=1085]
+image::xp-dashboard.png[The XP admin dashboard,width=1280]
 +
 The center menu, known as the `XP menu`, lets you navigate between admin tools.
 Applications can add admin tools as extensions.
@@ -104,7 +105,7 @@ TIP: The current project is shown at the top of Content Studio.
 
 . *Verify the sample content* - Content Studio lists the sample content items:
 +
-image::content-studio-moviedb.png[Movie DB in Content Studio,width=1440]
+image::content-studio-moviedb.png[Movie DB in Content Studio,width=1280]
 +
 NOTE: Some of the content items will have a default preview. That's okay for now - you'll customize the preview later.
 

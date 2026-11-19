@@ -15,7 +15,7 @@ Enonic has a {cms-docs}/{cms-docs-version}/schemas/form-items/htmlarea[rich text
 The sample data set contains everything you need to get going.
 The `Bio` field for persons is a rich text form item, and some persons are even populated with relevant content, like you see below:
 
-image::rich-text-bio.png[Rich text bio field for Lea Seydough,width=662]
+image::rich-text-bio.png[Rich text bio field for Lea Seydough,width=490]
 
 == Task: Render rich text
 

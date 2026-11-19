@@ -18,7 +18,7 @@ For every content project in your sandbox, you automatically get an API. Query P
 . *Open Query Playground* - Click `Query Playground` in the Content Studio menu.
 . *Verify that the API is available* - You should see the following:
 +
-image::content-studio-guillotine.png[Browsing the Guillotine API using Query Playground,width=1440]
+image::content-studio-guillotine.png[Browsing the Guillotine API using Query Playground,width=1280]
 
 [NOTE]
 ====
@@ -50,9 +50,9 @@ Run this query, which retrieves the ID and display name of some movies:
             }
           }
           sort: {
-          	field:"displayName"
-          	direction:ASC
-        	}
+            field:"displayName"
+            direction:ASC
+          }
         ) {
             id: _id
             displayName
@@ -65,7 +65,7 @@ NOTE: `intro` is the name of the Content Studio project. `{app-id}` refers to th
 
 . *Verify the result* - After executing the query, the response panel on the right shows the result:
 +
-image::content-studio-basic-query.png[Running a query for movies in Query Playground,width=1440]
+image::content-studio-basic-query.png[Running a query for movies in Query Playground,width=1280]
 
 == Task: Use query variables
 
@@ -89,7 +89,7 @@ query($path:ID!){               # <1>
 <1> `path` is declared (with a `$` marking it as a variable in the query). The declaration includes its type (`ID`), and a `!` marking it as a _required_ parameter.
 <2> The `path` variable is used here as the value of the `key` parameter, passed to the `get` field.
 
-. *Add query variables* - In the bottom left of Query Playground, you will find the `Query variables` tab. Add the following JSON to the field:
+. *Add query variables* - In the bottom left of Query Playground, you will find the `Variables` tab. Add the following JSON to the field:
 +
 NOTE: The `path` field in the JSON corresponds to the `$path` in the query string above:
 +

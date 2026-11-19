@@ -54,10 +54,12 @@ NOTE: Macros do not support the regular queries, but you may use `configQuery`. 
 TIP: You do not need to ask for the macro body, as it is implicitly passed to the macro component.
 +
 IMPORTANT: Macros must be registered before the adapter prepares the outgoing query. Register the macro in `+_mappings.ts+` so it is available when requests are handled.
++
+NOTE: The sample content also uses a `filmography` macro, for instance in the bio of Keanu Reefs. This tutorial does not implement it, so those pages show a notice about the missing macro. Register a component for it in the same way if you want to render it.
 
 . *Verify the rendering* - The page for http://localhost:3000/persons/lea-seydough[Lea Seydough] now shows the `FactBox` macro:
 +
-image::rich-text-result.png[Person content rendered with rich text and macro,width=1142]
+image::rich-text-result.png[Person content rendered with rich text and macro,width=1080]
 
 == Summary
 

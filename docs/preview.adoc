@@ -32,7 +32,7 @@ In production, only explicitly configured URLs are allowed.
 . *Verify the preview* - Select any content in the "Persons" folder: the preview pane now shows the page rendered by Next.js.
 The preview toolbar's widget selector is set to `Automatic`, which picks the first preview that can render the item - choose `Next.js Preview` explicitly if another preview shows up.
 +
-image::morgan-floatman-preview.png[Next.js-rendered preview in Content Studio,width=1072]
+image::morgan-floatman-preview.png[Next.js-rendered preview of a person in Content Studio,width=1280]
 
 == How does it work?
 

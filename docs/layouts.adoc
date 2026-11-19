@@ -67,11 +67,11 @@ ComponentRegistry.addLayout(`${APP_NAME}:2-column`, {
 +
 NOTE: This specific layout does not need any additional data, hence no query or processor.
 
-. *Verify the result* - In Content Studio, add the layout to a page, and then add components inside the layout.
+. *Verify the result* - In Content Studio, add the layout to a page: drag `Layout` from the `Insert` tab into the region and select `2 columns` in the `Inspect` tab. Then add parts inside the `left` and `right` regions of the layout.
 +
-By combining layout, part and text components, the potential of the page editor starts to show:
+By combining layouts and parts, the potential of the page editor starts to show:
 +
-image::layout-part-text.png[Layout combined with part and text components,width=1440]
+image::layout-part-text.png[Front page with a paragraph above a two-column layout holding a child list and a paragraph,width=1440]
 
 == Summary
 

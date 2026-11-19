@@ -88,6 +88,8 @@ image::child-list-rendered.png[Part rendered with list of persons as seen from C
 +
 Try customizing the part configuration and see what happens.
 
+. *Publish the page* - Click `Mark as ready`, and then `Publish now` in the Publishing Wizard, like you did for the front page. The list of persons is now available on http://localhost:3000/persons[http://localhost:3000/persons] as well.
+
 == Task: Add a heading part (optional)
 
 For more components to play with, you may add another part. This task is optional.
@@ -103,9 +105,12 @@ kind: "Part"
 title: "Heading"
 description: "Demo heading"
 form:
-- type: "TextLine"
-  name: "heading"
-  label: "Override heading"
+  - type: "TextLine"
+    name: "heading"
+    label: "Override heading"
+    occurrences:
+      min: 0
+      max: 1
 ----
 
 . *Redeploy the Enonic app* - This is only needed if you had to add the descriptor, and happens automatically if you started `enonic dev`.

@@ -17,12 +17,12 @@ To demonstrate multi-language, you first need to activate support for translatin
 
 . *Open the project settings* - In Content Studio, click the `Settings` cog icon on the left-hand side of the grid. You will be presented with the currently available projects:
 +
-image::content-studio-settings.png[Project list,width=1024]
+image::content-studio-settings.png[Project list,width=1280]
 
 . *Create a layer* - Select the existing `Intro Project` and click the `New` button.
 This opens the project wizard with `Intro Project` preselected as the parent project, so the new project becomes a layer.
 +
-image::content-studio-create-layer.png[Layered project type,width=1024]
+image::content-studio-create-layer.png[Layered project type,width=1280]
 +
 Walk through the wizard steps, using the following values:
 +
@@ -38,9 +38,9 @@ Click `Create Project` in the `Summary` step, and the new layer appears in the l
 +
 After switching context, you should see the following:
 +
-image::content-studio-filmdb.png[Film DB project,width=1024]
+image::content-studio-filmdb.png[Film DB project,width=1280]
 
-. *Publish the project* - Select the `HMDB` site, click `Publish` in the toolbar, toggle `Include child items`, click `Apply` and then `Publish now`.
+. *Publish the project* - Select the `HMDB` site, click `Publish` in the toolbar, toggle `Include child items` and then click `Publish now`. If the wizard reports items that are in progress, click `Mark as ready` first.
 
 == Task: Set up i18n in Next.js
 
@@ -95,15 +95,9 @@ Content Studio detects the correct Next.js locale for the project. Select an ite
 
 . *Translate the site content* - Select the site and click `Edit`. The editor opens with a `Localize` button in place of `Save`: click it to create a local copy in the layer (the item switches from `Not localised` to `Localised` and gets the layer's language). You may now show off your skills while translating the page to Norwegian.
 
-. *Publish the entire site* - Once finished, click `Mark as ready` and proceed to publish the entire site structure.
+. *Publish the translation* - Once finished, click `Mark as ready`, and then `Publish now` in the Publishing Wizard.
 +
-[TIP]
-====
-*Publish the entire tree* by selecting the tree icon in the publishing wizard.
-
-image::content-studio-mark-as-ready.png[Click tree icon to include all children,width=819]
-
-====
+TIP: If the wizard lists unpublished child items, toggle `Include child items` to publish them as well.
 
 . *Verify that your front-end is working* - Add `/no` (i.e. `localhost:3000/no`) to the URL of your Next.js server in an *incognito window*. You should now see the published content from the Norwegian project.
 
@@ -135,7 +129,7 @@ NOTE: Every configured URL is automatically allowed in Content Studio's Content 
 
 . *Assign the configuration to your site* by clicking the pencil icon next to the `Next.XP` app name in the site form, and selecting it from the list of named configurations:
 +
-image::content-studio-configure-nextxp.png[Selecting a named configuration for the Next.XP app in the site form,width=771]
+image::content-studio-configure-nextxp.png[Selecting a named configuration for the Next.XP app in the site form,width=1280]
 
 == Accessing locale in views
 

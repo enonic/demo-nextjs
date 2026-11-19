@@ -19,17 +19,15 @@ TIP: Before you continue, clear all selections in the Content Studio list view (
 +
 NOTE: If you choose a different name, make sure the site path name (seen below the Display name) is set to `hmdb`, as this is used throughout the tutorial.
 
-. *Add your app* to the site - Select it in the `Applications` form field and click `Apply`.
+. *Add your app* to the site - Select it in the `Applications` form field, where it is listed as `Intro`, and click `Apply`.
 +
 NOTE: Sites act as scopes in the content structure. By adding an app to the site, you effectively allow editors to create content based on the app within this scope.
 +
 Your form should now look something like this:
 +
-image::content-studio-create-site.png["Give the site a name, and add the Movie DB app",width=1024]
-
-. *Save the site* - Click `Save` in the toolbar.
+image::content-studio-create-site.png["The site form with the display name HMDB and the Intro app added",width=1280]
 +
-NOTE: This leaves the item in the `In progress` state, which is OK for now.
+NOTE: Applying the change saves the site automatically. This leaves the item in the `In progress` state, which is OK for now.
 
 == Task: Move content into the site
 
@@ -39,17 +37,17 @@ Return to the Content Studio tab, and follow these steps:
 . *Select the folders* in the list, and click `Move` in the toolbar.
 . *Select the `HMDB` site* as the target and click `Move` once more.
 +
-image::content-studio-move.png[Move the folder into the site,width=1024]
+image::content-studio-move.png[Move the folder into the site,width=1280]
 
 . *Mark the site as ready* - Select the site (root item) in the tree structure, and click `Mark as ready` in the top right. This marks the item as ready and opens the Publishing Wizard.
 +
-image::content-studio-mark-as-ready.png[Mark as ready,width=1024]
+image::content-studio-mark-as-ready.png[Mark as ready,width=1280]
 
-. *Publish the entire tree structure* - Toggle `Include child items`, click `Apply` in the wizard header, then click `Publish now`.
+. *Publish the entire tree structure* - Toggle `Include child items`, which lists the child items in the wizard, then click `Publish now`.
 +
-image::content-studio-publish.png[Publish entire tree structure,width=1024]
+image::content-studio-publish.png[Publish entire tree structure,width=1280]
 
-. *Verify the result* - The content tree now shows the folders beneath the `HMDB` site, and the items are published.
+. *Verify the result* - The content tree now shows the folders beneath the `HMDB` site, and all items have the status `Online`.
 
 
 == Task: Run queries in the site context
