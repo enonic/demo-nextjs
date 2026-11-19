@@ -74,6 +74,8 @@ even without the skill.
 
 - **Images:** screenshots are in `docs/media/` and pages set `:imagesdir: media/`. Retake screenshots when the sample content
   or UI they show has changed.
+- **XP version:** do not pin the Enonic XP release in sandbox commands (no `-v`). The tutorial is kept up to date and should work with
+  the latest version; the versions it was tested with are listed on the introduction page.
 - **Naming:** the tutorial slug is `nextjs`. The sandbox is `tutorial_nextjs` (the CLI does not accept hyphens in sandbox
   names), the Enonic source folder is `tutorial-nextjs-enonic`, the frontend folder is `tutorial-nextjs-frontend`, and the
   application the reader creates is `com.example.tutorial.nextjs`.

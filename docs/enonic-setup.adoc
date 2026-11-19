@@ -19,10 +19,10 @@ The Enonic CLI manages local instances of Enonic XP, known as sandboxes, and bui
 +
 [source,shell,subs="attributes+"]
 ----
-enonic sandbox create {sandbox-name} -t essentials -v {xp-release} -f
+enonic sandbox create {sandbox-name} -t essentials -f
 ----
 +
-NOTE: `-f` forces the use of default values for the remaining options, and starts the sandbox.
+NOTE: `-f` forces the use of default values for the remaining options, which includes the latest version of Enonic XP, and starts the sandbox.
 
 . *Verify that the sandbox is running* - Open http://localhost:8080[http://localhost:8080] in your browser. The Enonic XP Welcome page appears.
 

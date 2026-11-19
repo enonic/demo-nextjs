@@ -15,7 +15,6 @@
 
 // Enonic stack
 :xp-version: 8.1
-:xp-release: 8.1.3
 :guillotine-version: 9
 :cli-version: latest
 

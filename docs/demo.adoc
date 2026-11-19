@@ -1,5 +1,4 @@
 = Running the demo
-include::.variables.adoc[]
 :toc: right
 :imagesdir: media/
 
@@ -23,12 +22,12 @@ The application reads its content from a sandbox, which is a local instance of E
 
 . *Create a sandbox* - Run this command in your terminal. It works from any folder:
 +
-[source,shell,subs="attributes+"]
+[source,shell]
 ----
-enonic sandbox create demo_nextjs -t hmdb -v {xp-release} -f
+enonic sandbox create demo_nextjs -t hmdb -f
 ----
 +
-The `hmdb` template installs Content Studio, the Guillotine GraphQL API, the Next.XP app and the Headless Movie DB app with its sample content. The `-f` option accepts the default values for the remaining options, and starts the sandbox.
+The `hmdb` template installs Content Studio, the Guillotine GraphQL API, the Next.XP app and the Headless Movie DB app with its sample content. The `-f` option accepts the default values for the remaining options, which includes the latest version of Enonic XP, and starts the sandbox.
 +
 NOTE: The demo uses its own sandbox and sample content, separate from the sandbox you create in the tutorial. All sandboxes use the same ports by default, so stop any other sandbox before starting this one.
 
