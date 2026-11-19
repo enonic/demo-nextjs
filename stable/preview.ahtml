@@ -445,6 +445,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#how_does_it_work">How does it work?</a></li>
 <li><a href="#live_page_editing">Live page editing</a></li>
 <li><a href="#link_handling">Link handling</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 </div>
@@ -477,16 +478,10 @@ The Next.XP app requires Enonic XP 8.1 or later.
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Install the Next.XP app</strong>:</p>
-<div class="paragraph">
-<p>From <code>XP menu</code> &#8594; <code>Applications</code> &#8594; <code>Install</code> and search for <code>Next.XP</code></p>
-</div>
+<p><strong>Install the Next.XP app</strong> - Go to <code>XP menu</code> &#8594; <code>Applications</code> &#8594; <code>Install</code>, search for <code>Next.XP</code> and install it.</p>
 </li>
 <li>
-<p><strong>Add the Next.XP app to your site</strong>:</p>
-<div class="paragraph">
-<p>Edit the <code>HMDB</code> site, select <code>Next.XP</code> in the <code>Applications</code> field - in addition to your own app - and click <code>Apply</code>, just like you did in the <a href="sites.ahtml">Sites</a> chapter.</p>
-</div>
+<p><strong>Add the Next.XP app to your site</strong> - Edit the <code>HMDB</code> site, select <code>Next.XP</code> in the <code>Applications</code> field - in addition to your own app - and click <code>Apply</code>, like you did in the <a href="sites.ahtml">Sites</a> chapter.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -510,7 +505,7 @@ The preview is only available for sites the <code>Next.XP</code> app has been ad
 <li>
 <p><strong>secret</strong>: <code>mySecretKey</code></p>
 <div class="paragraph">
-<p>This matches your setup, so no further configuration is needed. We will get back to tuning these values in the <a href="static.ahtml">Static pages</a>, <a href="i18n.ahtml">Multi language</a> and <a href="deployment.ahtml">Deployment</a> chapters.</p>
+<p>This matches your setup, so no further configuration is needed. You will get back to tuning these values in the <a href="static.ahtml">Static pages</a>, <a href="i18n.ahtml">Multi language</a> and <a href="deployment.ahtml">Deployment</a> chapters.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -532,10 +527,12 @@ In production, only explicitly configured URLs are allowed.
 </div>
 </li>
 <li>
-<p>Select any content in the "Persons" folder: the preview pane now shows the page rendered by Next.js.
+<p><strong>Verify the preview</strong> - Select any content in the "Persons" folder: the preview pane now shows the page rendered by Next.js.
 The preview toolbar&#8217;s widget selector is set to <code>Automatic</code>, which picks the first preview that can render the item - choose <code>Next.js Preview</code> explicitly if another preview shows up.</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/morgan-floatman-preview.png" alt="morgan floatman preview" width="1072px" title="Next.js-rendered preview in Content Studio"></span></p>
+<div class="imageblock">
+<div class="content">
+<img src="media/morgan-floatman-preview.png" alt="Next.js-rendered preview of a person in Content Studio" width="1280">
+</div>
 </div>
 </li>
 </ol>
@@ -590,7 +587,7 @@ Have a look at the page component to see how it is wired up:</p>
 <div class="listingblock">
 <div class="title">src/app/[locale]/[[&#8230;&#8203;contentPath]]/page.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import PageEditorScript from '../../../components/views/PageEditorScript';
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import PageEditorScript from '../../../components/views/PageEditorScript';
 
 // ...
 
@@ -629,15 +626,23 @@ In preview, the browser loads draft media through the Next.js <code>/api/media/[
 </tr>
 </table>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="summary"><a class="link" href="#summary">Summary</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>That completes the preview setup; moving forward, we&#8217;ll look into rendering <a href="rich-text.ahtml">Html Area</a> fields.</p>
+<p>You&#8217;ve installed the Next.XP app and added it to the site, so Content Studio now previews content with your Next.js front-end. You&#8217;ve also seen how the preview, live page editing and links work behind the scenes.</p>
+</div>
+<div class="paragraph">
+<p>Next, you&#8217;ll <a href="rich-text.ahtml">render rich text fields</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:48:31 UTC
+Last updated 2026-11-19 21:54:02 UTC
 </div>
 </div>
 </body>

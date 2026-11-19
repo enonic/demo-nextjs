@@ -444,12 +444,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#task_sign_up_to_enonic">Task: Sign up to Enonic</a></li>
 <li><a href="#task_install_your_app">Task: Install your app</a></li>
-<li><a href="#task_expose_api_via_route">Task: Expose API via route</a></li>
+<li><a href="#task_expose_the_api_via_a_route">Task: Expose the API via a route</a></li>
 <li><a href="#task_add_your_front_end_to_git">Task: Add your front-end to Git</a></li>
-<li><a href="#task_deploy_next_app">Task: Deploy Next app</a></li>
+<li><a href="#task_deploy_the_next_js_app">Task: Deploy the Next.js app</a></li>
 <li><a href="#task_link_content_studio_to_vercel">Task: Link Content Studio to Vercel</a></li>
 <li><a href="#task_publish_a_page">Task: Publish a page</a></li>
-<li><a href="#summary_and_whats_next">Summary, and whats Next?</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#further_reading">Further reading</a></li>
 </ul>
 </div>
 </div>
@@ -457,7 +458,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this chapter you will launch cloud instances of both Enonic and Next - link them together, and see the glorious result.</p>
+<p>In this chapter you will launch cloud instances of both Enonic and Next.js, link them together, and see the glorious result.</p>
 </div>
 </div>
 </div>
@@ -465,7 +466,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="introduction"><a class="link" href="#introduction">Introduction</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To complete this chapter, you&#8217;ll be using Enonic to host the XP side of things, and Vercel for the front-end - Vercel are the makers of Next.js.</p>
+<p>To complete this chapter, you&#8217;ll be using Enonic to host the XP side of things, and Vercel for the front-end. Vercel are the makers of Next.js.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -485,7 +486,7 @@ Both Enonic and Next.js are open source software projects and can be deployed mo
 <h2 id="task_sign_up_to_enonic"><a class="link" href="#task_sign_up_to_enonic">Task: Sign up to Enonic</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Create an account to get a free developer instance of Enonic XP</p>
+<p>Create an account to get a free developer instance of Enonic XP.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -493,12 +494,12 @@ Both Enonic and Next.js are open source software projects and can be deployed mo
 <p><strong>Sign up</strong> for a <a href="https://enonic.com/sign-up">free developer account</a>.</p>
 </li>
 <li>
-<p><strong>Create a new solution using the <code>CMS essentials</code> template</strong>. This will install applications like <code>Content Studio</code> and <code>Guillotine</code> automatically.</p>
+<p><strong>Create a new solution using the <code>CMS essentials</code> template</strong> - This installs applications like <code>Content Studio</code> and <code>Guillotine</code> automatically.</p>
+</li>
+<li>
+<p><strong>Verify the solution</strong> - When the new solution has started, launch <code>Enonic XP Admin</code> to verify that everything is up and running.</p>
 </li>
 </ol>
-</div>
-<div class="paragraph">
-<p>When the new solution has started, launch <code>Enonic XP Admin</code> to verify that everything is up and running.</p>
 </div>
 </div>
 </div>
@@ -508,18 +509,18 @@ Both Enonic and Next.js are open source software projects and can be deployed mo
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Connect Enonic CLI to the cloud</strong> by running this command, and follow the instructions:</p>
+<p><strong>Connect the Enonic CLI to the cloud</strong> - Run this command, and follow the instructions:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">enonic cloud login</code></pre>
+<pre class="highlight"><code class="language-shell" data-lang="shell">enonic cloud login</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p><strong>Install your enonic app</strong> directly from the app folder by running this command:</p>
+<p><strong>Install your Enonic app</strong> - Run this command from the <code>tutorial-nextjs-enonic</code> folder:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">enonic cloud app install</code></pre>
+<pre class="highlight"><code class="language-shell" data-lang="shell">enonic cloud app install</code></pre>
 </div>
 </div>
 </li>
@@ -527,20 +528,20 @@ Both Enonic and Next.js are open source software projects and can be deployed mo
 <p><strong>Verify that the app was installed</strong> from <code>Solution</code> &#8594; <code>Applications</code> in the Enonic Console.</p>
 </li>
 <li>
-<p>From XP Admin, <strong>open Content Studio</strong> to verify that your app automatically initialized the <code>Intro</code> project and imported content on the server, just like on your local machine.</p>
+<p><strong>Open Content Studio</strong> - From XP Admin, open Content Studio to verify that your app automatically initialized the <code>Intro</code> project and imported content on the server, like on your local machine.</p>
 </li>
 <li>
-<p>Just like <a href="sites.ahtml">you did it locally</a> , <strong>create a new site</strong> called <code>Hmdb</code> and move all imported content there.</p>
+<p><strong>Create a new site</strong> called <code>Hmdb</code> and move all imported content there, like <a href="sites.ahtml">you did locally</a>.</p>
 </li>
 <li>
-<p>Lastly, remember to create a localized version of the site <a href="i18n.ahtml">as you did before</a>.</p>
+<p><strong>Create a localized version</strong> of the site, <a href="i18n.ahtml">as you did before</a>.</p>
 </li>
 </ol>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_expose_api_via_route"><a class="link" href="#task_expose_api_via_route">Task: Expose API via route</a></h2>
+<h2 id="task_expose_the_api_via_a_route"><a class="link" href="#task_expose_the_api_via_a_route">Task: Expose the API via a route</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The purpose of routes is to expose APIs and other endpoints in Enonic XP, like the <code>:8080/api</code> API root, to the internet.</p>
@@ -570,10 +571,7 @@ Both Enonic and Next.js are open source software projects and can be deployed mo
 </div>
 </li>
 <li>
-<p><strong>Make a note of the route URL</strong> - you will find it in the route details.</p>
-</li>
-</ol>
-</div>
+<p><strong>Make a note of the route URL</strong> - You will find it in the route details.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -586,18 +584,21 @@ The URL should look something like this: <code><a href="https://account-solution
 </tr>
 </table>
 </div>
+</li>
+</ol>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="task_add_your_front_end_to_git"><a class="link" href="#task_add_your_front_end_to_git">Task: Add your front-end to Git</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Vercel (which will be hosting your front-end) will need write access to a Git repo with your code.</p>
+<p>Vercel, which will host your front-end, needs write access to a Git repo with your code.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Create a new Git repo</strong> - Vercel supports Github, Gitlab and Bitbucket.</p>
+<p><strong>Create a new Git repo</strong> - Vercel supports GitHub, GitLab and Bitbucket.</p>
 </li>
 <li>
 <p><strong>Commit and push</strong> your Next.js app files to the new repo.</p>
@@ -607,47 +608,46 @@ The URL should look something like this: <code><a href="https://account-solution
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_deploy_next_app"><a class="link" href="#task_deploy_next_app">Task: Deploy Next app</a></h2>
+<h2 id="task_deploy_the_next_js_app"><a class="link" href="#task_deploy_the_next_js_app">Task: Deploy the Next.js app</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You are now ready to deploy the the front-end application.</p>
+<p>You are now ready to deploy the front-end application.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Sign up to Vercel: <a href="https://vercel.com/" class="bare">https://vercel.com/</a></p>
+<p><strong>Sign up to Vercel</strong> at <a href="https://vercel.com/" class="bare">https://vercel.com/</a></p>
 </li>
 <li>
-<p>Create a new project <code>enonic-tutorial</code> and connect it to the repo you created in the previous step.</p>
+<p><strong>Create a new project</strong> called <code>enonic-tutorial</code> and connect it to the repo you created in the previous task.</p>
 </li>
 <li>
 <p><strong>Add the following environment variables</strong> to the project (name: value):</p>
 <div class="ulist">
 <ul>
 <li>
-<p>ENONIC_APP_NAME: &lt;enonic app name (<code>tutorial.nxp</code> in this guide)&gt;</p>
+<p><code>ENONIC_APP_NAME</code>: &lt;enonic app name (<code>com.example.tutorial.nextjs</code> in this tutorial)&gt;</p>
 </li>
 <li>
-<p>ENONIC_API: &lt;route URL from the previous task, ending with /api&gt;</p>
+<p><code>ENONIC_API</code>: &lt;route URL from the previous task, ending with /api&gt;</p>
 </li>
 <li>
-<p>ENONIC_ADMIN: &lt;enonic admin URL&gt; (optional, only if admin is on a different domain than the API)</p>
+<p><code>ENONIC_ADMIN</code>: &lt;enonic admin URL&gt; (optional, only if admin is on a different domain than the API)</p>
 </li>
 <li>
-<p>ENONIC_MEDIA_CDN: &lt;media URL&gt; (optional, only if images and attachments are served from a different domain than the API)</p>
+<p><code>ENONIC_MEDIA_CDN</code>: &lt;media URL&gt; (optional, only if images and attachments are served from a different domain than the API)</p>
 </li>
 <li>
-<p>ENONIC_API_TOKEN: &lt;yourSecret&gt;</p>
+<p><code>ENONIC_API_TOKEN</code>: &lt;yourSecret&gt;</p>
 </li>
 <li>
-<p>ENONIC_MAPPINGS: en:intro/hmdb,no:intro-no/hmdb</p>
+<p><code>ENONIC_MAPPINGS</code>: en:intro/hmdb,no:intro-no/hmdb</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><strong>Verify the result</strong>.
-The front-page of your app should now display a 404 - as you haven&#8217;t published any content yet.</p>
+<p><strong>Verify the result</strong> - The front page of your app should now display a 404, as you haven&#8217;t published any content yet.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -655,13 +655,15 @@ The front-page of your app should now display a 404 - as you haven&#8217;t publi
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Make a note of the URL to the Vercel app, you will need it later
+Make a note of the URL to the Vercel app, you will need it later.
 </td>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="media/404.png" alt="404" width="768px" title="Front page rendering before a site has been added to it"></span></p>
+<div class="imageblock">
+<div class="content">
+<img src="media/404.png" alt="Front page rendering before a site has been added to it" width="768">
+</div>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -701,12 +703,14 @@ To save time, you may export content from your local machine and import it to th
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Install the <code>Next.XP</code> app</strong> <code>Solution</code> &#8594; <code>Applications</code> &#8594; <code>Install</code> &#8594; Search for <code>Next.XP</code>, select it and click install</p>
+<p><strong>Install the <code>Next.XP</code> app</strong> - Go to <code>Solution</code> &#8594; <code>Applications</code> &#8594; <code>Install</code>, search for <code>Next.XP</code>, select it and click install.</p>
 </li>
 <li>
-<p><strong>Add configuration</strong>.</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/console-configure-app.png" alt="console configure app" width="769px" title="Configure the Next.XP application in the solution console"></span></p>
+<p><strong>Add configuration</strong>:</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/console-configure-app.png" alt="Configure the Next.XP application in the solution console" width="769">
+</div>
 </div>
 <div class="listingblock">
 <div class="title">Add the following lines to the app config field to override the default values:</div>
@@ -747,7 +751,7 @@ Unlike your local sandbox, a production server allows only explicitly configured
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If you imported content from your local environment, the following two steps can be skipped
+If you imported content from your local environment, the following step can be skipped.
 </td>
 </tr>
 </table>
@@ -785,15 +789,19 @@ Adding it to the site also lets you select a named configuration from the app co
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>If you did not import content, <strong>create the front-page</strong> (once again) by using the page editor. Maybe something like this will do?</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/cloud-preview.png" alt="cloud preview" width="1419px" title="Front page as seen from Content Studio"></span></p>
+<p><strong>Create the front page</strong> - If you did not import content, create the front page once again using the page editor. Maybe something like this will do?</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/cloud-preview.webp" alt="Front page as seen from Content Studio" width="1440">
+</div>
 </div>
 </li>
 <li>
-<p><strong>Go live</strong> by publishing the new page, and verify that your live site gets updated. Voila!</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/live.png" alt="live" width="1033px" title="Content rendered on the live server"></span></p>
+<p><strong>Go live</strong> - Publish the new page, and verify that your live site gets updated:</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/live.png" alt="Content rendered on the live server" width="1033">
+</div>
 </div>
 </li>
 </ol>
@@ -801,21 +809,26 @@ Adding it to the site also lets you select a named configuration from the app co
 </div>
 </div>
 <div class="sect1">
-<h2 id="summary_and_whats_next"><a class="link" href="#summary_and_whats_next">Summary, and whats Next?</a></h2>
+<h2 id="summary"><a class="link" href="#summary">Summary</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>🎉 Congratulations 🥳 - You&#8217;ve reached the end of this tutorial - we hope you enjoyed it!</p>
+<p>You did it! 🎉 You&#8217;ve built a Next.js site that renders content from Enonic, with pages composed by editors, live preview in Content Studio, static generation and multiple languages - and deployed it to Enonic Cloud and Vercel. That completes the tutorial.</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="further_reading"><a class="link" href="#further_reading">Further reading</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>There are other aspects of Enonic and Next.js that will never be covered by this tutorial - to learn more about Enonic check out the following resources:</p>
+<p>None of this is required, but here are some suggestions for where to go from here:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://developer.enonic.com">Enonic Developer portal</a></p>
+<p>The <a href="https://developer.enonic.com">Enonic Developer Portal</a> has documentation for the entire platform.</p>
 </li>
 <li>
-<p><a href="https://developer.enonic.com/docs/developer-101/stable">Enonic Developer 101</a></p>
+<p>The <a href="https://developer.enonic.com/learn/developer-101">Developer 101 tutorial</a> teaches you how to build your own content model in Enonic.</p>
 </li>
 </ul>
 </div>
@@ -824,7 +837,7 @@ Adding it to the site also lets you select a named configuration from the app co
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:48:31 UTC
+Last updated 2026-11-19 21:54:02 UTC
 </div>
 </div>
 </body>

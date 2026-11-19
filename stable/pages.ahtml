@@ -441,11 +441,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#task_disable_debug_view">Task: Disable debug view</a></li>
-<li><a href="#task_setup_page_rendering">Task: Setup page rendering</a></li>
+<li><a href="#task_disable_the_debug_view">Task: Disable the debug view</a></li>
+<li><a href="#task_set_up_page_rendering">Task: Set up page rendering</a></li>
 <li><a href="#task_create_your_first_page">Task: Create your first page</a></li>
-<li><a href="#task_adding_a_paragraph_part">Task: Adding a paragraph part</a></li>
-<li><a href="#task_publish_page">Task: Publish page</a></li>
+<li><a href="#task_add_a_paragraph_part">Task: Add a paragraph part</a></li>
+<li><a href="#task_publish_the_page">Task: Publish the page</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 </div>
@@ -453,12 +454,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>So far, rendering has been based on hardcoded mappings made by the developer. In this chapter we will enable editors to compose their own pages.</p>
+<p>So far, rendering has been based on hardcoded mappings made by the developer. In this chapter you will enable editors to compose their own pages.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_disable_debug_view"><a class="link" href="#task_disable_debug_view">Task: Disable debug view</a></h2>
+<h2 id="task_disable_the_debug_view"><a class="link" href="#task_disable_the_debug_view">Task: Disable the debug view</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>For every page you select, the debug view keeps appearing - even in Content Studio. Disable this by following the steps below.</p>
@@ -466,11 +467,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Comment out the <code>CATCH_ALL</code> debug view</strong> at the bottom of your mappings file - like this:</p>
+<p><strong>Comment out the <code>CATCH_ALL</code> debug view</strong> at the bottom of your mappings file, like this:</p>
 <div class="listingblock">
 <div class="title">src/components/_mappings.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">...
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">...
 
 /*
 // Debug
@@ -482,9 +483,12 @@ ComponentRegistry.addContentType(CATCH_ALL, {
 </div>
 </li>
 <li>
-<p><strong>Verify that pages are no longer rendering json body</strong> by visiting your site on <code><a href="http://localhost:3000" class="bare">http://localhost:3000</a></code>.</p>
+<p><strong>Restart the Next.js dev server</strong> - Stop it with ctrl-c and run <code>npm run dev</code> again. Mappings that are removed are not unregistered by hot reloading.</p>
+</li>
+<li>
+<p><strong>Verify that pages no longer render the JSON body</strong> by visiting your site on <code><a href="http://localhost:3000" class="bare">http://localhost:3000</a></code>.</p>
 <div class="paragraph">
-<p>The same will now apply to Content Studio.</p>
+<p>Content without a mapping, such as the front page and the movies, now responds with "404 page not found", while persons are rendered as before. The same applies to the preview in Content Studio.</p>
 </div>
 </li>
 </ol>
@@ -492,7 +496,7 @@ ComponentRegistry.addContentType(CATCH_ALL, {
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_setup_page_rendering"><a class="link" href="#task_setup_page_rendering">Task: Setup page rendering</a></h2>
+<h2 id="task_set_up_page_rendering"><a class="link" href="#task_set_up_page_rendering">Task: Set up page rendering</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Content types need to exist in Enonic before an editor can create content. Similarly, page components must be defined before Content Studio can enable editors to create pages.</p>
@@ -500,7 +504,7 @@ ComponentRegistry.addContentType(CATCH_ALL, {
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Verify Enonic app (not the Next.js frontend) has a <strong>page component descriptor</strong> at:</p>
+<p><strong>Check the page component descriptor</strong> - Verify that the Enonic app (not the Next.js front-end) has a page component descriptor at:</p>
 <div class="listingblock">
 <div class="title">src/main/resources/cms/pages/main/main.yaml</div>
 <div class="content">
@@ -519,21 +523,18 @@ regions:
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The definition of the region <code>main</code>, allows Content Studio editors to add components to the page, as you will see later.
+The definition of the region <code>main</code> allows Content Studio editors to add components to the page, as you will see later.
 </td>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p><strong>Redeploy the Enonic app</strong> to register the page component if it didn&#8217;t have it (happens automatically if you started <code>enonic dev</code>).</p>
-</div>
 </li>
 <li>
-<p><strong>Configure page rendering in Next.js</strong></p>
-<div class="paragraph">
-<p>Rendering a page is similar to rendering a content type.
+<p><strong>Redeploy the Enonic app</strong> - This is only needed if you had to add the descriptor, and happens automatically if you started <code>enonic dev</code>.</p>
+</li>
+<li>
+<p><strong>Configure page rendering in Next.js</strong> - Rendering a page is similar to rendering a content type.
 Go to the folder <code>./src/components</code>, create a new folder here called <code>pages</code>, and inside it a new file called <code>Main.tsx</code> containing the following code.</p>
-</div>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -549,7 +550,7 @@ Make sure to use <code>src/components/pages</code>, not <code>src/pages</code>!
 <div class="listingblock">
 <div class="title">src/components/pages/Main.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {PageProps} from '@enonic/nextjs-adapter';
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import type {PageProps} from '@enonic/nextjs-adapter';
 import React from 'react'
 import RegionsView from '@enonic/nextjs-adapter/views/Region';
 
@@ -579,18 +580,18 @@ export default MainPage;</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The &lt;RegionsView&gt; element is referring to the 'main' region we defined in the page component earlier.
+The <code>&lt;RegionsView&gt;</code> element refers to the <code>main</code> region defined in the page component descriptor.
 </td>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>Finally, register it in the component mappings by adding the following lines to _mappings.ts</p>
-</div>
+</li>
+<li>
+<p><strong>Register the page</strong> - Add the following lines to <code>_mappings.ts</code>:</p>
 <div class="listingblock">
 <div class="title">src/components/_mappings.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import MainPage from './pages/Main';
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import MainPage from './pages/Main';
 
 // Page mappings
 ComponentRegistry.addPage(`${APP_NAME}:main`, {
@@ -610,30 +611,31 @@ ComponentRegistry.addPage(`${APP_NAME}:main`, {
 <h2 id="task_create_your_first_page"><a class="link" href="#task_create_your_first_page">Task: Create your first page</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>It&#8217;s time to build a custom page.</p>
+<p>It&#8217;s time to build a custom page, by turning the site into one.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Turn the site into a page</strong></p>
-<div class="paragraph">
-<p>From Content Studio, select and edit the <code>/hmdb</code> content item.
+<p><strong>Open the page view</strong> - From Content Studio, select and edit the <code>/hmdb</code> content item.
 From the edit view, open the Context Panel by clicking the <code>Show Context Panel</code> icon in the top right corner, and select <code>Page</code> in the widget dropdown at the top of the panel.</p>
-</div>
 <div class="paragraph">
 <p>You should now see the following:</p>
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="media/page-setup.png" alt="page setup" width="1440px" title="Selecting the page component in the page view"></span></p>
+<div class="imageblock">
+<div class="content">
+<img src="media/page-setup.png" alt="Selecting the page component in the page view" width="1440">
 </div>
-<div class="paragraph">
-<p>In the <code>Inspect</code> tab of the panel, select the <code>Main</code> component we created earlier from the <code>Template</code> dropdown (it shows <code>Automatic</code> until then).</p>
 </div>
-<div class="paragraph">
-<p>You should then see a page with a single "dropzone" inside (the region we specified earlier).</p>
+</li>
+<li>
+<p><strong>Select the page component</strong> - In the <code>Inspect</code> tab of the panel, select the <code>Main</code> component you created earlier from the <code>Template</code> dropdown (it shows <code>Automatic</code> until then).</p>
+</li>
+<li>
+<p><strong>Verify the result</strong> - The page now shows a single "dropzone": the region you specified earlier.</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/page-rendered.png" alt="Active page controller rendering an empty region visualized by a placeholder" width="1440">
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="media/page-rendered.png" alt="page rendered" width="1440px" title="Active page controller rendering an empty region visualized by a placeholder"></span></p>
 </div>
 </li>
 </ol>
@@ -641,11 +643,11 @@ From the edit view, open the Context Panel by clicking the <code>Show Context Pa
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_adding_a_paragraph_part"><a class="link" href="#task_adding_a_paragraph_part">Task: Adding a paragraph part</a></h2>
+<h2 id="task_add_a_paragraph_part"><a class="link" href="#task_add_a_paragraph_part">Task: Add a paragraph part</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To put something on the page, we need a component editors can drop into the region.
-Let&#8217;s create a simple <code>Paragraph</code> part that holds rich text.</p>
+<p>To put something on the page, you need a component editors can drop into the region.
+Create a <code>Paragraph</code> part that holds rich text.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -654,7 +656,7 @@ Let&#8217;s create a simple <code>Paragraph</code> part that holds rich text.</p
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Deeper dive into parts and components will be covered in the next chapter.
+The next chapter takes a deeper dive into parts and components.
 </td>
 </tr>
 </table>
@@ -662,7 +664,7 @@ Deeper dive into parts and components will be covered in the next chapter.
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Verify Enonic app (not the Next.js frontend) has <strong>the <code>paragraph</code> part</strong>:</p>
+<p><strong>Check the part descriptor</strong> - Verify that the Enonic app (not the Next.js front-end) has the <code>paragraph</code> part:</p>
 <div class="listingblock">
 <div class="title">src/main/resources/cms/parts/paragraph/paragraph.yaml</div>
 <div class="content">
@@ -686,21 +688,21 @@ form:
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The <a href="https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types/htmlarea">HtmlArea input</a> gives editors a rich-text editor with formatting, links, images and macros.
+The <a href="https://developer.enonic.com/docs/cms/stable/schemas/form-items/htmlarea">HtmlArea form item</a> gives editors a rich text editor with formatting, links, images and macros.
 </td>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p><strong>Redeploy the Enonic app</strong> if it didn&#8217;t have it to register the part (happens automatically if you started <code>enonic dev</code>).</p>
-</div>
 </li>
 <li>
-<p><strong>Add the part implementation to the Next.js app</strong></p>
+<p><strong>Redeploy the Enonic app</strong> - This is only needed if you had to add the part, and happens automatically if you started <code>enonic dev</code>.</p>
+</li>
+<li>
+<p><strong>Add the part implementation to the Next.js app</strong>:</p>
 <div class="listingblock">
 <div class="title">src/components/parts/Paragraph.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import React from 'react'
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import React from 'react'
 import {PartProps} from '@enonic/nextjs-adapter';
 import RichTextView from '@enonic/nextjs-adapter/views/RichTextView';
 
@@ -718,11 +720,11 @@ export default Paragraph;</code></pre>
 </div>
 </li>
 <li>
-<p><strong>Register the part</strong> by adding the following lines to _mappings.ts:</p>
+<p><strong>Register the part</strong> - Add the following lines to <code>_mappings.ts</code>:</p>
 <div class="listingblock">
 <div class="title">src/components/_mappings.ts</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-TypeScript" data-lang="TypeScript">import {richTextQuery} from '@enonic/nextjs-adapter';
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import {richTextQuery} from '@enonic/nextjs-adapter';
 import Paragraph from './parts/Paragraph';
 
 // Part mappings
@@ -746,29 +748,28 @@ ComponentRegistry.addPart(`${APP_NAME}:paragraph`, {
 </div>
 </li>
 <li>
-<p><strong>Add the part to your page</strong></p>
-<div class="paragraph">
-<p>Back in Content Studio, drag <code>Part</code> from the <code>Insert</code> tab on the right hand side into the region, then select <code>Paragraph</code> in the part dropdown of the <code>Inspect</code> tab.
-Use the <a href="https://developer.enonic.com/docs/content-studio/stable/editor/component-types#htmlarea">rich-text editor</a> to write and format text, as well as insert images or macros, and click <code>Apply</code>.</p>
+<p><strong>Add the part to your page</strong> - Back in Content Studio, drag <code>Part</code> from the <code>Insert</code> tab on the right hand side into the region, then select <code>Paragraph</code> in the part dropdown of the <code>Inspect</code> tab.
+Use the <a href="https://developer.enonic.com/docs/content-studio/stable/editor/rich-text-editor">rich text editor</a> to write and format text, as well as insert images or macros, and click <code>Apply</code>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/paragraph-component.png" alt="Next.js-rendered paragraph part on the front page in Content Studio" width="1440">
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="media/paragraph-component.png" alt="paragraph component" width="1440px" title="Next.js-rendered paragraph part with an image"></span></p>
 </div>
 </li>
 <li>
-<p>You may also click the <code>Preview</code> button in Content Studio for a full screen version.</p>
+<p><strong>Verify the result</strong> - Click the <code>Preview</code> button in Content Studio to see a full-screen version of the page.</p>
 </li>
 </ol>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_publish_page"><a class="link" href="#task_publish_page">Task: Publish page</a></h2>
+<h2 id="task_publish_the_page"><a class="link" href="#task_publish_the_page">Task: Publish the page</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Your new page is looking good.
-However, if you visit <code><a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a></code> in an incognito window or different browser - you&#8217;ll get a "404 page not found" error.
-This is because preview mode is off in incognito window and only published changes are visible from the front end.</p>
+However, if you visit <a href="http://localhost:3000">http://localhost:3000</a> in an incognito window or a different browser, you&#8217;ll get a "404 page not found" error.
+This is because preview mode is off in an incognito window, and only published changes are visible from the front-end.</p>
 </div>
 <div class="paragraph">
 <p>Content Studio activates Next.js' preview mode, which in turn uses the drafts API. When accessing the front-end directly, Next.js fetches published content from the master branch.</p>
@@ -776,25 +777,35 @@ This is because preview mode is off in incognito window and only published chang
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Publish the page</strong> by clicking <code>Mark as ready</code>, and then <code>Publish now</code> in the Publishing Wizard.</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/publish.png" alt="publish" width="810px" title="Publishing wizard"></span></p>
+<p><strong>Publish the page</strong> - Click <code>Mark as ready</code>, and then <code>Publish now</code> in the Publishing Wizard.</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/publish.png" alt="Publishing wizard" width="1440">
+</div>
 </div>
 </li>
 <li>
-<p><strong>Verify that your page is live</strong> by visiting <code><a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a></code> in incognito window once again.</p>
+<p><strong>Verify that your page is live</strong> - Visit <a href="http://localhost:3000">http://localhost:3000</a> in an incognito window once again.</p>
 </li>
 </ol>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="summary"><a class="link" href="#summary">Summary</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>That concludes the introduction to page rendering, coming up we&#8217;ll add some <a href="parts.ahtml">configurable page components</a> to play with.</p>
+<p>You&#8217;ve disabled the debug view, registered a <code>Main</code> page component with a region, added a <code>Paragraph</code> part, and published a page composed in Content Studio.</p>
+</div>
+<div class="paragraph">
+<p>Next, you&#8217;ll <a href="parts.ahtml">add more configurable parts</a> to play with.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:48:31 UTC
+Last updated 2026-11-19 21:54:02 UTC
 </div>
 </div>
 </body>

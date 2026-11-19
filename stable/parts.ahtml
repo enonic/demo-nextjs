@@ -441,9 +441,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#task_add_part_to_enonic">Task: Add part to Enonic</a></li>
+<li><a href="#task_add_a_part_to_enonic">Task: Add a part to Enonic</a></li>
 <li><a href="#task_configure_part_rendering_in_next_js">Task: Configure part rendering in Next.js</a></li>
-<li><a href="#optional_task_the_heading_part">Optional Task: The heading part</a></li>
+<li><a href="#task_add_a_heading_part_optional">Task: Add a heading part (optional)</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 </div>
@@ -451,21 +452,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Enonic provides a highly customizable component type called <a href="https://developer.enonic.com/docs/xp/stable/cms/pages/parts" target="_blank" rel="noopener">parts</a> and you actually have already created one called <code>Paragraph</code> in the previous chapter!
-Similar to page components, parts must be defined in both Enonic and Next.js in order to fully work.</p>
+<p>In this chapter you will add configurable parts to your pages: a list of child items and, optionally, a heading.</p>
+</div>
+<div class="paragraph">
+<p>Enonic provides a highly customizable component type called <a href="https://developer.enonic.com/docs/cms/stable/pages/parts">parts</a>. You have already created one, called <code>Paragraph</code>, in the previous chapter.
+Like page components, parts must be defined in both Enonic and Next.js to fully work.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_add_part_to_enonic"><a class="link" href="#task_add_part_to_enonic">Task: Add part to Enonic</a></h2>
+<h2 id="task_add_a_part_to_enonic"><a class="link" href="#task_add_a_part_to_enonic">Task: Add a part to Enonic</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We&#8217;ll start off by adding a simple component that lists child items in the tree structure.</p>
+<p>Start by adding a component that lists child items in the tree structure.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Verify Enonic app (not the Next.js frontend) has <strong>the <code>child-list</code> part descriptor</strong> at:</p>
+<p><strong>Check the part descriptor</strong> - Verify that the Enonic app (not the Next.js front-end) has the <code>child-list</code> part descriptor at:</p>
 <div class="listingblock">
 <div class="title">src/main/resources/cms/parts/child-list/child-list.yaml</div>
 <div class="content">
@@ -495,36 +499,26 @@ form:
 </td>
 <td class="content">
 This component also contains a form, similar to content types.
-This means editors can configure it - sorting the items Ascending or Descending.
+This means editors can configure it, sorting the items in ascending or descending order.
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p><strong>Build and redeploy your Enonic app</strong> once more if it didn&#8217;t have it to make the new part available in Content Studio (happens automatically if you started <code>enonic dev</code>).</p>
 </div>
 </li>
 <li>
-<p><strong>Add parts to the page</strong></p>
-<div class="paragraph">
-<p>Back in Content Studio, edit the <code>/hmdb/persons</code> folder item.
+<p><strong>Redeploy your Enonic app</strong> - This is only needed if you had to add the descriptor, and happens automatically if you started <code>enonic dev</code>. It makes the new part available in Content Studio.</p>
+</li>
+<li>
+<p><strong>Add the part to a page</strong> - Back in Content Studio, edit the <code>/hmdb/persons</code> folder item.
 Open the Context Panel (<code>Show Context Panel</code> in the top right corner), select <code>Page</code> in the widget dropdown and choose <code>Main</code> in the Template dropdown to turn the folder into a page.
 Drag <code>Part</code> from the <code>Insert</code> tab into the region, then select <code>Child list</code> in the part dropdown of the <code>Inspect</code> tab.</p>
+</li>
+<li>
+<p><strong>Verify the result</strong> - The part appears without any changes to the front-end. This is because the Enonic adapter contains fallback part rendering, as long as Next.js is running in dev mode.</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/missing-component.png" alt="Next.js dev mode renders helpful feedback when components are missing" width="1440">
 </div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-The part will appear without making any changes to the front-end, this is because the Enonic Adapter contains fallback part rendering, as long as Next.js is running in DEV mode.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="media/missing-component.png" alt="missing component" width="1440px" title="Next.js dev mode renderes nice feedback when components are missing"></span></p>
 </div>
 </li>
 </ol>
@@ -535,16 +529,16 @@ The part will appear without making any changes to the front-end, this is becaus
 <h2 id="task_configure_part_rendering_in_next_js"><a class="link" href="#task_configure_part_rendering_in_next_js">Task: Configure part rendering in Next.js</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Heading over to the front-end, you must register a new component that supports rendering of this part.</p>
+<p>Over in the front-end, register a new component that supports rendering of this part.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Add the part implementation to the Next.js app</strong></p>
+<p><strong>Add the part implementation to the Next.js app</strong>:</p>
 <div class="listingblock">
 <div class="title">src/components/parts/ChildList.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-JavaScript" data-lang="JavaScript">import {
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import {
     Context,
     PartProps,
     VariablesGetterResult,
@@ -626,14 +620,11 @@ export async function childListProcessor(data: any, context?: Context, config?: 
 </div>
 </li>
 <li>
-<p>Then, <strong>register the components</strong> in _mappings.ts:</p>
-<div class="paragraph">
-<p>Update _mappings.ts with the following new lines:</p>
-</div>
+<p><strong>Register the component</strong> - Update <code>_mappings.ts</code> with the following new lines:</p>
 <div class="listingblock">
 <div class="title">src/components/_mappings.ts</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-TypeScript" data-lang="TypeScript">import ChildList, {childListProcessor, getChildList} from './parts/ChildList';
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import ChildList, {childListProcessor, getChildList} from './parts/ChildList';
 
 // Part mappings
 ComponentRegistry.addPart(`${APP_NAME}:child-list`, {
@@ -644,10 +635,10 @@ ComponentRegistry.addPart(`${APP_NAME}:child-list`, {
 </div>
 </div>
 <div class="paragraph">
-<p>As you may have noticed this component has a query, a view and a processor. Processors are optional JavaScript functions that can do whatever you need it to. For instance fetch data from another source than the CMS, or post-process the query response before it is passed to the view etc.</p>
+<p>As you may have noticed, this component has a query, a view and a processor. Processors are optional JavaScript functions that can do whatever you need them to, for instance fetch data from another source than the CMS, or post-process the query response before it is passed to the view.</p>
 </div>
 <div class="paragraph">
-<p>The Enonic adapter will execute the query, pass the result via the processor, and then to the view which renders the component.</p>
+<p>The Enonic adapter executes the query, passes the result via the processor, and then to the view which renders the component.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -656,34 +647,42 @@ ComponentRegistry.addPart(`${APP_NAME}:child-list`, {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Like macros, all page components support <code>configQuery</code>. Here though, if <code>configQuery</code> is omitted, the <code>config</code> prop will fallback to the raw form values via <code>configAsJson</code>.
+Like macros, all page components support <code>configQuery</code>. Here though, if <code>configQuery</code> is omitted, the <code>config</code> prop falls back to the raw form values via <code>configAsJson</code>.
 </td>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="media/child-list-rendered.png" alt="child list rendered" width="1440px" title="Part rendered with list of persons as seen from Content Studio"></span></p>
+</li>
+<li>
+<p><strong>Verify the rendering</strong> - Content Studio now shows the part with a list of persons:</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/child-list-rendered.png" alt="Part rendered with list of persons as seen from Content Studio" width="1440">
+</div>
 </div>
 <div class="paragraph">
 <p>Try customizing the part configuration and see what happens.</p>
 </div>
+</li>
+<li>
+<p><strong>Publish the page</strong> - Click <code>Mark as ready</code>, and then <code>Publish now</code> in the Publishing Wizard, like you did for the front page. The list of persons is now available on <a href="http://localhost:3000/persons">http://localhost:3000/persons</a> as well.</p>
 </li>
 </ol>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="optional_task_the_heading_part"><a class="link" href="#optional_task_the_heading_part">Optional Task: The heading part</a></h2>
+<h2 id="task_add_a_heading_part_optional"><a class="link" href="#task_add_a_heading_part_optional">Task: Add a heading part (optional)</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>For more components to play with, you may add another part:</p>
+<p>For more components to play with, you may add another part. This task is optional.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Verify Enonic app (not the Next.js frontend) contains <strong>the Heading part descriptor</strong>:</p>
+<p><strong>Check the part descriptor</strong> - Verify that the Enonic app (not the Next.js front-end) contains the <code>heading</code> part descriptor.</p>
 <div class="paragraph">
-<p>This part definition includes a form, with an <a href="https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types">input field</a> called <code>heading</code>.This makes it possible for editors to override the heading (aka displayName) coming from the content item.</p>
+<p>This part definition includes a form, with an <a href="https://developer.enonic.com/docs/cms/stable/schemas/form-items">form item</a> called <code>heading</code>. This makes it possible for editors to override the heading (the display name) coming from the content item.</p>
 </div>
 <div class="listingblock">
 <div class="title">src/main/resources/cms/parts/heading/heading.yaml</div>
@@ -692,21 +691,24 @@ Like macros, all page components support <code>configQuery</code>. Here though, 
 title: "Heading"
 description: "Demo heading"
 form:
-- type: "TextLine"
-  name: "heading"
-  label: "Override heading"</code></pre>
+  - type: "TextLine"
+    name: "heading"
+    label: "Override heading"
+    occurrences:
+      min: 0
+      max: 1</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p><strong>Redeploy</strong> the Enonic app if it didn&#8217;t have it and add the part to your page (happens automatically if you started <code>enonic dev</code>).</p>
 </div>
 </li>
 <li>
-<p><strong>Add the heading component in Next.js</strong>.</p>
+<p><strong>Redeploy the Enonic app</strong> - This is only needed if you had to add the descriptor, and happens automatically if you started <code>enonic dev</code>.</p>
+</li>
+<li>
+<p><strong>Add the heading component in Next.js</strong>:</p>
 <div class="listingblock">
 <div class="title">src/components/parts/Heading.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-JavaScript" data-lang="JavaScript">import React from 'react'
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import React from 'react'
 import {APP_NAME, PartData} from '@enonic/nextjs-adapter';
 
 // fully qualified XP part name:
@@ -724,13 +726,13 @@ const HeadingView = ({part, common}: HeadingData) =&gt; (
 export default HeadingView;</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Add the following lines to _mappings.ts:</p>
-</div>
+</li>
+<li>
+<p><strong>Register the part</strong> - Add the following lines to <code>_mappings.ts</code>:</p>
 <div class="listingblock">
 <div class="title">src/components/_mappings.ts</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import Heading from './parts/Heading';
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import Heading from './parts/Heading';
 
 // Part mappings
 ComponentRegistry.addPart(`${APP_NAME}:heading`, {
@@ -738,21 +740,29 @@ ComponentRegistry.addPart(`${APP_NAME}:heading`, {
 });</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>You should now have three configurable parts to play with.</p>
-</div>
+</li>
+<li>
+<p><strong>Verify the rendering</strong> - Add the <code>Heading</code> part to your page in Content Studio. You now have three configurable parts to play with.</p>
 </li>
 </ol>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="summary"><a class="link" href="#summary">Summary</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>In the next chapter you will make page composition even more interesting, with the introduction of <a href="layouts.ahtml">layouts</a>.</p>
+<p>You&#8217;ve registered a <code>ChildList</code> part with a query, a processor and a view, and seen how editors add and configure parts in Content Studio.</p>
+</div>
+<div class="paragraph">
+<p>Next, you&#8217;ll make page composition even more interesting, with the introduction of <a href="layouts.ahtml">layouts</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:48:31 UTC
+Last updated 2026-11-19 21:54:02 UTC
 </div>
 </div>
 </body>

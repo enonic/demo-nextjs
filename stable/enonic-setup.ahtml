@@ -444,8 +444,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#task_install_the_enonic_cli">Task: Install the Enonic CLI</a></li>
 <li><a href="#task_create_and_start_a_sandbox">Task: Create and start a sandbox</a></li>
 <li><a href="#task_create_and_deploy_your_app">Task: Create and deploy your app</a></li>
-<li><a href="#task_open_admin_dashboard">Task: Open Admin dashboard</a></li>
+<li><a href="#task_open_the_admin_dashboard">Task: Open the admin dashboard</a></li>
 <li><a href="#task_open_content_studio">Task: Open Content Studio</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 </div>
@@ -453,7 +454,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this chapter you will create a local Enonic developer environment, create and deploy an Enonic app.</p>
+<p>In this chapter you will create a local Enonic development environment, then create and deploy an Enonic app with sample content.</p>
 </div>
 </div>
 </div>
@@ -461,7 +462,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="task_install_the_enonic_cli"><a class="link" href="#task_install_the_enonic_cli">Task: Install the Enonic CLI</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://developer.enonic.com/start"><strong>Install the Enonic CLI</strong></a> (follow link for instructions).</p>
+<p>The Enonic CLI manages local instances of Enonic XP, known as sandboxes, and builds and deploys your apps.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Install the CLI</strong> - Follow the <a href="https://developer.enonic.com/start">installation instructions</a> for your operating system.</p>
+</li>
+<li>
+<p><strong>Verify the installation</strong> - Run <code>enonic -v</code> in your terminal. It prints the installed CLI version.</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -471,10 +482,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Create a sandbox called <code>nxptutorial</code> by running this command in your terminal:</p>
-<div class="literalblock">
+<p><strong>Create a sandbox</strong> - Run this command in your terminal to create a sandbox called <code>tutorial_nextjs</code>. It works from any folder:</p>
+<div class="listingblock">
 <div class="content">
-<pre>enonic sandbox create nxptutorial -t essentials -v 8.1.1 -f</pre>
+<pre class="highlight"><code class="language-shell" data-lang="shell">enonic sandbox create tutorial_nextjs -t essentials -f</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -484,38 +495,47 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<code>-f</code> forces the use of default values for remaining options
+<code>-f</code> forces the use of default values for the remaining options, which includes the latest version of Enonic XP, and starts the sandbox.
 </td>
 </tr>
 </table>
 </div>
 </li>
+<li>
+<p><strong>Verify that the sandbox is running</strong> - Open <a href="http://localhost:8080">http://localhost:8080</a> in your browser. The Enonic XP Welcome page appears.</p>
+</li>
 </ol>
+</div>
+<div class="paragraph">
+<p>Leave the sandbox running in this terminal window. To stop it, press ctrl-c. To start it again, run <code>enonic sandbox start tutorial_nextjs</code> from any folder.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The sandbox has its own content and applications, separate from other tutorials. All sandboxes use the same ports by default, so stop the sandbox of any other tutorial before starting this one.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="task_create_and_deploy_your_app"><a class="link" href="#task_create_and_deploy_your_app">Task: Create and deploy your app</a></h2>
 <div class="sectionbody">
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Leave the sandbox running in the first terminal window, and open a new terminal window for the following commands.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>Open a new terminal window in the folder where you keep your tutorial projects, for example <code>enonic-tutorials/</code>. The commands below create the app in a subfolder of its own.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Create a new project</strong> using the <code>Introduction</code> app as a starter, by running the following command in your terminal:</p>
-<div class="literalblock">
+<p><strong>Create a new project</strong> - Use the <code>Introduction</code> app as a starter by running this command:</p>
+<div class="listingblock">
 <div class="content">
-<pre>enonic create tutorial.nxp -r tutorial-intro -s nxptutorial -f</pre>
+<pre class="highlight"><code class="language-shell" data-lang="shell">enonic project create com.example.tutorial.nextjs -r tutorial-intro -s tutorial_nextjs -d tutorial-nextjs-enonic -f</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -527,100 +547,81 @@ Leave the sandbox running in the first terminal window, and open a new terminal 
 <p>use the GitHub repo <code>github.com/enonic/tutorial-intro</code> as a starter</p>
 </li>
 <li>
-<p>to create an app called <code>tutorial.nxp</code></p>
+<p>create an app called <code>com.example.tutorial.nextjs</code></p>
 </li>
 <li>
-<p>and link it to the <code>nxptutorial</code> sandbox</p>
+<p>link it to the <code>tutorial_nextjs</code> sandbox</p>
+</li>
+<li>
+<p>place the project in a new folder called <code>tutorial-nextjs-enonic</code></p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><strong>Deploy the application</strong></p>
-<div class="paragraph">
-<p>To build and run your application, execute these commands (the CLI placed the project in a folder named after the last part of the app name):</p>
-</div>
-<div class="literalblock">
+<p><strong>Deploy the application</strong> - Run these commands to build and run your application:</p>
+<div class="listingblock">
 <div class="content">
-<pre>cd nxp
-enonic dev</pre>
+<pre class="highlight"><code class="language-shell" data-lang="shell">cd tutorial-nextjs-enonic
+enonic dev</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The last command builds and deploys the app to the sandbox, then watches the code for changes and rebuilds as you work on it.</p>
+</div>
+</li>
+<li>
+<p><strong>Verify the deployment</strong> - In <code>dev</code> mode the CLI keeps watching for changes, so the build process never exits. This is expected behavior. When your terminal shows output like the following, the app has been built and deployed:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">&gt; Task :deploy
+Deploying 'nextjs.jar' to '.../.enonic/sandboxes/tutorial_nextjs/home/deploy'
+BUILD SUCCESSFUL in 1m 16s
+Waiting for changes to input files...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>On its first deployment, the app creates the <code>Intro Project</code> content project and publishes its sample content.</p>
 </div>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>The last command will build and deploy the app to the sandbox, and then start watching for changes in the code to automatically rebuild as you work on it.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>In <code>dev</code> mode CLI will constantly watch for changes in the code, so the build process will never exit, which is expected behaviour.
-When you see the following output in your terminal then your app has been successfully built/deployed, and you can proceed to the next step:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>[server] CLI Watching for changes in "."
-[server] CLI Ignoring changes in "**/{.git,node_modules}/**" | "build/resources/main"
-[browserSync] [Browsersync] Reloading Browsers... (buffered 9 events)
-&lt;============-&gt; 94% EXECUTING [17m 31s]
-&gt; :dev</pre>
-</div>
-</div>
-</td>
-</tr>
-</table>
+<p>Leave <code>enonic dev</code> running in this terminal window as well. To stop it, press ctrl-c. To resume the tutorial later, start the sandbox and then run <code>enonic dev</code> from the <code>tutorial-nextjs-enonic</code> folder again.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_open_admin_dashboard"><a class="link" href="#task_open_admin_dashboard">Task: Open Admin dashboard</a></h2>
+<h2 id="task_open_the_admin_dashboard"><a class="link" href="#task_open_the_admin_dashboard">Task: Open the admin dashboard</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let&#8217;s have a look at the sandbox' web interface. Open <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a> in your browser (or just click the link).</p>
+<p>The sandbox has a web interface for managing applications and content.</p>
 </div>
-<div class="paragraph">
-<p>You should now see the Welcome page:</p>
-</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Open the Welcome page</strong> - Go to <a href="http://localhost:8080">http://localhost:8080</a> in your browser.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/xp-boot.png" alt="The XP boot page" width="1085w">
+<img src="media/xp-boot.png" alt="The XP boot page" width="1280">
 </div>
 <div class="title">Figure 1. Welcome page</div>
 </div>
 <div class="paragraph">
-<p>The Welcome page provides an overview of the sandbox, including installed application and <a href="https://developer.enonic.com/docs/xp/stable/deployment/config" target="_blank" rel="noopener">standard configuration files</a>.</p>
+<p>The Welcome page provides an overview of the sandbox, including installed applications and <a href="https://developer.enonic.com/docs/platform/stable/config">standard configuration files</a>. <code>Intro</code> should be in the list, together with the other applications that were installed when you created the sandbox.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<code>Intro</code> should be in the list, together with other applications that were automatically installed when you created the sandbox.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Click <b class="button">Log In as Guest</b> to open the XP admin dashboard. You should now see the following:</p>
-</div>
+</li>
+<li>
+<p><strong>Log in</strong> - Click <b class="button">Log In as Guest</b> to open the XP admin dashboard.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/xp-dashboard.png" alt="The XP admin dashboard" width="1085w">
+<img src="media/xp-dashboard.webp" alt="The XP admin dashboard" width="1280">
 </div>
 <div class="title">Figure 2. The XP admin dashboard</div>
 </div>
 <div class="paragraph">
-<p>You are now on the admin dashboard.
-The center menu (aka <code>XP menu</code>) enables navigation between admin tools.
-Admin tools may be injected as extensions via applications.</p>
+<p>The center menu, known as the <code>XP menu</code>, lets you navigate between admin tools.
+Applications can add admin tools as extensions.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -629,10 +630,13 @@ Admin tools may be injected as extensions via applications.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If things don&#8217;t look exactly the same, don&#8217;t worry. In every new version of XP the background picture gets updated. Also, admin dashboard is automatically localized - based on your browsers preferred language.
+If things don&#8217;t look exactly the same, don&#8217;t worry. In every new version of XP the background picture gets updated. Also, the admin dashboard is automatically localized, based on your browser&#8217;s preferred language.
 </td>
 </tr>
 </table>
+</div>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -640,16 +644,14 @@ If things don&#8217;t look exactly the same, don&#8217;t worry. In every new ver
 <h2 id="task_open_content_studio"><a class="link" href="#task_open_content_studio">Task: Open Content Studio</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://market.enonic.com/vendors/enonic/content-studio" target="_blank" rel="noopener">Content Studio</a> is the editorial interface used to create and manage content. It was pre-installed from <a href="https://market.enonic.com" target="_blank" rel="noopener">Enonic Market</a> as a part of the <code>Essentials</code> template when you started the sandbox, and can now be accessed from the XP menu.</p>
+<p><a href="https://market.enonic.com/vendors/enonic/content-studio">Content Studio</a> is the editorial interface used to create and manage content. It was pre-installed from <a href="https://market.enonic.com">Enonic Market</a> as a part of the <code>Essentials</code> template when you started the sandbox, and can be accessed from the XP menu.</p>
 </div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Launch Content Studio</strong> - Click <b class="button">Content Studio</b> in the XP menu.</p>
 <div class="paragraph">
-<p>Before continuing, verify that <code>Guillotine</code> is version 9 or later in <code>XP menu</code> &#8594; <code>Applications</code>. If the Essentials template installed version 8, update it to version 9 using <code>Install</code> before running the queries in the next chapter.</p>
-</div>
-<div class="paragraph">
-<p><strong>Click <b class="button">Content Studio</b></strong> in the XP menu to launch it.</p>
-</div>
-<div class="paragraph">
-<p>The first time your application was deployed to the sandbox, it automatically created a content project called <code>Intro Project</code> (id <code>intro</code>) and populated it with content. Since this is the only available project at the moment, Content Studio will automatically open it, revealing the list of sample content items.</p>
+<p>The first time your application was deployed to the sandbox, it automatically created a content project called <code>Intro Project</code> (id <code>intro</code>) and populated it with content. Since this is the only available project at the moment, Content Studio opens it automatically.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -663,8 +665,13 @@ The current project is shown at the top of Content Studio.
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="media/content-studio-moviedb.png" alt="content studio moviedb" width="1440px" title="Movie DB in Content Studio"></span></p>
+</li>
+<li>
+<p><strong>Verify the sample content</strong> - Content Studio lists the sample content items:</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/content-studio-moviedb.png" alt="Movie DB in Content Studio" width="1280">
+</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -678,18 +685,26 @@ Some of the content items will have a default preview. That&#8217;s okay for now
 </tr>
 </table>
 </div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="summary"><a class="link" href="#summary">Summary</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p><strong>Congrats on setting up the Enonic development environment</strong></p>
+<p>You&#8217;ve installed the Enonic CLI, started the <code>tutorial_nextjs</code> sandbox, deployed the <code>com.example.tutorial.nextjs</code> app based on the Intro starter, and opened its sample content in Content Studio.</p>
 </div>
 <div class="paragraph">
-<p>With the Enonic environment up and running, lets have a look at <a href="api-primer.ahtml">the GraphQL API</a>.</p>
+<p>Next, you&#8217;ll <a href="api-primer.ahtml">query that content with the GraphQL API</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:48:31 UTC
+Last updated 2026-11-19 21:54:02 UTC
 </div>
 </div>
 </body>

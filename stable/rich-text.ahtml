@@ -443,7 +443,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#intro">Intro</a></li>
 <li><a href="#sample_content">Sample content</a></li>
-<li><a href="#task_rich_text_rendering">Task: Rich text rendering</a></li>
+<li><a href="#task_render_rich_text">Task: Render rich text</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 </div>
@@ -451,7 +452,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this chapter you&#8217;ll learn how to render Rich Text content.</p>
+<p>In this chapter you&#8217;ll render rich text content, including its links and images.</p>
 </div>
 </div>
 </div>
@@ -459,7 +460,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="intro"><a class="link" href="#intro">Intro</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Enonic boasts a <a href="https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types/htmlarea">Rich Text input type</a> which, unlike basic text fields, may contain more complex concepts such as tables, images, links and custom components. Each of these will typically need to be processed during rendering to provide a contextually correct URL, ideal image sizes, etc.</p>
+<p>Enonic has a <a href="https://developer.enonic.com/docs/cms/stable/schemas/form-items/htmlarea">rich text form item</a> which, unlike basic text fields, may contain more complex concepts such as tables, images, links and custom components. Each of these typically needs to be processed during rendering to provide a contextually correct URL, ideal image sizes, etc.</p>
 </div>
 </div>
 </div>
@@ -467,32 +468,28 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="sample_content"><a class="link" href="#sample_content">Sample content</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Luckily, the sample data set contains everything we need to get going.
-The <code>Bio</code> field for persons is a Rich Text input, and some Persons' data is even populated with relevant content, like you see below:</p>
+<p>The sample data set contains everything you need to get going.
+The <code>Bio</code> field for persons is a rich text form item, and some persons are even populated with relevant content, like you see below:</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="media/rich-text-bio.png" alt="rich text bio" width="662px">
+<img src="media/rich-text-bio.png" alt="Rich text bio field for Lea Seydough" width="490">
 </div>
-<div class="title">Figure 1. Rich text bio field for Lea Seydough</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_rich_text_rendering"><a class="link" href="#task_rich_text_rendering">Task: Rich text rendering</a></h2>
+<h2 id="task_render_rich_text"><a class="link" href="#task_render_rich_text">Task: Render rich text</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Follow these steps to implement rendering of the Bio field in Next.js:</p>
+<p>Follow these steps to implement rendering of the <code>Bio</code> field in Next.js:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Update the Person query</strong></p>
+<p><strong>Update the Person query</strong> - To properly render rich text, you need access to additional metadata (such as links and images) within it.</p>
 <div class="paragraph">
-<p>To properly render Rich text, we need access to additional metadata (such as links and images) within it.</p>
-</div>
-<div class="paragraph">
-<p>To simplify things, Next.XP provides a <code>richTextQuery</code> helper function that generates the query for us. Also, this way we don&#8217;t have to repeat the query for every rich text field.</p>
+<p>Next.XP provides a <code>richTextQuery</code> helper function that generates the query for you. This way you don&#8217;t have to repeat the query for every rich text field.</p>
 </div>
 <div class="paragraph">
 <p>Add a new query file to your project with the following content:</p>
@@ -500,7 +497,7 @@ The <code>Bio</code> field for persons is a Rich Text input, and some Persons' d
 <div class="listingblock">
 <div class="title">src/components/queries/getPersonWithBio.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-Typescript" data-lang="Typescript">import { APP_NAME_UNDERSCORED, imageUrlQuery, pageUrlQuery, richTextQuery } from '@enonic/nextjs-adapter';
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import { APP_NAME_UNDERSCORED, imageUrlQuery, pageUrlQuery, richTextQuery } from '@enonic/nextjs-adapter';
 
 const getPersonWithBio = () =&gt; `
 query {
@@ -558,26 +555,23 @@ This guarantees that it is executed when querying for data, and all the macros a
 </table>
 </div>
 <div class="paragraph">
-<p>Guillotine 9&#8217;s processed HTML contains placeholders. The adapter matches <code>data-link-ref</code> and <code>data-image-ref</code> with the structured links and images, preserving page-link query strings and fragments.
+<p>The processed HTML from Guillotine 9 contains placeholders. The adapter matches <code>data-link-ref</code> and <code>data-image-ref</code> with the structured links and images, preserving page-link query strings and fragments.
 Apps providing macros and image styles must be configured on the selected site or project.</p>
 </div>
 <div class="paragraph">
-<p>For further insight, visit the <a href="https://developer.enonic.com/docs/developer-101/stable/rich-text">rich text chapter</a> in the Developer 101 tutorial, or have a look at the tutorial covering our standard <a href="https://developer.enonic.com/docs/react-spa">react components</a>.</p>
+<p>For further insight, visit the <a href="https://developer.enonic.com/learn/developer-101/stable/rich-text">rich text chapter</a> in the Developer 101 tutorial, or have a look at the <a href="https://developer.enonic.com/learn/react-spa">React SPA tutorial</a>, which covers Enonic&#8217;s standard React components.</p>
 </div>
 </li>
 <li>
-<p><strong>The RichTextView component</strong></p>
-<div class="paragraph">
-<p>Now that we got the data, we need to use <code>RichTextView</code> component that knows how to render it.
-All we need to do is pass value of the <code>bio</code> field from the query response to the <code>RichTextView</code> component.</p>
-</div>
+<p><strong>Add the RichTextView component</strong> - With the data in place, use the <code>RichTextView</code> component, which knows how to render it.
+Pass the value of the <code>bio</code> field from the query response to the <code>RichTextView</code> component.</p>
 <div class="paragraph">
 <p>Create a new component with the following content:</p>
 </div>
 <div class="listingblock">
 <div class="title">src/components/views/PersonWithBio.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-tsx" data-lang="tsx">import React from 'react';
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import React from 'react';
 import { FetchContentResult, I18n, imageUrl, pageUrl } from '@enonic/nextjs-adapter';
 import Link from 'next/link';
 import RichTextView from '@enonic/nextjs-adapter/views/RichTextView';
@@ -673,17 +667,14 @@ function getTitle(photo: any, displayName: string) {
 </div>
 </li>
 <li>
-<p><strong>Update the mapping</strong></p>
+<p><strong>Update the mapping</strong> - Update the mappings to use the new query and view.</p>
 <div class="paragraph">
-<p>Finally, we need to update the mappings to use the new query and view.</p>
-</div>
-<div class="paragraph">
-<p>Replace the <code>getPerson</code> query with <code>getPersonWithBio</code> and <code>Person</code> view with <code>PersonWithBio</code>. It should look something like this:</p>
+<p>Replace the <code>getPerson</code> query with <code>getPersonWithBio</code> and the <code>Person</code> view with <code>PersonWithBio</code>. It should look something like this:</p>
 </div>
 <div class="listingblock">
 <div class="title">src/components/_mappings.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-Typescript" data-lang="Typescript">import getPersonWithBio from './queries/getPersonWithBio';
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import getPersonWithBio from './queries/getPersonWithBio';
 import PersonWithBio from './views/PersonWithBio';
 
 ComponentRegistry.addContentType(`${APP_NAME}:person`, {
@@ -694,28 +685,32 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 </div>
 </li>
 <li>
-<p><strong>That&#8217;s it!</strong></p>
-<div class="paragraph">
-<p>The resulting page for <a href="http://localhost:3000/persons/lea-seydough">Lea Seydough</a> should look like this:</p>
-</div>
+<p><strong>Verify the rendering</strong> - The resulting page for <a href="http://localhost:3000/persons/lea-seydough">Lea Seydough</a> should look like this:</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/rich-text-no-macro.png" alt="rich text no macro" width="1080px">
+<img src="media/rich-text-no-macro.png" alt="Person content rendered with rich text" width="1080">
 </div>
-<div class="title">Figure 2. Person content rendered with rich text</div>
 </div>
 </li>
 </ol>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="summary"><a class="link" href="#summary">Summary</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>As you can see from the above screenshot, there is a missing component. The next chapter addresses this by looking into <a href="macros.ahtml">Macros</a>.</p>
+<p>You&#8217;ve added a query that uses <code>richTextQuery</code>, and a view that renders the <code>bio</code> field with <code>RichTextView</code>, including its links and images.</p>
+</div>
+<div class="paragraph">
+<p>As the screenshot shows, one component in the bio is still missing. Next, you&#8217;ll fix this by <a href="macros.ahtml">rendering macros</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:48:31 UTC
+Last updated 2026-11-19 21:54:02 UTC
 </div>
 </div>
 </body>

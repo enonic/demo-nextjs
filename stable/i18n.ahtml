@@ -448,6 +448,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#multi_front_end_setup">Multi front-end setup</a></li>
 <li><a href="#accessing_locale_in_views">Accessing locale in views</a></li>
 <li><a href="#localizing_the_views">Localizing the views</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 </div>
@@ -455,7 +456,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this chapter you will learn what it takes to support multi-language for your site.</p>
+<p>In this chapter you will add a second language to your site, in both Content Studio and Next.js.</p>
 </div>
 </div>
 </div>
@@ -474,21 +475,25 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="task_create_a_layered_project"><a class="link" href="#task_create_a_layered_project">Task: Create a layered project</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To demonstrate multi-language, you first need to activate support for translating your content in Content Studio. In our case, let&#8217;s try Norwegian.</p>
+<p>To demonstrate multi-language, you first need to activate support for translating your content in Content Studio. This chapter uses Norwegian as the example.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Create a new project</strong> in Content Studio by clicking on the <code>Settings</code> cog icon, on the left-hand side of the grid. You will be presented with the currently available projects:</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/content-studio-settings.png" alt="content studio settings" width="1024px" title="Project list"></span></p>
+<p><strong>Open the project settings</strong> - In Content Studio, click the <code>Settings</code> cog icon on the left-hand side of the grid. You will be presented with the currently available projects:</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/content-studio-settings.png" alt="Project list" width="1280">
 </div>
-<div class="paragraph">
-<p>Select the existing <code>Intro Project</code> and click the <code>New</code> button.
+</div>
+</li>
+<li>
+<p><strong>Create a layer</strong> - Select the existing <code>Intro Project</code> and click the <code>New</code> button.
 This opens the project wizard with <code>Intro Project</code> preselected as the parent project, so the new project becomes a layer.</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/content-studio-create-layer.png" alt="Layered project type" width="1280">
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="media/content-studio-create-layer.png" alt="content studio create layer" width="1024px" title="Layered project type"></span></p>
 </div>
 <div class="paragraph">
 <p>Walk through the wizard steps, using the following values:</p>
@@ -517,16 +522,18 @@ This opens the project wizard with <code>Intro Project</code> preselected as the
 </div>
 </li>
 <li>
-<p><strong>Verify the new layer</strong> by going back to the content list (<code>Content</code> in the sidebar), and then switching project with the project selector in the top left corner.</p>
+<p><strong>Verify the new layer</strong> - Go back to the content list (<code>Content</code> in the sidebar), and then switch project with the project selector in the top left corner.</p>
 <div class="paragraph">
 <p>After switching context, you should see the following:</p>
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="media/content-studio-filmdb.png" alt="content studio filmdb" width="1024px" title="Film DB project"></span></p>
+<div class="imageblock">
+<div class="content">
+<img src="media/content-studio-filmdb.png" alt="Film DB project" width="1280">
+</div>
 </div>
 </li>
 <li>
-<p>Finally <strong>publish the project</strong>: select the <code>HMDB</code> site, click <code>Publish</code> in the toolbar, toggle <code>Include child items</code>, click <code>Apply</code> and then <code>Publish now</code>.</p>
+<p><strong>Publish the project</strong> - Select the <code>HMDB</code> site, click <code>Publish</code> in the toolbar, toggle <code>Include child items</code> and then click <code>Publish now</code>. If the wizard reports items that are in progress, click <code>Mark as ready</code> first.</p>
 </li>
 </ol>
 </div>
@@ -536,34 +543,31 @@ This opens the project wizard with <code>Intro Project</code> preselected as the
 <h2 id="task_set_up_i18n_in_next_js"><a class="link" href="#task_set_up_i18n_in_next_js">Task: Set up i18n in Next.js</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Next, let&#8217;s turn on multi-language support in Next.js.</p>
+<p>With the layer in place, turn on multi-language support in Next.js.</p>
+</div>
+<div class="paragraph">
+<p>The starter comes with a proxy (<code>src/proxy.ts</code>) that keeps the default locale out of public URLs: <code><a href="http://localhost:3000/persons/x" class="bare">http://localhost:3000/persons/x</a></code> is rendered by the internal <code>/en/persons/x</code> route, and <code>/en/persons/x</code> itself redirects to <code>/persons/x</code>.
+Other locales keep their prefix (<code>/no/persons/x</code>).
+Content Studio preview URLs and links rendered with <code>pageUrl(data, meta)</code> follow the same rule.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>This template comes with a proxy (<code>src/proxy.ts</code>) that keeps the default locale out of public URLs: <code><a href="http://localhost:3000/persons/x" class="bare">http://localhost:3000/persons/x</a></code> is rendered by the internal <code>/en/persons/x</code> route, and <code>/en/persons/x</code> itself redirects to <code>/persons/x</code>.
-Other locales keep their prefix (<code>/no/persons/x</code>).
-Content Studio preview URLs and links rendered with <code>pageUrl(data, meta)</code> follow the same rule.</p>
-</li>
-<li>
-<p>But you need to <strong>configure the Enonic adapter</strong>, by specifying which content project to use for each locale:</p>
+<p><strong>Configure the Enonic adapter</strong> - Specify which content project to use for each locale:</p>
 <div class="listingblock">
 <div class="title">.env</div>
 <div class="content">
-<pre class="highlight"><code class="language-Properties" data-lang="Properties"># ...
+<pre class="highlight"><code class="language-properties" data-lang="properties"># ...
 ENONIC_MAPPINGS=en:intro/hmdb,no:intro-no/hmdb
 # ...</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s break down the syntax.</p>
+<p>Each comma-separated entry follows the pattern <code>&lt;locale&gt;:&lt;project&gt;/&lt;sitekey&gt;</code>.
+In the example above, the entries are <code>en:intro/hmdb</code> and <code>no:intro-no/hmdb</code>.</p>
 </div>
 <div class="paragraph">
-<p>For each comma separated entry, you will find the following pattern: <code>&lt;locale&gt;:&lt;project&gt;/&lt;sitekey&gt;</code>.
-In the example above <code>en:intro/hmdb</code> and <code>no:intro-no/hmdb</code>.</p>
-</div>
-<div class="paragraph">
-<p>The first entry will map to the <code>defaultLocale</code> that is used in the locale related methods in the NextJS adapter.</p>
+<p>The first entry maps to the <code>defaultLocale</code> that is used in the locale-related methods of the Enonic adapter.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -572,14 +576,14 @@ In the example above <code>en:intro/hmdb</code> and <code>no:intro-no/hmdb</code
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The reason for repeating paths, is that the path may be different in each project/translation.
+The reason for repeating paths is that the path may be different in each project/translation.
 </td>
 </tr>
 </table>
 </div>
 </li>
 <li>
-<p>Next, add the static texts file for every locale to the <code>src/phrases</code> folder.
+<p><strong>Add the phrases</strong> - Add a static texts file for every locale to the <code>src/phrases</code> folder.
 The file name should be <code>&lt;locale&gt;.json</code>, e.g. <code>no.json</code> for Norwegian.</p>
 <div class="listingblock">
 <div class="title">src/phrases/no.json</div>
@@ -595,7 +599,7 @@ The file name should be <code>&lt;locale&gt;.json</code>, e.g. <code>no.json</co
 </div>
 </li>
 <li>
-<p>Finally <strong>restart your Next.js server</strong> to pick up the changes to environment variables.</p>
+<p><strong>Restart your Next.js server</strong> to pick up the changes to the environment variables.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -617,7 +621,7 @@ In prod mode this means running <code>npm run prod</code> again. The build calls
 <h2 id="task_translate_and_publish"><a class="link" href="#task_translate_and_publish">Task: Translate and publish</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As long as your preview configuration was working before you started, Content Studio should automatically be able to detect the right locale for each project.</p>
+<p>As long as your preview configuration was working before you started, Content Studio automatically detects the right locale for each project.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -647,16 +651,16 @@ You may need to restart/rebuild your Next.js server for the changes to be picked
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>In Content Studio, <strong>Switch editing context</strong> to the <code>Film DB</code> project by toggling in the top left corner of Content Studio.</p>
+<p><strong>Switch editing context</strong> - In Content Studio, switch to the <code>Film DB</code> project with the project selector in the top left corner.</p>
 <div class="paragraph">
-<p>Content Studio should automatically be able to detect the correct Next.js locale for the project. Select an item, and you should get a preview.</p>
+<p>Content Studio detects the correct Next.js locale for the project. Select an item, and you should get a preview.</p>
 </div>
 </li>
 <li>
-<p><strong>Translate the site content</strong> by selecting the site and clicking <code>Edit</code>. The editor opens with a <code>Localize</code> button in place of <code>Save</code>: click it to create a local copy in the layer (the item switches from <code>Not localised</code> to <code>Localised</code> and gets the layer&#8217;s language). You may now show off your skills while translating the page to Norwegian.</p>
+<p><strong>Translate the site content</strong> - Select the site and click <code>Edit</code>. The editor opens with a <code>Localize</code> button in place of <code>Save</code>: click it to create a local copy in the layer (the item switches from <code>Not localised</code> to <code>Localised</code> and gets the layer&#8217;s language). You may now show off your skills while translating the page to Norwegian.</p>
 </li>
 <li>
-<p>Once finished, click <code>Mark as ready</code> and proceed to <strong>publish the entire site</strong> structure.</p>
+<p><strong>Publish the translation</strong> - Once finished, click <code>Mark as ready</code>, and then <code>Publish now</code> in the Publishing Wizard.</p>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -664,20 +668,14 @@ You may need to restart/rebuild your Next.js server for the changes to be picked
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-<div class="paragraph">
-<p><strong>Publish the entire tree</strong> by selecting the tree icon in the publishing wizard.
-<span class="image"><img src="media/content-studio-mark-as-ready.png" alt="content studio mark as ready" width="819px" title="Click tree icon to include all children"></span></p>
-</div>
+If the wizard lists unpublished child items, toggle <code>Include child items</code> to publish them as well.
 </td>
 </tr>
 </table>
 </div>
 </li>
 <li>
-<p><strong>Verify that your front-end is working</strong></p>
-<div class="paragraph">
-<p>Finally, by adding <code>/no</code> (i.e. <code>localhost:3000/no</code>) to the URL of your Next.js server in an <strong>incognito window</strong> you should now see the published content from the Norwegian project.</p>
-</div>
+<p><strong>Verify that your front-end is working</strong> - Add <code>/no</code> (i.e. <code>localhost:3000/no</code>) to the URL of your Next.js server in an <strong>incognito window</strong>. You should now see the published content from the Norwegian project.</p>
 </li>
 </ol>
 </div>
@@ -687,10 +685,10 @@ You may need to restart/rebuild your Next.js server for the changes to be picked
 <h2 id="multi_front_end_setup"><a class="link" href="#multi_front_end_setup">Multi front-end setup</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In some cases, you may prefer a setup where each language/market is served by a separate Next.js front-end, or you may simply have different sites accessing the same Enonic instance.</p>
+<p>In some cases, you may prefer a setup where each language/market is served by a separate Next.js front-end, or you may have different sites accessing the same Enonic instance. This setup is optional, and not needed for the rest of the tutorial.</p>
 </div>
 <div class="paragraph">
-<p>Setting up Next.js to do this is just like handling a single language. To enable Content Studio preview to know which Next.js server to use, some additional configuration will be required.</p>
+<p>Setting up Next.js for this works the same way as handling a single language. For Content Studio preview to know which Next.js server to use, some additional configuration is required.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -703,7 +701,7 @@ You may need to restart/rebuild your Next.js server for the changes to be picked
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The sandbox configuration files are located in the sandbox' home directory inside your user&#8217;s root directory at <code>.enonic/sandboxes/&lt;your-sandbox-name&gt;/home/config</code>. The full path is also listed on the sandbox Welcome page at <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a>, together with the existing configuration files. Create the file <code>com.enonic.app.nextxp.cfg</code> in this folder.
+The sandbox configuration files are located in the sandbox' home directory inside your user&#8217;s root directory at <code>.enonic/sandboxes/tutorial_nextjs/home/config</code>. The full path is also listed on the sandbox Welcome page at <a href="http://localhost:8080">http://localhost:8080</a>, together with the existing configuration files. Create the file <code>com.enonic.app.nextxp.cfg</code> in this folder.
 </td>
 </tr>
 </table>
@@ -737,8 +735,10 @@ Every configured URL is automatically allowed in Content Studio&#8217;s Content 
 </li>
 <li>
 <p><strong>Assign the configuration to your site</strong> by clicking the pencil icon next to the <code>Next.XP</code> app name in the site form, and selecting it from the list of named configurations:</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/content-studio-configure-nextxp.png" alt="content studio configure nextxp" width="771px" title="Selecting a named configuration for the Next.XP app in the site form"></span></p>
+<div class="imageblock">
+<div class="content">
+<img src="media/content-studio-configure-nextxp.png" alt="Selecting a named configuration for the Next.XP app in the site form" width="1280">
+</div>
 </div>
 </li>
 </ol>
@@ -749,16 +749,16 @@ Every configured URL is automatically allowed in Content Studio&#8217;s Content 
 <h2 id="accessing_locale_in_views"><a class="link" href="#accessing_locale_in_views">Accessing locale in views</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Here are some insight on how to make further use of locales in your Next.js project.</p>
+<p>Here are some insights on how to make further use of locales in your Next.js project.</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+<div class="ulist">
+<ul>
 <li>
-<p>Locale is available as path parameter on the page</p>
+<p>The locale is available as a path parameter on the page:</p>
 <div class="listingblock">
 <div class="title">src/app/[locale]/[[&#8230;&#8203;contentPath]]/page.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">export type PageProps = {
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">export type PageProps = {
     locale: string,
     contentPath?: string[],
 }
@@ -772,10 +772,10 @@ export default async function Page({params}: { params: Promise&lt;PageProps&gt; 
 </div>
 </li>
 <li>
-<p>Result of <code>fetchContent()</code> call from <code>@enonic/nextjs-adapter/server</code> contains <code>MetaData</code> object (available in every view) that includes <code>locale</code> and <code>defaultLocale</code> along with other calculated runtime data:</p>
+<p>The result of a <code>fetchContent()</code> call from <code>@enonic/nextjs-adapter/server</code> contains a <code>MetaData</code> object (available in every view) that includes <code>locale</code> and <code>defaultLocale</code>, along with other calculated runtime data:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-TypeScript" data-lang="TypeScript">import {PageComponent, RENDER_MODE, XP_REQUEST_TYPE} from '@enonic/nextjs-adapter';
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import {PageComponent, RENDER_MODE, XP_REQUEST_TYPE} from '@enonic/nextjs-adapter';
 
 export interface MetaData {
     type: string;
@@ -795,10 +795,10 @@ export interface MetaData {
 </div>
 </div>
 </li>
-</ol>
+</ul>
 </div>
 <div class="paragraph">
-<p>You can also use <code>I18n.getLocale()</code> and <code>useLocaleContext()</code> to access locale in server-side and client-side components respectively.
+<p>You can also use <code>I18n.getLocale()</code> and <code>useLocaleContext()</code> to access the locale in server-side and client-side components respectively.
 For links, pass <code>meta</code> to <code>pageUrl(data, meta)</code> and the locale prefix is added for non-default locales; <code>pageUrl({path: '/'}, meta)</code> gives the site root (<code>/</code> or <code>/no</code>).</p>
 </div>
 </div>
@@ -807,19 +807,16 @@ For links, pass <code>meta</code> to <code>pageUrl(data, meta)</code> and the lo
 <h2 id="localizing_the_views"><a class="link" href="#localizing_the_views">Localizing the views</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>So far we have only localized the content.
-Here is how you can localize texts in your views:</p>
+<p>So far you have only localized the content.
+The phrases files you added to the <code>src/phrases</code> folder earlier are used to localize texts in your views:</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+<div class="ulist">
+<ul>
 <li>
-<p>Remember, we added file for every locale to the <code>src/phrases</code> folder earlier ?</p>
-</li>
-<li>
-<p>Use <code>useLocaleContext</code> from <code>@enonic/nextjs-adapter/client</code> to access current locale in client-side components:</p>
+<p>Use <code>useLocaleContext</code> from <code>@enonic/nextjs-adapter/client</code> to access the current locale in client-side components:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">'use client';
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">'use client';
 
 import {useLocaleContext} from '@enonic/nextjs-adapter/client';
 
@@ -829,9 +826,6 @@ export default function ClientSideComponent() {
     // ...
 }</code></pre>
 </div>
-</div>
-</li>
-</ol>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -845,13 +839,12 @@ The <code>useLocaleContext</code> hook is only available in <strong>client-side<
 </tr>
 </table>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+</li>
 <li>
 <p>In server-side components, you can use <code>I18n.getLocale()</code> from <code>@enonic/nextjs-adapter</code> to do the same:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import {I18n} from '@enonic/nextjs-adapter';
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import {I18n} from '@enonic/nextjs-adapter';
 
 export default function ServerSideComponent() {
     const locale = I18n.getLocale();
@@ -861,17 +854,25 @@ export default function ServerSideComponent() {
 </div>
 </div>
 </li>
-</ol>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="summary"><a class="link" href="#summary">Summary</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You&#8217;ve created a Norwegian layer of the content project, mapped it to the <code>no</code> locale in <code>ENONIC_MAPPINGS</code>, added phrases for static texts, and published the translated site at <code>/no</code>.</p>
 </div>
 <div class="paragraph">
-<p>Now that we have everything working, it&#8217;s about time you <a href="deployment.ahtml">deploy to live servers</a>.</p>
+<p>Next, you&#8217;ll <a href="deployment.ahtml">deploy to live servers</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:48:31 UTC
+Last updated 2026-11-19 21:54:02 UTC
 </div>
 </div>
 </body>

@@ -443,6 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#intro">Intro</a></li>
 <li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#tested_versions">Tested versions</a></li>
 </ul>
 </div>
 </div>
@@ -450,18 +451,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This is a step-by-step tutorial on building and managing Next.js sites, using Enonic as your backend. The combined set of software and tools used in this tutorial is simply called Next.XP. You may alternatively <a href="demo.ahtml">skip the tutorial and try out a demo of Next.XP</a> instead.</p>
+<p>This is a step-by-step tutorial on building and managing <a href="https://nextjs.org/">Next.js</a> sites, using Enonic as your back-end. The combined set of software and tools used in this tutorial is called Next.XP.</p>
 </div>
-<div class="admonitionblock note">
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-<div class="paragraph">
-<p><strong>Requirements</strong>: We recommend that you complete the <a href="https://developer.enonic.com/docs/intro/stable">introduction to Enonic</a> before embarking on this tutorial. Experience with <a href="https://nextjs.org/">Next.js</a> is nice, but not required.</p>
-</div>
+<strong>Just want to see the result?</strong> <a href="demo.ahtml">Run the demo</a> to try the finished application without going through the chapters, either locally or in the cloud.
 </td>
 </tr>
 </table>
@@ -478,7 +477,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>It offers content editors a familiar and hassle-free way of working with content, using structured content, component based landing pages, and extensive control over the site&#8217;s URL structure.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="media/cloud-preview.png" alt="cloud preview" width="1419px" title="Editors enjoy WYSIWYG editing and live preview, combined with statically generated pages"></span></p>
+<p>When you are done, editors can build and preview pages like this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="media/cloud-preview.webp" alt="Content Studio showing a live preview of the front page rendered by Next.js" width="1440">
+</div>
+<div class="title">Figure 1. Editors enjoy WYSIWYG editing and live preview, combined with statically generated pages</div>
 </div>
 <div class="paragraph">
 <p>You will complete the following steps:</p>
@@ -486,37 +491,40 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p>Set up the Enonic SDK and sample content</p>
+<p><a href="enonic-setup.ahtml">Set up Enonic</a> with sample content</p>
 </li>
 <li>
-<p>Get familiar with the GraphQL API</p>
+<p><a href="api-primer.ahtml">Get familiar with the GraphQL API</a></p>
 </li>
 <li>
-<p>Learn about the site concept in Enonic</p>
+<p><a href="sites.ahtml">Create a site</a> and learn about the site concept in Enonic</p>
 </li>
 <li>
-<p>Create a Next.js app from a template</p>
+<p><a href="nextjs-setup.ahtml">Create a Next.js app</a> from a starter</p>
 </li>
 <li>
-<p>Activate live preview in Enonic</p>
+<p><a href="rendering-basics.ahtml">Render content</a> based on its type</p>
 </li>
 <li>
-<p>Render content based on type</p>
+<p><a href="preview.ahtml">Activate live preview</a> in Content Studio</p>
 </li>
 <li>
-<p>Build landing pages using components</p>
+<p>Render <a href="rich-text.ahtml">rich text</a> and <a href="macros.ahtml">macros</a></p>
 </li>
 <li>
-<p>Create page templates</p>
+<p>Build landing pages using <a href="pages.ahtml">pages</a>, <a href="parts.ahtml">parts</a> and <a href="layouts.ahtml">layouts</a></p>
 </li>
 <li>
-<p>Static Site Generation SSG</p>
+<p><a href="templates.ahtml">Create page templates</a></p>
 </li>
 <li>
-<p>Deploy to live servers</p>
+<p><a href="static.ahtml">Generate static pages</a>, and update them when content is published</p>
 </li>
 <li>
-<p>How to handle multi-language sites</p>
+<p><a href="i18n.ahtml">Handle multi-language sites</a></p>
+</li>
+<li>
+<p><a href="deployment.ahtml">Deploy to live servers</a></p>
 </li>
 </ul>
 </div>
@@ -526,13 +534,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="prerequisites"><a class="link" href="#prerequisites">Prerequisites</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
+<p>Experience with Next.js is nice, but not required. If Enonic is new to you, complete the <a href="https://developer.enonic.com/learn/intro">introduction to Enonic</a> before starting this tutorial.</p>
+</div>
+<div class="paragraph">
 <p>To follow this tutorial you will need:</p>
 </div>
 <div class="ulist">
 <ul>
-<li>
-<p>The <a href="https://developer.enonic.com/start">Enonic CLI</a></p>
-</li>
 <li>
 <p><a href="https://nodejs.org/">Node.js</a> 24.16.0 or newer, with npm 10.9.2 or newer</p>
 </li>
@@ -545,7 +553,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 <div class="paragraph">
-<p>This version of the tutorial is based on NextXP 6, consisting of:</p>
+<p>You will install the Enonic CLI in the first chapter.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="tested_versions"><a class="link" href="#tested_versions">Tested versions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This version of the tutorial is based on Next.XP 6, and was produced and tested with the following stack:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -585,28 +601,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 </tbody>
 </table>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-Using an older setup?
-Select the matching tutorial version from the version menu on this page.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>Using an older setup? Select the matching tutorial version from the version menu on this page.</p>
 </div>
 <div class="paragraph">
-<p>Get started by <a href="enonic-setup.ahtml">setting up the Enonic development environment</a>.</p>
+<p>Get started by <a href="enonic-setup.ahtml">setting up Enonic</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:48:31 UTC
+Last updated 2026-11-19 21:54:02 UTC
 </div>
 </div>
 </body>

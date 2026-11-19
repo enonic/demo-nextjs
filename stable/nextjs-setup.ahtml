@@ -442,15 +442,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#next_js_at_a_glance">Next.js at a glance</a></li>
-<li><a href="#task_create_the_next_js_project">Task: Create the Next.js project</a>
-<ul class="sectlevel2">
+<li><a href="#task_create_the_next_js_project">Task: Create the Next.js project</a></li>
 <li><a href="#code_overview">Code overview</a></li>
-</ul>
-</li>
-<li><a href="#task_configure_application">Task: Configure application</a></li>
-<li><a href="#task_boot_the_server">Task: Boot the server</a></li>
-<li><a href="#next_url_patterns">Next URL patterns</a></li>
+<li><a href="#task_verify_the_configuration">Task: Verify the configuration</a></li>
+<li><a href="#task_start_the_server">Task: Start the server</a></li>
+<li><a href="#next_js_url_patterns">Next.js URL patterns</a></li>
 <li><a href="#task_visit_some_more_pages">Task: Visit some more pages</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 </div>
@@ -458,7 +456,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this chapter we will create a front-end application that renders content from the Enonic CMS (the app created in the previous chapters).</p>
+<p>In this chapter you will create a front-end application that renders content from Enonic, using the app and site you created in the previous chapters.</p>
 </div>
 </div>
 </div>
@@ -466,7 +464,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="next_js_at_a_glance"><a class="link" href="#next_js_at_a_glance">Next.js at a glance</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://nextjs.org/"><strong>Next.js</strong></a> runs on top of <a href="https://nodejs.org/en/">Node.js</a>, and provides a shrink-wrapped approach to building sites using the <a href="https://reactjs.org/">React framework</a>.
+<p><a href="https://nextjs.org/"><strong>Next.js</strong></a> runs on top of <a href="https://nodejs.org/en/">Node.js</a>, and provides a shrink-wrapped approach to building sites using the <a href="https://react.dev/">React framework</a>.
 Next.js supports both client-side rendering and <a href="https://nextjs.org/docs/pages/building-your-application/rendering">Server side rendering</a>, as well as pre-generation of static HTML files.</p>
 </div>
 </div>
@@ -475,40 +473,44 @@ Next.js supports both client-side rendering and <a href="https://nextjs.org/docs
 <h2 id="task_create_the_next_js_project"><a class="link" href="#task_create_the_next_js_project">Task: Create the Next.js project</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Create an empty folder, go inside and run the following command:</p>
+<p>The Next.XP starter gives you a Next.js project that is prepared for Enonic content.</p>
 </div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Fetch the starter</strong> - Open a new terminal window in the folder where you keep your tutorial projects, next to the <code>tutorial-nextjs-enonic</code> folder, and run the following command:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">npx degit github:enonic/starter-nextjs</code></pre>
+<pre class="highlight nowrap"><code class="language-shell" data-lang="shell">npx degit github:enonic/starter-nextjs tutorial-nextjs-frontend</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>starter-nextjs</strong> is based on <a href="https://nextjs.org/docs/getting-started">Next.js' own introduction app</a>, so if you&#8217;re familiar with that, you&#8217;ll recognize the structure of the files.</p>
+<p>This places the project in a new folder called <code>tutorial-nextjs-frontend</code>.</p>
 </div>
 <div class="paragraph">
-<p>The template includes some boilerplate we will customize, and an npm dependency aka <code>The Enonic Adapter</code> (<code>@enonic/nextjs-adapter</code>) that facilitates and simplifies integration with Enonic.</p>
+<p><code>starter-nextjs</code> is based on <a href="https://nextjs.org/docs/app/getting-started">Next.js' own introduction app</a>, so if you&#8217;re familiar with that, you&#8217;ll recognize the structure of the files.</p>
 </div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-This tutorial requires the Next.XP 6 starter, with <code>@enonic/nextjs-adapter</code> 6 and <code>@enonic/page-editor</code> 2. Check <code>package.json</code> before continuing: a starter using adapter 5 is not compatible with the Guillotine 9 examples in this tutorial.
-</td>
-</tr>
-</table>
-</div>
-<div class="sect2">
-<h3 id="code_overview"><a class="link" href="#code_overview">Code overview</a></h3>
 <div class="paragraph">
-<p>The following file structure should now exist within your new project folder:</p>
+<p>The starter includes some boilerplate you will customize, and an npm dependency known as the Enonic adapter (<code>@enonic/nextjs-adapter</code>) that handles the integration with Enonic.</p>
+</div>
+</li>
+<li>
+<p><strong>Check the versions</strong> - This tutorial requires the Next.XP 6 starter, with <code>@enonic/nextjs-adapter</code> 6 and <code>@enonic/page-editor</code> 2. Check <code>package.json</code> before continuing: a starter using an older adapter is not compatible with the Guillotine 9 examples in this tutorial.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="code_overview"><a class="link" href="#code_overview">Code overview</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following file structure should now exist within the <code>tutorial-nextjs-frontend</code> folder:</p>
 </div>
 <div class="listingblock">
 <div class="title">Next project files:</div>
 <div class="content">
-<pre class="highlight"><code class="language-files" data-lang="files">.env                                <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlight"><code class="language-text" data-lang="text">.env                                <i class="conum" data-value="1"></i><b>(1)</b>
 src/
     proxy.ts                        <i class="conum" data-value="2"></i><b>(2)</b>
     components/                     <i class="conum" data-value="3"></i><b>(3)</b>
@@ -534,6 +536,9 @@ src/
         api/                        <i class="conum" data-value="12"></i><b>(12)</b>
             mappings/
                 route.ts
+            media/
+                [...path]/
+                    route.ts
             preview/
                 route.ts
             revalidate/
@@ -594,24 +599,24 @@ src/
 </div>
 </div>
 </div>
-</div>
 <div class="sect1">
-<h2 id="task_configure_application"><a class="link" href="#task_configure_application">Task: Configure application</a></h2>
+<h2 id="task_verify_the_configuration"><a class="link" href="#task_verify_the_configuration">Task: Verify the configuration</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>By default, the configuration should work for your setup, but verify it to be sure.</p>
+<p>The default configuration should work for your setup, but verify it to be sure.</p>
 </div>
-<div class="paragraph">
-<p>The following configuration values should match your environment:</p>
-</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Open the <code>.env</code> file</strong> - The following configuration values should match your environment:</p>
 <div class="listingblock">
 <div class="title">.env extract:</div>
 <div class="content">
-<pre class="highlight"><code class="language-files" data-lang="files"># Provide a unique value which will be used to secure the preview mode
+<pre class="highlight"><code class="language-text" data-lang="text"># Provide a unique value which will be used to secure the preview mode
 ENONIC_API_TOKEN=mySecretKey
 
 # Enonic app name, must match the name of your app
-ENONIC_APP_NAME=tutorial.nxp
+ENONIC_APP_NAME=com.example.tutorial.nextjs
 
 # Enonic XP projects configuration for different locales
 ENONIC_MAPPINGS=en:intro/hmdb <i class="conum" data-value="1"></i><b>(1)</b>
@@ -660,6 +665,9 @@ Defaults to the origin of <code>ENONIC_API</code>.</td>
 </tr>
 </table>
 </div>
+</li>
+<li>
+<p><strong>Check the app name</strong> - <code>ENONIC_APP_NAME</code> must match the name of the app you created in the <a href="enonic-setup.ahtml">first chapter</a>: <code>com.example.tutorial.nextjs</code>. Update the value if you used a different name.</p>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -672,13 +680,16 @@ These configuration values can be overridden later when deploying your app to a 
 </tr>
 </table>
 </div>
+</li>
+</ol>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_boot_the_server"><a class="link" href="#task_boot_the_server">Task: Boot the server</a></h2>
+<h2 id="task_start_the_server"><a class="link" href="#task_start_the_server">Task: Start the server</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let&#8217;s fire up the Next.js server and see if things are working as planned&#8230;&#8203;</p>
+<p>Time to start the Next.js server and see if things are working as planned.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -687,27 +698,28 @@ These configuration values can be overridden later when deploying your app to a 
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Make sure <a href="enonic-setup.ahtml">Enonic XP and the Movie DB app are running on localhost:8080</a> before you continue
+Make sure <a href="enonic-setup.ahtml">Enonic XP and your app are running on localhost:8080</a> before you continue.
 </td>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>Start Next.js in  <strong>dev mode</strong> by running the following commands from within your Next.js project folder:</p>
-</div>
-<div class="literalblock">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Start Next.js in dev mode</strong> - Run the following commands from the <code>tutorial-nextjs-frontend</code> folder:</p>
+<div class="listingblock">
 <div class="content">
-<pre>npm install
-npm run dev</pre>
+<pre class="highlight"><code class="language-shell" data-lang="shell">npm install
+npm run dev</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>If Next boots without errors, point your browser to <a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a> to see the glorious result.</p>
-</div>
+</li>
+<li>
+<p><strong>Verify the result</strong> - If Next.js starts without errors, point your browser to <a href="http://localhost:3000">http://localhost:3000</a>. The root page lists debugging details:</p>
 <div class="listingblock">
 <div class="title">Application root page, showing debugging details</div>
 <div class="content">
-<pre class="highlight"><code>Page:
+<pre class="highlight"><code class="language-text" data-lang="text">Page:
 {
   "type": "page",
   "path": "/"
@@ -750,30 +762,36 @@ The <code>_id</code> values differ from installation to installation.
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Running Next in <code>dev</code> mode normally works fine. Should you however experience "strange issues" - try deleting the <code>.next/</code> folder and reboot</p>
+<p>Running Next.js in <code>dev</code> mode normally works fine. Should you experience "strange issues", try deleting the <code>.next/</code> folder and restarting the server.</p>
 </div>
 <div class="paragraph">
-<p>For more details on booting Next, check out the <a href="https://nextjs.org/docs/api-reference/cli">Next.js CLI docs</a>.</p>
+<p>For more details on starting Next.js, check out the <a href="https://nextjs.org/docs/app/api-reference/cli/next">Next.js CLI docs</a>.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Leave Next.js running in this terminal window. To stop it, press ctrl-c. To resume the tutorial later, start the sandbox with <code>enonic sandbox start tutorial_nextjs</code>, run <code>enonic dev</code> from the <code>tutorial-nextjs-enonic</code> folder, and then <code>npm run dev</code> from the <code>tutorial-nextjs-frontend</code> folder.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="next_url_patterns"><a class="link" href="#next_url_patterns">Next URL patterns</a></h2>
+<h2 id="next_js_url_patterns"><a class="link" href="#next_js_url_patterns">Next.js URL patterns</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The URL structure of your front-end will mirror the structure of the content in the CMS. <a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a> will be mounted to the site root, which in our case has the internal path <code>/hmdb</code>.</p>
+<p>The URL structure of your front-end mirrors the structure of the content in the CMS. <a href="http://localhost:3000">http://localhost:3000</a> is mounted to the site root, which in this case has the internal path <code>/hmdb</code>.</p>
 </div>
 <div class="paragraph">
 <p>Using the Movie s7ven as an example:</p>
 </div>
 <div class="listingblock">
-<div class="title">Result when visiting <a href="http://localhost:3000/movies/s7ven" target="_blank" rel="noopener">http://localhost:3000/movies/s7ven</a></div>
+<div class="title">Result when visiting <a href="http://localhost:3000/movies/s7ven">http://localhost:3000/movies/s7ven</a></div>
 <div class="content">
-<pre class="highlight"><code>Page:
+<pre class="highlight"><code class="language-text" data-lang="text">Page:
 {
   "type": "page",
   "path": "/"
@@ -783,30 +801,27 @@ Common:
   "get": {
     "displayName": "S7ven",
     "_id": "1cb3dbf4-31d1-4e8a-816a-8cf891de7ad6",
-    "type": "tutorial.nxp:movie",
+    "type": "com.example.tutorial.nextjs:movie",
     "dataAsJson": {
       "trailer": "https://youtu.be/znmZoVkCjpI",
       "cast": [
         {
           "actor": "6414dc62-a3a1-4772-961f-06cb85b1bbb7",
-          "character": "Somerset"
+          "character": "Sumerset"
         },
         {
           "actor": "3a7b833f-3c37-4d55-88ae-cea21c556c68",
-          "character": "Mills"
+          "character": "Mylar"
         }
       ],
       "website": null,
       "release": "1995-09-22",
-      "subtitle": "Chilling thriller with a plot beyond belief",
-      "abstract": "Two detectives, a rookie and a veteran, hunt a serial killer who uses the seven deadly sins as his motives.",
-      "photos": [
-        "6ca58af1-6810-4fae-b51b-f70e01fc4c17",
-        "5cb115db-eb1c-4314-8376-2cb711dea5bd"
-      ]
+      "subtitle": "What's in the box?",
+      "abstract": "Two balloon-headed detectives hunt a serial killer who is using the seven deadly sins to deflate his victims one balloon at a time. The desert finale is famously breathless.",
+      "photos": "6ca58af1-6810-4fae-b51b-f70e01fc4c17"
     },
     "xAsJson": {
-      "tutorial-nxp": {
+      "com-example-tutorial-nextjs": {
         "SoMe": {
           "twitter": null,
           "imdb": "https://www.imdb.com/title/tt0114369/",
@@ -822,9 +837,11 @@ Common:
 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<div class="title">S7ven as seen in Content Studio - internal path is <code>/hmdb/movies/s7ven</code></div>
-<p><span class="image"><img src="media/s7ven-edit.png" alt="s7ven edit" width="768px" title="Editing item in Content Studio - the path /hmdb/movies/s7ven is highlighted"></span></p>
+<div class="imageblock">
+<div class="content">
+<img src="media/s7ven-edit.png" alt="Editing item in Content Studio - the path /hmdb/movies/s7ven is highlighted" width="1280">
+</div>
+<div class="title">Figure 1. S7ven as seen in Content Studio - internal path is <code>/hmdb/movies/s7ven</code></div>
 </div>
 </div>
 </div>
@@ -832,36 +849,60 @@ Common:
 <h2 id="task_visit_some_more_pages"><a class="link" href="#task_visit_some_more_pages">Task: Visit some more pages</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Give the default rendering a spin by trying out some other URLs, for example:<br></p>
+<p>Give the default rendering a spin.</p>
 </div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Try some other URLs</strong>, for example:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="http://localhost:3000/movies" target="_blank" rel="noopener">http://localhost:3000/movies</a><br></p>
+<p><a href="http://localhost:3000/movies/pump-fiction">http://localhost:3000/movies/pump-fiction</a></p>
 </li>
 <li>
-<p><a href="http://localhost:3000/persons" target="_blank" rel="noopener">http://localhost:3000/persons</a><br></p>
+<p><a href="http://localhost:3000/persons">http://localhost:3000/persons</a></p>
 </li>
 <li>
-<p><a href="http://localhost:3000/persons/brad-pittless" target="_blank" rel="noopener">http://localhost:3000/persons/brad-pittless</a></p>
+<p><a href="http://localhost:3000/persons/brad-pittless">http://localhost:3000/persons/brad-pittless</a></p>
 </li>
 </ul>
 </div>
+</li>
+<li>
+<p><strong>Verify the rendering</strong> - Each page lists the props of the content item at that path.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Some sample content, such as the <code>Movies</code> folder, already has a page defined. These items show a "Missing component" message until you register the page components later in the tutorial.
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="summary"><a class="link" href="#summary">Summary</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>&#8230;&#8203;etc.</p>
+<p>You&#8217;ve created a Next.js project from the Next.XP starter, verified its configuration, and started it in dev mode. The front-end now lists the props of every content item in the <code>HMDB</code> site, on URLs that mirror the content structure.</p>
 </div>
 <div class="paragraph">
-<p><strong>That&#8217;s it for the basic Next.js setup.</strong></p>
-</div>
-<div class="paragraph">
-<p>Next, we&#8217;ll have a closer look at <a href="rendering-basics.ahtml">how to customize the rendering</a>.</p>
+<p>Next, you&#8217;ll <a href="rendering-basics.ahtml">customize the rendering</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:48:31 UTC
+Last updated 2026-11-19 21:54:02 UTC
 </div>
 </div>
 </body>

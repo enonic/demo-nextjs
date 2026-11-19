@@ -449,6 +449,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#a_look_at_the_code">A look at the code</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 </div>
@@ -456,7 +457,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this chapter you will learn about NextJS' static site generation capabilities, and how Enonic triggers re-generation of pages when publishing.</p>
+<p>In this chapter you will learn about the static site generation capabilities of Next.js, and how Enonic triggers regeneration of pages when content is published.</p>
 </div>
 </div>
 </div>
@@ -464,7 +465,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="introduction"><a class="link" href="#introduction">Introduction</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Your NextJS front-end strives to use Static Site Generation (SSG) when possible which basically means you get lightning fast pages, but adds an additional compilation build step.</p>
+<p>Your Next.js front-end uses Static Site Generation (SSG) when possible. This gives you fast pages, but adds a build step.</p>
 </div>
 <div class="paragraph">
 <p>For more information visit the <a href="https://nextjs.org/docs/app/building-your-application/rendering">Next.js rendering documentation</a>.</p>
@@ -478,36 +479,27 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>So far, you have been running Next.js in dev mode.</p>
 </div>
 <div class="paragraph">
-<p>By starting Next.js in <code>prod</code> mode, the application is automatically optimized, and in our case, pages get pre-rendered statically before the server starts.</p>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-Remember to stop your existing Next.js dev instance before you continue.
-</td>
-</tr>
-</table>
+<p>By starting Next.js in <code>prod</code> mode, the application is automatically optimized, and in this case, pages get pre-rendered statically before the server starts.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
+<p><strong>Stop the dev server</strong> - Stop your existing Next.js dev instance before you continue.</p>
+</li>
+<li>
 <p><strong>Start Next.js in prod mode</strong>:</p>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre>npm run prod</pre>
+<pre class="highlight"><code class="language-shell" data-lang="shell">npm run prod</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This will take a while longer as when compared to dev mode.</p>
+<p>This takes longer than starting dev mode, since the application is built first.</p>
 </div>
 </li>
 <li>
-<p><strong>Verify</strong> by pointing your <strong>incognito window</strong> to <a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a>, you should now see the published items, just like in dev mode.
-Only this time, they will be much faster. <strong>Sweet!</strong></p>
+<p><strong>Verify the result</strong> - Point your <strong>incognito window</strong> to <a href="http://localhost:3000">http://localhost:3000</a>. You should see the published items, like in dev mode.
+Only this time, they load much faster.</p>
 </li>
 </ol>
 </div>
@@ -518,8 +510,7 @@ Only this time, they will be much faster. <strong>Sweet!</strong></p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Since prod mode now runs on the default port 3000 (same as dev mode), Content Studio preview should continue to work without any configuration changes.
-Just remember to stop your dev server before starting prod mode.
+Since prod mode runs on the default port 3000 (same as dev mode), Content Studio preview continues to work without any configuration changes.
 The draft cookie issued by the dev server belongs to another build, so the proxy sends the first preview request through <code>/api/preview</code> again and draft mode is re-enabled for the prod build.
 </td>
 </tr>
@@ -531,22 +522,21 @@ The draft cookie issued by the dev server belongs to another build, so the proxy
 <h2 id="task_test_page_invalidation"><a class="link" href="#task_test_page_invalidation">Task: Test page invalidation</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>With all pages now being cached as files, Next.js must be instructed to re-generate the pages when a change is published.</p>
+<p>With all pages now being cached as files, Next.js must be instructed to regenerate the pages when a change is published.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Verify that the <code>Next.XP</code> app is added to your site, and that the site is published</strong>. You added the app in the <a href="preview.ahtml">Preview</a> chapter, and published the site in the <a href="pages.ahtml">Pages</a> chapter.
-This will ensure that the revalidation hook is triggered when you publish content.</p>
+<p><strong>Check the site</strong> - Verify that the <code>Next.XP</code> app is added to your site, and that the site is published. You added the app in the <a href="preview.ahtml">Preview</a> chapter, and published the site in the <a href="pages.ahtml">Pages</a> chapter.
+This ensures that the revalidation hook is triggered when you publish content.</p>
 </li>
 <li>
-<p><strong>Edit your front-page, and publish the changes</strong>.
-This will trigger a revalidation hook, which is built into the Next.XP app.</p>
+<p><strong>Edit your front page, and publish the changes</strong> - This triggers a revalidation hook, which is built into the Next.XP app.</p>
+</li>
+<li>
+<p><strong>Verify the update</strong> - The page at <a href="http://localhost:3000">http://localhost:3000</a> is updated more or less instantly.</p>
 </li>
 </ol>
-</div>
-<div class="paragraph">
-<p>The page should now get updated at <a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a> - more or less instantly.🎉</p>
 </div>
 <div class="sect2">
 <h3 id="what_happened"><a class="link" href="#what_happened">What happened?</a></h3>
@@ -561,7 +551,7 @@ The <code>/api/revalidate</code> route resolves the locale from the publishing p
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-You should also be able to tell from the Next.js log that the revalidation was triggered.
+The Next.js log also shows that the revalidation was triggered.
 </td>
 </tr>
 </table>
@@ -576,22 +566,22 @@ You should also be able to tell from the Next.js log that the revalidation was t
 <p>Static Site Generation is controlled within the content page handler.</p>
 </div>
 <div class="paragraph">
-<p>And the function we are interested the most is:</p>
+<p>The most interesting function is:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>generateStaticParams()</code> - This function will be used by Next.js at build time to create a list of pages to compile before the server starts.</p>
+<p><code>generateStaticParams()</code> - Next.js uses this function at build time to create a list of pages to compile before the server starts.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Below, we explain the details of the code:</p>
+<p>Here is the full page handler:</p>
 </div>
 <div class="listingblock">
 <div class="title">src/app/[locale]/[[&#8230;&#8203;contentPath]]/page.tsx</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-TypeScript" data-lang="TypeScript">import { FetchContentResult, validateData } from '@enonic/nextjs-adapter';
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import { FetchContentResult, validateData } from '@enonic/nextjs-adapter';
 import { fetchContent, fetchContentPathsForAllLocales } from '@enonic/nextjs-adapter/server';
 import MainView from '@enonic/nextjs-adapter/views/MainView';
 
@@ -653,17 +643,25 @@ export async function generateStaticParams(props: { params: PageProps }): Promis
 </div>
 </div>
 <div class="paragraph">
-<p>As you can see, Next.XP provides methods to create static pages, but the best part is that it chooses the best rendering and caching scheme based on what your code is doing !</p>
+<p>As you can see, Next.XP provides methods to create static pages, and Next.js chooses the rendering and caching scheme based on what your code is doing.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="summary"><a class="link" href="#summary">Summary</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You&#8217;ve run the front-end in prod mode with statically generated pages, and seen the Next.XP app revalidate them when content is published.</p>
 </div>
 <div class="paragraph">
-<p>With prod mode and revalidation sorted out, let&#8217;s see how to add <a href="i18n.ahtml">multi-language</a> support.</p>
+<p>Next, you&#8217;ll <a href="i18n.ahtml">add multi-language support</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:48:31 UTC
+Last updated 2026-11-19 21:54:02 UTC
 </div>
 </div>
 </body>

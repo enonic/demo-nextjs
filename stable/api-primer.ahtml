@@ -442,10 +442,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#intro">Intro</a></li>
-<li><a href="#task_graphql_playground">Task: GraphQL Playground</a></li>
-<li><a href="#task_run_a_simple_query">Task: Run a simple query</a></li>
-<li><a href="#task_query_variables">Task: Query variables</a></li>
-<li><a href="#task_type_introspection">Task: Type introspection</a></li>
+<li><a href="#task_open_query_playground">Task: Open Query Playground</a></li>
+<li><a href="#task_run_a_query">Task: Run a query</a></li>
+<li><a href="#task_use_query_variables">Task: Use query variables</a></li>
+<li><a href="#task_use_type_introspection">Task: Use type introspection</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 </div>
@@ -461,7 +462,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="intro"><a class="link" href="#intro">Intro</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Enonic provides a ridiculously flexible GraphQL API that dynamically reflects changes in your applications and content. Like Content Studio, the  <a href="https://developer.enonic.com/docs/guillotine/stable">Guillotine app</a> (and its API) was automatically downloaded and installed when you created your sandbox.</p>
+<p>Enonic provides a ridiculously flexible GraphQL API that dynamically reflects changes in your applications and content. Like Content Studio, the <a href="https://developer.enonic.com/docs/guillotine">Guillotine app</a> (and its API) was automatically downloaded and installed when you created your sandbox.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -470,7 +471,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-New to GraphQL as well? Check out the <a href="https://graphql.org/">GraphQL documentation</a>
+New to GraphQL as well? Check out the <a href="https://graphql.org/">GraphQL documentation</a>.
 </td>
 </tr>
 </table>
@@ -478,13 +479,25 @@ New to GraphQL as well? Check out the <a href="https://graphql.org/">GraphQL doc
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_graphql_playground"><a class="link" href="#task_graphql_playground">Task: GraphQL Playground</a></h2>
+<h2 id="task_open_query_playground"><a class="link" href="#task_open_query_playground">Task: Open Query Playground</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>For every content project in your sandbox, you will automatically get an API. By clicking <code>Query Playground</code> in the Content Studio menu, you should see the following:</p>
+<p>For every content project in your sandbox, you automatically get an API. Query Playground is a tool for browsing and testing it.</p>
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="media/content-studio-guillotine.png" alt="content studio guillotine" width="1440px" title="Browsing the Guillotine API using Query Playground"></span></p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Open Query Playground</strong> - Click <code>Query Playground</code> in the Content Studio menu.</p>
+</li>
+<li>
+<p><strong>Verify that the API is available</strong> - You should see the following:</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/content-studio-guillotine.png" alt="Browsing the Guillotine API using Query Playground" width="1280">
+</div>
+</div>
+</li>
+</ol>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -494,7 +507,7 @@ New to GraphQL as well? Check out the <a href="https://graphql.org/">GraphQL doc
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The API can also be called directly at <a href="http://localhost:8080/api/com.enonic.app.guillotine:graphql" target="_blank" rel="noopener">http://localhost:8080/api/com.enonic.app.guillotine:graphql</a>.
+<p>The API can also be called directly at <a href="http://localhost:8080/api/com.enonic.app.guillotine:graphql">http://localhost:8080/api/com.enonic.app.guillotine:graphql</a>.
 Direct calls must pass the <code>branch</code> argument (<code>draft</code> or <code>master</code>) to the <code>guillotine()</code> field, e.g. <code>guillotine(project: "intro", branch: "master")</code>.
 The playground adds it for you, based on its Draft/Master toggle.</p>
 </div>
@@ -505,20 +518,17 @@ The playground adds it for you, based on its Draft/Master toggle.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_run_a_simple_query"><a class="link" href="#task_run_a_simple_query">Task: Run a simple query</a></h2>
+<h2 id="task_run_a_query"><a class="link" href="#task_run_a_query">Task: Run a query</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Query playground lets us browse and use the API directly.
-Use the left hand field to type/paste in queries, press the "play" button to <strong>run the query</strong>, and the result will be presented in the right hand field.</p>
+<p>Query Playground lets you browse and use the API directly.
+Type or paste queries into the left-hand field, press the "play" button to run the query, and the result appears in the right-hand field.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Query movies</strong>:</p>
-<div class="paragraph">
-<p>One of the objectives in this tutorial is listing and presenting movie details.
-Run this simple query that retrieves the ID and displayName of some movies:</p>
-</div>
+<p><strong>Query movies</strong> - One of the objectives in this tutorial is listing and presenting movie details.
+Run this query, which retrieves the ID and display name of some movies:</p>
 <div class="listingblock">
 <div class="title">Query to fetch movies from the Headless API:</div>
 <div class="content">
@@ -529,14 +539,14 @@ Run this simple query that retrieves the ID and displayName of some movies:</p>
             boolean: {
               must:[
                 {term: {field: "valid", value: {boolean:true}}}
-                {term: {field: "type", value: {string: "tutorial.nxp:movie"}}}
+                {term: {field: "type", value: {string: "com.example.tutorial.nextjs:movie"}}}
               ]
             }
           }
           sort: {
-          	field:"displayName"
-          	direction:ASC
-        	}
+            field:"displayName"
+            direction:ASC
+          }
         ) {
             id: _id
             displayName
@@ -552,17 +562,18 @@ Run this simple query that retrieves the ID and displayName of some movies:</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<code>intro</code> is the name of the Content Studio project. <code>tutorial.nxp</code> refers to the name of the application you created in the previous chapter. <code>movie</code> is a specific content type within the app.
+<code>intro</code> is the name of the Content Studio project. <code>com.example.tutorial.nextjs</code> refers to the name of the application you created in the previous chapter. <code>movie</code> is a specific content type within the app.
 </td>
 </tr>
 </table>
 </div>
 </li>
 <li>
-<p><strong>View the Result</strong></p>
-<div class="paragraph">
-<p>After executing the query, you should get a result in the right hand response panel.
-<span class="image"><img src="media/content-studio-basic-query.png" alt="content studio basic query" width="1440px" title="Running a query for movies in Query Playground"></span></p>
+<p><strong>Verify the result</strong> - After executing the query, the response panel on the right shows the result:</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/content-studio-basic-query.png" alt="Running a query for movies in Query Playground" width="1280">
+</div>
 </div>
 </li>
 </ol>
@@ -570,16 +581,16 @@ Run this simple query that retrieves the ID and displayName of some movies:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_query_variables"><a class="link" href="#task_query_variables">Task: Query variables</a></h2>
+<h2 id="task_use_query_variables"><a class="link" href="#task_use_query_variables">Task: Use query variables</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In addition to the query itself, GraphQL also supports optional <code>query variables</code>.
-Query variables enable you to re-use the same query, but for instance fetch different content each time.</p>
+Query variables enable you to reuse the same query, but for instance fetch different content each time.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Add query</strong> to the GraphQL playground:</p>
+<p><strong>Add the query</strong> to Query Playground:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-graphql" data-lang="graphql">query($path:ID!){               <i class="conum" data-value="1"></i><b>(1)</b>
@@ -597,17 +608,17 @@ Query variables enable you to re-use the same query, but for instance fetch diff
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td><code>path</code> is declared (with a <code>$</code> marking it as a variable in the query). The declaration includes its type (<code>ID</code>), and a <code>!</code> marking it as a <em>required</em> parameter).</td>
+<td><code>path</code> is declared (with a <code>$</code> marking it as a variable in the query). The declaration includes its type (<code>ID</code>), and a <code>!</code> marking it as a <em>required</em> parameter.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The <code>path</code> variable here used as the value of the <code>key</code> parameter, passed to the <code>get</code> field.</td>
+<td>The <code>path</code> variable is used here as the value of the <code>key</code> parameter, passed to the <code>get</code> field.</td>
 </tr>
 </table>
 </div>
 </li>
 <li>
-<p><strong>Add query Variables</strong>. In the bottom left of Query Playground, you will find a the `Query variables`tab. Add the following JSON to the field.</p>
+<p><strong>Add query variables</strong> - In the bottom left of Query Playground, you will find the <code>Variables</code> tab. Add the following JSON to the field:</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -622,35 +633,35 @@ The <code>path</code> field in the JSON corresponds to the <code>$path</code> in
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+<pre class="highlight"><code class="language-json" data-lang="json">{
     "path": "/movies/s7ven"
 }</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p><strong>Run the query</strong> to validate that the parameter working as expected.</p>
+<p><strong>Run the query</strong> - The response contains the type, ID and display name of the movie at the given path, which shows that the variable works as expected.</p>
 </li>
 </ol>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_type_introspection"><a class="link" href="#task_type_introspection">Task: Type introspection</a></h2>
+<h2 id="task_use_type_introspection"><a class="link" href="#task_use_type_introspection">Task: Use type introspection</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The queries above only specify fields like <code>_id</code> and <code>displayName</code> for each content found. These are general fields in the CMS, available across all content types.</p>
 </div>
 <div class="paragraph">
-<p>Content types may also define their own <a href="https://developer.enonic.com/docs/xp/stable/cms/content-types">custom fields</a>. These are stored under the <code>data</code> field. In the headless API, deeper data and functionality belonging to a content type is accessed through <strong>introspection</strong>.</p>
+<p>Content types may also define their own <a href="https://developer.enonic.com/docs/cms/stable/content/content-types">custom fields</a>. These are stored under the <code>data</code> field. In the headless API, deeper data and functionality belonging to a content type is accessed through <strong>introspection</strong>.</p>
 </div>
 <div class="paragraph">
-<p>For example, you may introspect the fields that are exclusive to the <code>tutorial.nxp:movie</code> content type like this:</p>
+<p>For example, you may introspect the fields that are exclusive to the <code>com.example.tutorial.nextjs:movie</code> content type like this:</p>
 </div>
 <div class="listingblock">
 <div class="title">Content type introspection:</div>
 <div class="content">
-<pre class="highlight nowrap"><code>... on tutorial_nxp_Movie</code></pre>
+<pre class="highlight nowrap"><code class="language-text" data-lang="text">... on com_example_tutorial_nextjs_Movie</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -668,12 +679,9 @@ The fully-qualified content type name is used, dots are replaced with underscore
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Fetch a complex data set</strong></p>
+<p><strong>Fetch a complex data set</strong> - Get the content for a movie, the referenced <em>image</em> items <code>media:image</code> and <em>person</em> items <code>com.example.tutorial.nextjs:person</code> in a single query.</p>
 <div class="paragraph">
-<p>Lets get content for a movie, the referenced <em>image</em> items <code>media:image</code> and <em>person</em> items <code>tutorial.nxp:person</code> in a single query:</p>
-</div>
-<div class="paragraph">
-<p>Paste this query into the GraphQL Playground:</p>
+<p>Paste this query into Query Playground:</p>
 </div>
 <div class="listingblock">
 <div class="title">A query with nested introspections</div>
@@ -683,7 +691,7 @@ The fully-qualified content type name is used, dots are replaced with underscore
     get(key:$path) {
       type
       displayName
-      ... on tutorial_nxp_Movie {
+      ... on com_example_tutorial_nextjs_Movie {
         data {
           subtitle
           abstract
@@ -701,7 +709,7 @@ The fully-qualified content type name is used, dots are replaced with underscore
             character
             actor {
               displayName
-              ... on tutorial_nxp_Person {
+              ... on com_example_tutorial_nextjs_Person {
                 _path
                 data {
                   photos {
@@ -725,38 +733,46 @@ The fully-qualified content type name is used, dots are replaced with underscore
 </div>
 <div class="paragraph">
 <p>Notice how <code>imageUrl</code> is requested with parameters of its own?
-Type introspections can expose certain <a href="https://developer.enonic.com/docs/guillotine/stable/api" target="_blank" rel="noopener">functions for processing data</a> before returning it.
+Type introspections can expose certain <a href="https://developer.enonic.com/docs/guillotine/stable/api">functions for processing data</a> before returning it.
 Such URL functions return objects: combine <code>path</code> and <code>queryString</code> with your public media API base URL. They do not return a ready-made <code>url</code> field.
 In the Next.js app you will not write this selection by hand: the <code>imageUrlQuery()</code> helper from the adapter generates it with every field, and <code>imageUrl()</code> turns the result into an absolute URL to the media API.</p>
 </div>
 </li>
 <li>
-<p>Keep the <strong>query variables</strong> from the previous step:</p>
+<p><strong>Keep the query variables</strong> from the previous task:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+<pre class="highlight"><code class="language-json" data-lang="json">{
     "path": "/movies/s7ven"
 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Run the query in the Playground. It should produce a complete set of data - which will come in handy later in this tutorial.</p>
-</div>
+</li>
+<li>
+<p><strong>Run the query</strong> - It should produce a complete set of data, which will come in handy later in this tutorial.</p>
 <div class="paragraph">
 <p>All in all, this allows for fetching deep and rich content data in a single API request.</p>
 </div>
 </li>
 </ol>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="summary"><a class="link" href="#summary">Summary</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>In the next chapter you&#8217;ll get introduced to <a href="sites.ahtml">the concept of sites</a>.</p>
+<p>You&#8217;ve browsed the Guillotine API in Query Playground, run queries with variables, and used type introspection to fetch a movie with its images and cast in a single request.</p>
+</div>
+<div class="paragraph">
+<p>Next, you&#8217;ll <a href="sites.ahtml">create a site and organize the content within it</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:48:31 UTC
+Last updated 2026-11-19 21:54:02 UTC
 </div>
 </div>
 </body>

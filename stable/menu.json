@@ -1,6 +1,10 @@
 {
     "menuItems": [
         {
+            "title": "Introduction",
+            "document": "index"
+        },
+        {
             "title": "1 - Enonic setup",
             "document": "enonic-setup"
         },

@@ -441,8 +441,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#task_add_layout_to_enonic">Task: Add layout to Enonic</a></li>
+<li><a href="#task_add_a_layout_to_enonic">Task: Add a layout to Enonic</a></li>
 <li><a href="#task_add_layout_rendering_to_the_front_end">Task: Add layout rendering to the front-end</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 </div>
@@ -450,20 +451,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Layouts are essentially parts, with an extra trick up their sleeve. Regions. This means that layouts may host other components, and build rich page structures.</p>
+<p>In this chapter you will add a two-column layout, which lets editors place components side by side.</p>
+</div>
+<div class="paragraph">
+<p>Layouts are essentially parts with an extra trick up their sleeve: regions. This means that layouts may host other components, and build rich page structures.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_add_layout_to_enonic"><a class="link" href="#task_add_layout_to_enonic">Task: Add layout to Enonic</a></h2>
+<h2 id="task_add_a_layout_to_enonic"><a class="link" href="#task_add_a_layout_to_enonic">Task: Add a layout to Enonic</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Adding layouts is more or less identical to pages and parts. Simply follow the steps below:</p>
+<p>Adding layouts is more or less identical to adding pages and parts.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Verify the Enonic app has <strong>the <code>2-column</code> layout descriptor</strong> at:</p>
+<p><strong>Check the layout descriptor</strong> - Verify that the Enonic app has the <code>2-column</code> layout descriptor at:</p>
 <div class="listingblock">
 <div class="title">src/main/resources/cms/layouts/2-column/2-column.yaml</div>
 <div class="content">
@@ -483,14 +487,14 @@ regions:
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Just like a page, layouts may declare named regions.
+Like a page, layouts may declare named regions.
 </td>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>When completed, as always <strong>redeploy the Enonic app</strong> if you had to change it (happens automatically if you started <code>enonic dev</code>).</p>
-</div>
+</li>
+<li>
+<p><strong>Redeploy the Enonic app</strong> - This is only needed if you had to change it, and happens automatically if you started <code>enonic dev</code>.</p>
 </li>
 </ol>
 </div>
@@ -500,16 +504,16 @@ Just like a page, layouts may declare named regions.
 <h2 id="task_add_layout_rendering_to_the_front_end"><a class="link" href="#task_add_layout_rendering_to_the_front_end">Task: Add layout rendering to the front-end</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Moving over to the the Next.js app. Add the component that will render the layout.</p>
+<p>Move over to the Next.js app, and add the component that renders the layout.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Add the front-end layout component</strong> files</p>
+<p><strong>Add the front-end layout component</strong>:</p>
 <div class="listingblock">
 <div class="title">src/components/layouts/TwoColumnLayout.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import type {LayoutProps} from '@enonic/nextjs-adapter';
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import type {LayoutProps} from '@enonic/nextjs-adapter';
 import React from 'react'
 import {RegionView} from '@enonic/nextjs-adapter/views/Region';
 import styles from './TwoColumnLayout.module.css';
@@ -532,7 +536,7 @@ export default TwoColumnLayout;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>And it&#8217;s CSS module</p>
+<p>And its CSS module:</p>
 </div>
 <div class="listingblock">
 <div class="title">src/components/layouts/TwoColumnLayout.module.css</div>
@@ -561,21 +565,18 @@ export default TwoColumnLayout;</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This is an example of using CSS modules. For more details visit the <a href="https://nextjs.org/docs/app/getting-started/css">Next.js style documentation</a>
+This is an example of using CSS modules. For more details visit the <a href="https://nextjs.org/docs/app/getting-started/css">Next.js style documentation</a>.
 </td>
 </tr>
 </table>
 </div>
 </li>
 <li>
-<p><strong>Register the component</strong> in _mappings.ts:</p>
-<div class="paragraph">
-<p>Add these new lines to the _mappings.ts file.</p>
-</div>
+<p><strong>Register the component</strong> - Add these new lines to the <code>_mappings.ts</code> file:</p>
 <div class="listingblock">
 <div class="title">src/components/_mappings.ts</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-TypeScript" data-lang="TypeScript">import TwoColumnLayout from './layouts/TwoColumnLayout';
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import TwoColumnLayout from './layouts/TwoColumnLayout';
 
 
 // Layout mappings
@@ -591,33 +592,42 @@ ComponentRegistry.addLayout(`${APP_NAME}:2-column`, {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-this specific layout does not need any additional data - hence no query or processor:
+This specific layout does not need any additional data, hence no query or processor.
 </td>
 </tr>
 </table>
 </div>
 </li>
+<li>
+<p><strong>Verify the result</strong> - In Content Studio, add the layout to a page: drag <code>Layout</code> from the <code>Insert</code> tab into the region and select <code>2 columns</code> in the <code>Inspect</code> tab. Then add parts inside the <code>left</code> and <code>right</code> regions of the layout.</p>
+<div class="paragraph">
+<p>By combining layouts and parts, the potential of the page editor starts to show:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="media/layout-part-text.png" alt="Front page with a paragraph above a two-column layout holding a child list and a paragraph" width="1440">
+</div>
+</div>
+</li>
 </ol>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="summary"><a class="link" href="#summary">Summary</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>After completing these steps, you should be able to add the layout to a page, and then add components inside the layout.</p>
+<p>You&#8217;ve added a <code>2-column</code> layout with <code>left</code> and <code>right</code> regions, and used it to place components side by side on a page.</p>
 </div>
 <div class="paragraph">
-<p>By combining layout, part and text we are starting to see the potential of the page editor:</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="media/layout-part-text.png" alt="layout part text" width="1440px" title="Layout combined with part and text components"></span></p>
-</div>
-<div class="paragraph">
-<p>In the next chapter we will look into <a href="templates.ahtml">page templates</a>.
-Page templates allow us to reuse a page definition across multiple content items.</p>
+<p>Next, you&#8217;ll <a href="templates.ahtml">create page templates</a>, which reuse a page definition across multiple content items.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:48:31 UTC
+Last updated 2026-11-19 21:54:02 UTC
 </div>
 </div>
 </body>

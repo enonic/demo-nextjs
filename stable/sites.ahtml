@@ -442,9 +442,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#introduction">Introduction</a></li>
-<li><a href="#task_creating_the_site">Task: Creating the site</a></li>
-<li><a href="#add_content">Add content</a></li>
-<li><a href="#task_site_contextual_queries">Task: Site contextual queries</a></li>
+<li><a href="#task_create_the_site">Task: Create the site</a></li>
+<li><a href="#task_move_content_into_the_site">Task: Move content into the site</a></li>
+<li><a href="#task_run_queries_in_the_site_context">Task: Run queries in the site context</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 </div>
@@ -452,7 +453,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this chapter, you&#8217;ll build a tree structure of your content, with a site item at the root + learn about a handy trick for the GraphQL API.</p>
+<p>In this chapter, you&#8217;ll build a tree structure of your content with a site item at the root, and learn a handy trick for the GraphQL API.</p>
 </div>
 </div>
 </div>
@@ -465,7 +466,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_creating_the_site"><a class="link" href="#task_creating_the_site">Task: Creating the site</a></h2>
+<h2 id="task_create_the_site"><a class="link" href="#task_create_the_site">Task: Create the site</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Next.XP needs a root content item. This item will act as the front-page of your site.</p>
@@ -485,10 +486,10 @@ Before you continue, clear all selections in the Content Studio list view (this 
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Create a new item</strong> by clicking <code>New</code> in Content Studio toolbar, then select the <code>Site</code> content type. This will open the content editor in a new tab.</p>
+<p><strong>Create a new item</strong> - Click <code>New</code> in the Content Studio toolbar, then select the <code>Site</code> content type. This opens the content editor in a new tab.</p>
 </li>
 <li>
-<p><strong>Give the site a name</strong> by filling in a display name for the site, "HMDB" (short for Headless Movie DB) will do fine.</p>
+<p><strong>Give the site a name</strong> - Fill in a display name for the site. "HMDB" (short for Headless Movie DB) will do fine.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -496,14 +497,14 @@ Before you continue, clear all selections in the Content Studio list view (this 
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If you choose a different name, make sure the site path name (seen below the Display name) is set to <code>hmdb</code> - as this will be used throughout the tutorial.
+If you choose a different name, make sure the site path name (seen below the Display name) is set to <code>hmdb</code>, as this is used throughout the tutorial.
 </td>
 </tr>
 </table>
 </div>
 </li>
 <li>
-<p><strong>Add your app</strong> to the site - by selecting it in the <code>Applications</code> form field and clicking <code>Apply</code>.</p>
+<p><strong>Add your app</strong> to the site - Select it in the <code>Applications</code> form field, where it is listed as <code>Intro</code>, and click <code>Apply</code>.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -511,16 +512,18 @@ If you choose a different name, make sure the site path name (seen below the Dis
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Sites acts as scopes in the content structure. By adding an app to the site, you effectively allow editors to create content based on the app within this scope.
+Sites act as scopes in the content structure. By adding an app to the site, you effectively allow editors to create content based on the app within this scope.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="media/content-studio-create-site.png" alt="content studio create site" width="1024px" title="Give the site a name, and add the Movie DB app"></span></p>
+<p>Your form should now look something like this:</p>
 </div>
-<div class="paragraph">
-<p>When completed, your form should look something like this, and you can now press <code>Save</code> in the toolbar.</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/content-studio-create-site.png" alt="The site form with the display name HMDB and the Intro app added" width="1280">
+</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -529,7 +532,7 @@ Sites acts as scopes in the content structure. By adding an app to the site, you
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This will leave the item in <code>In progress</code> state, which is ok for now.
+Applying the change saves the site automatically. This leaves the item in the <code>In progress</code> state, which is OK for now.
 </td>
 </tr>
 </table>
@@ -540,56 +543,59 @@ This will leave the item in <code>In progress</code> state, which is ok for now.
 </div>
 </div>
 <div class="sect1">
-<h2 id="add_content"><a class="link" href="#add_content">Add content</a></h2>
+<h2 id="task_move_content_into_the_site"><a class="link" href="#task_move_content_into_the_site">Task: Move content into the site</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To quickly get some content and structure within the site, let&#8217;s move the Movie DB content into the site.
-Return back to the Content Studio tab, and follow these steps:</p>
+<p>To quickly get some content and structure within the site, move the Movie DB content into it.
+Return to the Content Studio tab, and follow these steps:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Select the folders</strong> in the list, and click <code>Move</code> from the toolbar.</p>
+<p><strong>Select the folders</strong> in the list, and click <code>Move</code> in the toolbar.</p>
 </li>
 <li>
-<p><strong>Selecting the <code>HMDB</code> site</strong> as the target and click <code>Move</code> once more.</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/content-studio-move.png" alt="content studio move" width="1024px" title="Move the folder into the site"></span></p>
+<p><strong>Select the <code>HMDB</code> site</strong> as the target and click <code>Move</code> once more.</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/content-studio-move.png" alt="Move the folder into the site" width="1280">
+</div>
 </div>
 </li>
 <li>
-<p>Wrap up by <strong>publishing the changes</strong>. Select the site (root item) in the tree structure, and click <code>Mark as ready</code> in the top right. This marks the item as ready and opens the Publishing Wizard.</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/content-studio-mark-as-ready.png" alt="content studio mark as ready" width="1024px" title="Mark as ready"></span></p>
+<p><strong>Mark the site as ready</strong> - Select the site (root item) in the tree structure, and click <code>Mark as ready</code> in the top right. This marks the item as ready and opens the Publishing Wizard.</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/content-studio-mark-as-ready.png" alt="Mark as ready" width="1280">
+</div>
 </div>
 </li>
 <li>
-<p>To <strong>publish the entire new tree structure</strong> toggle <code>Include child items</code>, click <code>Apply</code> in the wizard header, then click <code>Publish now</code>.</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/content-studio-publish.png" alt="content studio publish" width="1024px" title="Publish entire tree structure"></span></p>
+<p><strong>Publish the entire tree structure</strong> - Toggle <code>Include child items</code>, which lists the child items in the wizard, then click <code>Publish now</code>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/content-studio-publish.png" alt="Publish entire tree structure" width="1280">
 </div>
+</div>
+</li>
+<li>
+<p><strong>Verify the result</strong> - The content tree now shows the folders beneath the <code>HMDB</code> site, and all items have the status <code>Online</code>.</p>
 </li>
 </ol>
-</div>
-<div class="paragraph">
-<p>Sweet, you should now have a site with content and a basic tree structure.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_site_contextual_queries"><a class="link" href="#task_site_contextual_queries">Task: Site contextual queries</a></h2>
+<h2 id="task_run_queries_in_the_site_context"><a class="link" href="#task_run_queries_in_the_site_context">Task: Run queries in the site context</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In GraphQL queries, you may use a so-called "site context".
-This is achieved by selecting your site with the <code>scopeKey</code> parameter of the guillotine query.</p>
+This is achieved by selecting your site with the <code>scopeKey</code> parameter of the <code>guillotine</code> field.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Specify <code>scopeKey</code> parameter</p>
-<div class="paragraph">
-<p>Back in Query Playground, add the <code>scopeKey</code> parameter to your previous query, and set it to the path of your site:</p>
-</div>
+<p><strong>Specify the <code>scopeKey</code> parameter</strong> - Back in Query Playground, add the <code>scopeKey</code> parameter to your previous query, and set it to the path of your site:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-graphql" data-lang="graphql">query($path:ID!){
@@ -618,41 +624,37 @@ Add explicit path conditions to DSL queries when needed. Page URLs for content o
 </div>
 </li>
 <li>
-<p>Run a query with the site context</p>
-<div class="paragraph">
-<p>One of the new features you get from the site context is the <code>${site}</code> placeholder, which can be used in paths. Update your Query Variables as follows, and run the movie query from the previous chapter once more:</p>
+<p><strong>Run a query with the site context</strong> - One of the new features you get from the site context is the <code>${site}</code> placeholder, which can be used in paths. Update your query variables as follows, and run the movie query from the previous chapter once more:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+    "path": "${site}/movies/s7ven"
+}</code></pre>
 </div>
+</div>
+</li>
+<li>
+<p><strong>Verify the result</strong> - The response contains the same movie as before. Here, <code>${site}</code> resolves to the path of the site, so the full path expands to <code>/hmdb/movies/s7ven</code>.</p>
 </li>
 </ol>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>{
-    "path": "${site}/movies/s7ven"
-}</pre>
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Here, <code>${site}</code> will resolve to the path of the site and expand - in this case the full path will be expanded to <code>/hmdb/movies/s7ven</code>.
-</td>
-</tr>
-</table>
+<div class="sect1">
+<h2 id="summary"><a class="link" href="#summary">Summary</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You&#8217;ve created the <code>HMDB</code> site, moved the sample content into it and published the tree. You&#8217;ve also used <code>scopeKey</code> and the <code>${site}</code> placeholder to run queries in the context of the site.</p>
 </div>
 <div class="paragraph">
-<p>Coming up - get your <a href="nextjs-setup.ahtml">your Next.js developer environment</a> up and running.</p>
+<p>Next, you&#8217;ll <a href="nextjs-setup.ahtml">set up your Next.js development environment</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:48:31 UTC
+Last updated 2026-11-19 21:54:02 UTC
 </div>
 </div>
 </body>

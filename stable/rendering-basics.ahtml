@@ -444,9 +444,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#dev_mode_rendering">Dev mode rendering</a></li>
 <li><a href="#task_get_person_content">Task: Get person content</a></li>
 <li><a href="#media_urls">Media URLs</a></li>
-<li><a href="#task_add_person_template">Task: Add person template</a></li>
-<li><a href="#task_add_custom_header_and_footer">Task: Add custom header and footer</a></li>
+<li><a href="#task_add_a_person_view">Task: Add a person view</a></li>
+<li><a href="#task_add_a_custom_header_and_footer">Task: Add a custom header and footer</a></li>
 <li><a href="#the_common_query">The common query</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 </div>
@@ -454,7 +455,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this chapter we will look into the basic rendering mechanisms and add some custom rendering to our app as well.</p>
+<p>In this chapter you will look into the basic rendering mechanisms, and add custom rendering to your app.</p>
 </div>
 </div>
 </div>
@@ -462,10 +463,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="dev_mode_rendering"><a class="link" href="#dev_mode_rendering">Dev mode rendering</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As you have seen during the setup of Next, each content item automatically maps to a page listing available props. These props are fetched by the so-called Enonic Adapter.</p>
+<p>As you saw when setting up Next.js, each content item automatically maps to a page listing available props. These props are fetched by the Enonic adapter.</p>
 </div>
 <div class="paragraph">
-<p>By defining custom queries and react components tailored for each content type, we can customize the props passed to the view, and which React template is actually applied.</p>
+<p>By defining custom queries and React components tailored for each content type, you can customize the props passed to the view, and which React template is actually applied.</p>
 </div>
 </div>
 </div>
@@ -473,7 +474,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="task_get_person_content"><a class="link" href="#task_get_person_content">Task: Get person content</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let&#8217;s build our first component, starting with a rendering of the "Person" content type:</p>
+<p>Build your first component, starting with the query for the "Person" content type.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -482,7 +483,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The full name of your content type should now be <code>tutorial.nxp:person</code>.
+The full name of your content type should now be <code>com.example.tutorial.nextjs:person</code>.
 If you used a different name when creating the Enonic app, update the <code>.env</code> file in your Next.js app to reflect this.
 </td>
 </tr>
@@ -491,11 +492,11 @@ If you used a different name when creating the Enonic app, update the <code>.env
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Add a query</strong> by creating the following file in your front-end application:</p>
+<p><strong>Add a query</strong> - Create the following file in your front-end application:</p>
 <div class="listingblock">
 <div class="title">src/components/queries/getPerson.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import { APP_NAME_UNDERSCORED, imageUrlQuery, pageUrlQuery } from '@enonic/nextjs-adapter';
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import { APP_NAME_UNDERSCORED, imageUrlQuery, pageUrlQuery } from '@enonic/nextjs-adapter';
 
 const getPerson = () =&gt; `
 query {
@@ -527,7 +528,7 @@ export default getPerson;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This file defines a graphQL query 'getPerson' that will fetch data from the Enonic API.</p>
+<p>This file defines a GraphQL query, <code>getPerson</code>, that fetches data from the Enonic API.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -536,7 +537,7 @@ export default getPerson;</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Query uses variables <code>scopeKey</code>, <code>branch</code>, <code>project</code> and <code>path</code> that are automatically populated by the Enonic next.js adapter.
+The query uses the variables <code>scopeKey</code>, <code>branch</code>, <code>project</code> and <code>path</code>, which are automatically populated by the Enonic adapter.
 </td>
 </tr>
 </table>
@@ -548,8 +549,8 @@ Query uses variables <code>scopeKey</code>, <code>branch</code>, <code>project</
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-You may validate the query by copying it to the GraphQL playground.
-Replace <code>APP_NAME_UNDERSCORED</code> with <code>tutorial_nxp</code> and set the query variables, try this for instance:
+You may validate the query by copying it to Query Playground.
+Replace <code>APP_NAME_UNDERSCORED</code> with <code>com_example_tutorial_nextjs</code> and set the query variables, for instance:
 <code>{"path": "/hmdb/persons/brad-pittless", "project": "intro", "branch": "draft", "scopeKey": "/hmdb"}</code>
 </td>
 </tr>
@@ -561,17 +562,17 @@ Replace <code>APP_NAME_UNDERSCORED</code> with <code>tutorial_nxp</code> and set
 <div class="listingblock">
 <div class="title">src/components/_mappings.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-JavaScript" data-lang="JavaScript">import getPerson from './queries/getPerson';
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import getPerson from './queries/getPerson';
 import {APP_NAME} from '@enonic/nextjs-adapter';</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Then <strong>Register the query</strong> in the same file:</p>
+<p><strong>Register the query</strong> in the same file:</p>
 <div class="listingblock">
 <div class="title">src/components/_mappings.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-JavaScript" data-lang="JavaScript">// Content type mappings
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">// Content type mappings
 ComponentRegistry.addContentType(`${APP_NAME}:person`, {
     query: getPerson,
     view: PropsView
@@ -580,12 +581,11 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 </div>
 </li>
 <li>
-<p><strong>Check the result</strong></p>
-<div class="paragraph">
-<p>By visiting a person item (like <code><a href="http://localhost:3000/persons/morgan-floatman" target="_blank" rel="noopener">http://localhost:3000/persons/morgan-floatman</a></code>) you should now see data props listed in the view.</p>
+<p><strong>Verify the result</strong> - Visit a person item, like <a href="http://localhost:3000/persons/morgan-floatman">http://localhost:3000/persons/morgan-floatman</a>. The view now lists the data props from your query.</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/morgan-floatman-props.png" alt="Page showing data props for Morgan Floatman content item" width="1024">
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="media/morgan-floatman-props.png" alt="morgan floatman props" width="767px" title="Page showing data props for Morgan Floatman content item"></span></p>
 </div>
 </li>
 </ol>
@@ -607,19 +607,19 @@ The <code>pageUrl(data, meta)</code> function is the one to use for links betwee
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_add_person_template"><a class="link" href="#task_add_person_template">Task: Add person template</a></h2>
+<h2 id="task_add_a_person_view"><a class="link" href="#task_add_a_person_view">Task: Add a person view</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>With fresh content available, it&#8217;s time to make things shine:</p>
+<p>With fresh content available, it&#8217;s time to make things shine.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Add a view</strong> by creating the following file in your Next.js application</p>
+<p><strong>Add a view</strong> - Create the following file in your Next.js application:</p>
 <div class="listingblock">
 <div class="title">src/components/views/Person.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import React from 'react';
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import React from 'react';
 import { FetchContentResult, I18n, imageUrl, pageUrl } from '@enonic/nextjs-adapter';
 import Link from 'next/link';
 
@@ -657,24 +657,24 @@ function getTitle(photo: any, displayName: string) {
 </div>
 </div>
 <div class="paragraph">
-<p>This file defines a React view <code>Person</code> that will use the props from the query to render the person.</p>
+<p>This file defines a React view, <code>Person</code>, that uses the props from the query to render the person.</p>
 </div>
 </li>
 <li>
-<p><strong>Register the Person view</strong> by adding the following import to the component mappings:</p>
+<p><strong>Register the Person view</strong> - Add the following import to the component mappings:</p>
 <div class="listingblock">
 <div class="title">src/components/_mappings.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-JavaScript" data-lang="JavaScript">import Person from './views/Person';</code></pre>
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import Person from './views/Person';</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>And then update the component mapping you created earlier to use the new view:</p>
+<p>Then update the component mapping you created earlier to use the new view:</p>
 </div>
 <div class="listingblock">
 <div class="title">src/components/_mappings.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-JavaScript" data-lang="JavaScript">// Content type mappings
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">// Content type mappings
 ComponentRegistry.addContentType(`${APP_NAME}:person`, {
     query: getPerson,
     view: Person
@@ -683,27 +683,29 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 </div>
 </li>
 <li>
-<p><strong>Check the result</strong> - The page should automatically reload once the changes have been saved</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/morgan-floatman-render.png" alt="morgan floatman render" width="768px" title="Person rendering with query and view"></span></p>
+<p><strong>Verify the result</strong> - The page reloads automatically once the changes have been saved:</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/morgan-floatman-render.png" alt="Person rendering with query and view" width="1024">
+</div>
 </div>
 </li>
 </ol>
 </div>
 <div class="paragraph">
 <p>The content type mapping applies to every <code>person</code> content item in the site, regardless of its location in the hierarchy.
-Try looking at some other persons, e.g., <a href="http://localhost:3000/persons/uma-tieoffman" target="_blank" rel="noopener">http://localhost:3000/persons/uma-tieoffman</a></p>
+Try looking at some other persons, such as <a href="http://localhost:3000/persons/uma-tieoffman">http://localhost:3000/persons/uma-tieoffman</a>.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_add_custom_header_and_footer"><a class="link" href="#task_add_custom_header_and_footer">Task: Add custom header and footer</a></h2>
+<h2 id="task_add_a_custom_header_and_footer"><a class="link" href="#task_add_a_custom_header_and_footer">Task: Add a custom header and footer</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>With some styling applied, the header and the footer will make the site more interesting visually. Next.js provides a handy solution to this problem.</p>
+<p>A header and a footer make the site more interesting visually, and Next.js layouts are a handy way of adding them.</p>
 </div>
 <div class="paragraph">
-<p>Next.js layouts wrap every page below them. The starter has a root layout (<code>src/app/layout.tsx</code>), a locale layout and a content layout (<code>src/app/[locale]/[[&#8230;&#8203;contentPath]]/layout.tsx</code>); by modifying the last one we can inject the same header and footer components into all content pages.</p>
+<p>Next.js layouts wrap every page below them. The starter has a root layout (<code>src/app/layout.tsx</code>), a locale layout and a content layout (<code>src/app/[locale]/[[&#8230;&#8203;contentPath]]/layout.tsx</code>). By modifying the last one, you can inject the same header and footer components into all content pages.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -712,7 +714,7 @@ Try looking at some other persons, e.g., <a href="http://localhost:3000/persons/
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Sample header and footer views are already included in the starter under <code>src/components/views</code>, so all we need to do is put them to work.
+Sample header and footer views are already included in the starter under <code>src/components/views</code>, so all you need to do is put them to work.
 </td>
 </tr>
 </table>
@@ -723,19 +725,19 @@ Sample header and footer views are already included in the starter under <code>s
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><strong>Add these imports</strong></p>
+<p><strong>Add these imports</strong>:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">import Header from '../../../components/views/Header';
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import Header from '../../../components/views/Header';
 import Footer from '../../../components/views/Footer';</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>And at the bottom of the file <strong>replace the entire return function</strong>:</p>
+<p><strong>Replace the return statement</strong> - At the bottom of the file, replace the entire return statement:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">return (
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">return (
     &lt;LocaleContextProvider locale={resolvedParams.locale}&gt;
         &lt;StaticContent condition={isEdit}&gt;
             &lt;main&gt;{children}&lt;/main&gt;
@@ -750,7 +752,7 @@ import Footer from '../../../components/views/Footer';</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">return (
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">return (
     &lt;LocaleContextProvider locale={resolvedParams.locale}&gt;
         &lt;StaticContent condition={isEdit}&gt;
             &lt;Header meta={meta} title={I18n.localize('title')} logoUrl="/images/xp-logo.svg"/&gt;
@@ -763,13 +765,15 @@ import Footer from '../../../components/views/Footer';</code></pre>
 </div>
 </div>
 </li>
+<li>
+<p><strong>Verify the result</strong> - Morgan Floatman&#8217;s page should now look like this:</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/morgan-floatman-header-footer.png" alt="Rendering with header and footer" width="1024">
+</div>
+</div>
+</li>
 </ol>
-</div>
-<div class="paragraph">
-<p>Morgan Floatman&#8217;s page should now look like this</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="media/morgan-floatman-header-footer.png" alt="morgan floatman header footer" width="768px" title="Rendering with header and footer"></span></p>
 </div>
 </div>
 </div>
@@ -777,12 +781,12 @@ import Footer from '../../../components/views/Footer';</code></pre>
 <h2 id="the_common_query"><a class="link" href="#the_common_query">The common query</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You may have noticed the <code>Common</code> props appearing in the various prop views - these originate from the following statement in the mappings:</p>
+<p>You may have noticed the <code>Common</code> props appearing in the various prop views. These originate from the following statement in the mappings:</p>
 </div>
 <div class="listingblock">
 <div class="title">src/components/_mappings.ts</div>
 <div class="content">
-<pre class="highlight"><code class="language-TypeScript" data-lang="TypeScript">...
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">...
 
 // Common query
 ComponentRegistry.setCommonQuery([commonQuery, commonVariables]);
@@ -800,20 +804,28 @@ ComponentRegistry.setCommonQuery([commonQuery, commonVariables]);
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If you do not need any common props, remove it from the mappings to optimize performance.
+If you do not need any common props, remove the common query from the mappings to optimize performance.
 </td>
 </tr>
 </table>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="summary"><a class="link" href="#summary">Summary</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>With the basic rendering completed, in the following chapter, you&#8217;ll add <a href="preview.ahtml">preview support to Content Studio</a>.</p>
+<p>You&#8217;ve added a query and a view for the <code>person</code> content type, registered them in the component mappings, and wrapped all content pages in a header and a footer.</p>
+</div>
+<div class="paragraph">
+<p>Next, you&#8217;ll <a href="preview.ahtml">add preview support to Content Studio</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:48:31 UTC
+Last updated 2026-11-19 21:54:02 UTC
 </div>
 </div>
 </body>

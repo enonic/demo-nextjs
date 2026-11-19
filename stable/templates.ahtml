@@ -441,8 +441,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#task_movie_details_part">Task: Movie details part</a></li>
-<li><a href="#task_create_template">Task: Create template</a></li>
+<li><a href="#task_add_a_movie_details_part">Task: Add a movie details part</a></li>
+<li><a href="#task_create_a_template">Task: Create a template</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 </div>
@@ -455,15 +456,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_movie_details_part"><a class="link" href="#task_movie_details_part">Task: Movie details part</a></h2>
+<h2 id="task_add_a_movie_details_part"><a class="link" href="#task_add_a_movie_details_part">Task: Add a movie details part</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To complete this section, we&#8217;ll need one final part for listing movie details. The content type and content for movies already exists in Enonic, so lets get to work.</p>
+<p>To complete this chapter, you&#8217;ll need one final part for presenting movie details. The content type and content for movies already exist in Enonic.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Verify the Enonic app has <strong>the <code>movie-details</code> part descriptor</strong> - same procedure as before&#8230;&#8203;</p>
+<p><strong>Check the part descriptor</strong> - Verify that the Enonic app has the <code>movie-details</code> part descriptor, same procedure as before:</p>
 <div class="listingblock">
 <div class="title">src/main/resources/cms/parts/movie-details/movie-details.yaml</div>
 <div class="content">
@@ -475,14 +476,14 @@ form: [ ]</code></pre>
 </div>
 </li>
 <li>
-<p><strong>Redeploy</strong> the Enonic app if you made any changes (happens automatically if you started <code>enonic dev</code>).</p>
+<p><strong>Redeploy the Enonic app</strong> - This is only needed if you made any changes, and happens automatically if you started <code>enonic dev</code>.</p>
 </li>
 <li>
-<p><strong>Add the Movie query and view</strong> in Next.</p>
+<p><strong>Add the Movie query and view</strong> in Next.js:</p>
 <div class="listingblock">
 <div class="title">src/components/parts/MovieDetails.tsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-JavaScript" data-lang="JavaScript">import React from 'react';
+<pre class="highlight"><code class="language-typescript" data-lang="typescript">import React from 'react';
 import type { ImageUrl, PageUrl } from '@enonic/nextjs-adapter';
 import {
     APP_NAME_UNDERSCORED,
@@ -671,7 +672,7 @@ const CastMember = (props: CastMemberProps &amp; { meta: MetaData }) =&gt; {
 <div class="listingblock">
 <div class="title">src/components/_mappings.ts</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">import MovieDetails, {getMovie} from './parts/MovieDetails';
+<pre class="highlight nowrap"><code class="language-typescript" data-lang="typescript">import MovieDetails, {getMovie} from './parts/MovieDetails';
 
 // Part mappings
 ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
@@ -680,66 +681,83 @@ ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
 });</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>The part is now available in Content Studio. You&#8217;ll put it to use in the next task.</p>
+</div>
 </li>
 </ol>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_create_template"><a class="link" href="#task_create_template">Task: Create template</a></h2>
+<h2 id="task_create_a_template"><a class="link" href="#task_create_a_template">Task: Create a template</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>With the new component registered, let&#8217;s put it to use.</p>
+<p>With the new component registered, put it to use.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>In Content Studio, select and <strong>edit your favorite movie</strong> (or choose "No time to deflate" if you have no favorites).</p>
+<p><strong>Edit your favorite movie</strong> - In Content Studio, select and edit your favorite movie (or choose "No time to deflate" if you have no favorites).</p>
 </li>
 <li>
-<p><strong>Activate the context panel</strong> by pressing its icon in the top right screen corner, select <code>Page</code> in the widget dropdown, then <code>Main</code> in the Template dropdown, and <strong>add the <code>Movie Details</code> part</strong> to the page (drag <code>Part</code> from the <code>Insert</code> tab into the region and pick it in the part dropdown).</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/movie-details.png" alt="movie details" width="1440px" title="No time to deflate, configured with movie-details part"></span></p>
+<p><strong>Add the part to the page</strong> - Open the context panel by pressing its icon in the top right screen corner, select <code>Page</code> in the widget dropdown, then <code>Main</code> in the Template dropdown. Add the <code>Movie Details</code> part to the page: drag <code>Part</code> from the <code>Insert</code> tab into the region and pick it in the part dropdown.</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/movie-details.webp" alt="No time to deflate, configured with movie-details part" width="1440">
+</div>
 </div>
 <div class="paragraph">
-<p>We now have a single movie nicely presented, but it would be cumbersome to manually configure each movie like this - page templates to the rescue.</p>
-</div>
-</li>
-<li>
-<p>In the <code>Page</code> tab of the form on the left, <strong>select the page (root) component</strong> named <code>Main</code>.</p>
-<div class="paragraph">
-<p><span class="image"><img src="media/movie-page.png" alt="movie page" width="1440px" title="With page component selected, save as template appears in right hand panel"></span></p>
+<p>You now have a single movie nicely presented, but it would be cumbersome to configure each movie like this manually. Page templates to the rescue.</p>
 </div>
 </li>
 <li>
-<p>Right click it and select <strong>Save as Template</strong> from the context menu.</p>
-<div class="paragraph">
-<p>This will create a new page template content item, and open it in a new tab for editing.</p>
+<p><strong>Select the page component</strong> - In the <code>Page</code> tab of the form on the left, select the page (root) component named <code>Main</code>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/movie-page.webp" alt="The Main page component selected in the Page tab of a movie" width="1440">
+</div>
 </div>
 </li>
 <li>
-<p><strong>Give your template a better name</strong>, such as "Movie details" - the change is saved automatically. The template already supports the <code>Movie</code> content type.</p>
+<p><strong>Save as template</strong> - Right-click the component and select <code>Save as Template</code> from the context menu.</p>
 <div class="paragraph">
-<p><span class="image"><img src="media/movie-template.png" alt="movie template" width="1440px" title="Content item of type template, configure to support movie items"></span></p>
+<p>This creates a new page template content item, and opens it in a new tab for editing.</p>
 </div>
 </li>
 <li>
-<p>Try visiting other movie items to <strong>verify they now automatically render</strong>.</p>
-<div class="paragraph">
-<p><strong>PS!</strong> Don&#8217;t forget to publish the changes and the new page template (both the movie and the template are <code>Mark as ready</code> &#8594; <code>Publish now</code>).</p>
+<p><strong>Give your template a better name</strong>, such as "Movie details", and click <code>Save</code>. The template already supports the <code>Movie</code> content type.</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/movie-template.png" alt="Content item of type template, configure to support movie items" width="1440">
 </div>
+</div>
+</li>
+<li>
+<p><strong>Publish the changes</strong> - Publish both the movie and the new page template (<code>Mark as ready</code> &#8594; <code>Publish now</code> for each).</p>
+</li>
+<li>
+<p><strong>Verify the result</strong> - Visit other movie items. They now render automatically, using the template.</p>
 </li>
 </ol>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="summary"><a class="link" href="#summary">Summary</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>With templates sorted out, let&#8217;s dive into  <a href="static.ahtml">production mode and page revalidation</a>.</p>
+<p>You&#8217;ve added a <code>MovieDetails</code> part and saved a page as a template, so every movie is rendered with the same page definition.</p>
+</div>
+<div class="paragraph">
+<p>Next, you&#8217;ll <a href="static.ahtml">run Next.js in production mode and revalidate pages when content is published</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:48:31 UTC
+Last updated 2026-11-19 21:54:02 UTC
 </div>
 </div>
 </body>
