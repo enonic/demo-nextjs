@@ -45,7 +45,7 @@ Run this query, which retrieves the ID and display name of some movies:
             boolean: {
               must:[
                 {term: {field: "valid", value: {boolean:true}}}
-                {term: {field: "type", value: {string: "tutorial.nxp:movie"}}}
+                {term: {field: "type", value: {string: "com.example.tutorial.nextjs:movie"}}}
               ]
             }
           }
@@ -61,7 +61,7 @@ Run this query, which retrieves the ID and display name of some movies:
 }
 ----
 +
-NOTE: `intro` is the name of the Content Studio project. `tutorial.nxp` refers to the name of the application you created in the previous chapter. `movie` is a specific content type within the app.
+NOTE: `intro` is the name of the Content Studio project. `{app-id}` refers to the name of the application you created in the previous chapter. `movie` is a specific content type within the app.
 
 . *Verify the result* - After executing the query, the response panel on the right shows the result:
 +
@@ -108,17 +108,17 @@ The queries above only specify fields like `+_id+` and `displayName` for each co
 
 Content types may also define their own {cms-docs}/{cms-docs-version}/content/content-types[custom fields]. These are stored under the `data` field. In the headless API, deeper data and functionality belonging to a content type is accessed through **introspection**.
 
-For example, you may introspect the fields that are exclusive to the `tutorial.nxp:movie` content type like this:
+For example, you may introspect the fields that are exclusive to the `{app-id}:movie` content type like this:
 
 .Content type introspection:
 [source,text,options="nowrap"]
 ----
-... on tutorial_nxp_Movie
+... on com_example_tutorial_nextjs_Movie
 ----
 
 NOTE: The fully-qualified content type name is used, dots are replaced with underscores, and the name is capitalized `Movie`.
 
-. *Fetch a complex data set* - Get the content for a movie, the referenced _image_ items `media:image` and _person_ items `tutorial.nxp:person` in a single query.
+. *Fetch a complex data set* - Get the content for a movie, the referenced _image_ items `media:image` and _person_ items `{app-id}:person` in a single query.
 +
 Paste this query into Query Playground:
 +
@@ -130,7 +130,7 @@ query($path:ID!){
     get(key:$path) {
       type
       displayName
-      ... on tutorial_nxp_Movie {
+      ... on com_example_tutorial_nextjs_Movie {
         data {
           subtitle
           abstract
@@ -148,7 +148,7 @@ query($path:ID!){
             character
             actor {
               displayName
-              ... on tutorial_nxp_Person {
+              ... on com_example_tutorial_nextjs_Person {
                 _path
                 data {
                   photos {

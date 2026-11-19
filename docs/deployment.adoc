@@ -28,7 +28,7 @@ Create an account to get a free developer instance of Enonic XP.
 enonic cloud login
 ----
 
-. *Install your Enonic app* - Run this command from the app folder:
+. *Install your Enonic app* - Run this command from the `{enonic-folder}` folder:
 +
 [source,shell]
 ----
@@ -71,7 +71,7 @@ You are now ready to deploy the front-end application.
 . *Create a new project* called `enonic-tutorial` and connect it to the repo you created in the previous task.
 . *Add the following environment variables* to the project (name: value):
 +
-* `+ENONIC_APP_NAME+`: <enonic app name (`tutorial.nxp` in this guide)>
+* `+ENONIC_APP_NAME+`: <enonic app name (`{app-id}` in this tutorial)>
 * `+ENONIC_API+`: <route URL from the previous task, ending with /api>
 * `+ENONIC_ADMIN+`: <enonic admin URL> (optional, only if admin is on a different domain than the API)
 * `+ENONIC_MEDIA_CDN+`: <media URL> (optional, only if images and attachments are served from a different domain than the API)

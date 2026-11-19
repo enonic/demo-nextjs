@@ -115,7 +115,7 @@ Setting up Next.js for this works the same way as handling a single language. Fo
 
 . *Create the Next.XP configuration file* for your Enonic installation, and add an entry for each front-end:
 +
-NOTE: The sandbox configuration files are located in the sandbox' home directory inside your user's root directory at `.enonic/sandboxes/<your-sandbox-name>/home/config`. The full path is also listed on the sandbox Welcome page at http://localhost:8080[http://localhost:8080], together with the existing configuration files. Create the file `com.enonic.app.nextxp.cfg` in this folder.
+NOTE: The sandbox configuration files are located in the sandbox' home directory inside your user's root directory at `+.enonic/sandboxes/tutorial_nextjs/home/config+`. The full path is also listed on the sandbox Welcome page at http://localhost:8080[http://localhost:8080], together with the existing configuration files. Create the file `com.enonic.app.nextxp.cfg` in this folder.
 +
 .com.enonic.app.nextxp.cfg
 [source,properties]

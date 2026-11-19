@@ -15,14 +15,14 @@ Next.js supports both client-side rendering and link:https://nextjs.org/docs/pag
 
 The Next.XP starter gives you a Next.js project that is prepared for Enonic content.
 
-. *Create the project folder* - Create an empty folder and go inside it.
-
-. *Fetch the starter* - Run the following command:
+. *Fetch the starter* - Open a new terminal window in the folder where you keep your tutorial projects, next to the `{enonic-folder}` folder, and run the following command:
 +
-[source,shell,options="nowrap"]
+[source,shell,options="nowrap",subs="attributes+"]
 ----
-npx degit github:enonic/starter-nextjs
+npx degit github:enonic/starter-nextjs {frontend-folder}
 ----
++
+This places the project in a new folder called `{frontend-folder}`.
 +
 `starter-nextjs` is based on link:https://nextjs.org/docs/app/getting-started[Next.js' own introduction app], so if you're familiar with that, you'll recognize the structure of the files.
 +
@@ -32,7 +32,7 @@ The starter includes some boilerplate you will customize, and an npm dependency 
 
 == Code overview
 
-The following file structure should now exist within your new project folder:
+The following file structure should now exist within the `{frontend-folder}` folder:
 
 .Next project files:
 [source,text]
@@ -90,13 +90,13 @@ The default configuration should work for your setup, but verify it to be sure.
 . *Open the `.env` file* - The following configuration values should match your environment:
 +
 ..env extract:
-[source,text]
+[source,text,subs="attributes+"]
 ----
 # Provide a unique value which will be used to secure the preview mode
 ENONIC_API_TOKEN=mySecretKey
 
 # Enonic app name, must match the name of your app
-ENONIC_APP_NAME=tutorial.nxp
+ENONIC_APP_NAME={app-id}
 
 # Enonic XP projects configuration for different locales
 ENONIC_MAPPINGS=en:intro/hmdb <1>
@@ -126,7 +126,7 @@ Defaults to `+ENONIC_API+`.
 Origin of the Enonic admin UI, used for CORS.
 Defaults to the origin of `+ENONIC_API+`.
 
-. *Update any value that differs* - In particular, `+ENONIC_APP_NAME+` must match the name of the app you created in the <<enonic-setup#,first chapter>>.
+. *Update any value that differs* - In particular, `+ENONIC_APP_NAME+` must match the name of the app you created in the <<enonic-setup#,first chapter>>: `{app-id}`.
 +
 TIP: These configuration values can be overridden later when deploying your app to a live server.
 
@@ -136,7 +136,7 @@ Time to start the Next.js server and see if things are working as planned.
 
 NOTE: Make sure <<enonic-setup#,Enonic XP and your app are running on localhost:8080>> before you continue.
 
-. *Start Next.js in dev mode* - Run the following commands from your Next.js project folder:
+. *Start Next.js in dev mode* - Run the following commands from the `{frontend-folder}` folder:
 +
 [source,shell]
 ----
@@ -181,6 +181,8 @@ Running Next.js in `dev` mode normally works fine. Should you experience "strang
 For more details on starting Next.js, check out the link:https://nextjs.org/docs/app/api-reference/cli/next[Next.js CLI docs].
 ====
 
+Leave Next.js running in this terminal window. To stop it, press ctrl-c. To resume the tutorial later, start the sandbox with `+enonic sandbox start tutorial_nextjs+`, run `enonic dev` from the `{enonic-folder}` folder, and then `npm run dev` from the `{frontend-folder}` folder.
+
 == Next.js URL patterns
 
 The URL structure of your front-end mirrors the structure of the content in the CMS. http://localhost:3000[http://localhost:3000] is mounted to the site root, which in this case has the internal path `/hmdb`.
@@ -200,7 +202,7 @@ Common:
   "get": {
     "displayName": "S7ven",
     "_id": "1cb3dbf4-31d1-4e8a-816a-8cf891de7ad6",
-    "type": "tutorial.nxp:movie",
+    "type": "com.example.tutorial.nextjs:movie",
     "dataAsJson": {
       "trailer": "https://youtu.be/znmZoVkCjpI",
       "cast": [
@@ -223,7 +225,7 @@ Common:
       ]
     },
     "xAsJson": {
-      "tutorial-nxp": {
+      "com-example-tutorial-nextjs": {
         "SoMe": {
           "twitter": null,
           "imdb": "https://www.imdb.com/title/tt0114369/",

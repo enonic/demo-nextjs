@@ -6,6 +6,13 @@
 // Next.XP release documented by this tutorial (follows the adapter major)
 :nextxp-version: 6
 
+// Tutorial resource names, based on the slug `nextjs`.
+// The sandbox name contains an underscore: in prose, write it literally inside a `+...+` passthrough.
+:sandbox-name: tutorial_nextjs
+:app-id: com.example.tutorial.nextjs
+:enonic-folder: tutorial-nextjs-enonic
+:frontend-folder: tutorial-nextjs-frontend
+
 // Enonic stack
 :xp-version: 8.1
 :xp-release: 8.1.3

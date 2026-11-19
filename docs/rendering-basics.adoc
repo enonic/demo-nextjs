@@ -1,4 +1,5 @@
 = Rendering basics
+include::.variables.adoc[]
 :toc: right
 :imagesdir: media/
 :sourcedir: ../src
@@ -15,7 +16,7 @@ By defining custom queries and React components tailored for each content type, 
 
 Build your first component, starting with the query for the "Person" content type.
 
-NOTE: The full name of your content type should now be `tutorial.nxp:person`.
+NOTE: The full name of your content type should now be `{app-id}:person`.
 If you used a different name when creating the Enonic app, update the `.env` file in your Next.js app to reflect this.
 
 . *Add a query* - Create the following file in your front-end application:
@@ -31,7 +32,7 @@ This file defines a GraphQL query, `getPerson`, that fetches data from the Enoni
 NOTE: The query uses the variables `scopeKey`, `branch`, `project` and `path`, which are automatically populated by the Enonic adapter.
 +
 TIP: You may validate the query by copying it to Query Playground.
-Replace `+APP_NAME_UNDERSCORED+` with `+tutorial_nxp+` and set the query variables, for instance:
+Replace `+APP_NAME_UNDERSCORED+` with `+com_example_tutorial_nextjs+` and set the query variables, for instance:
 `{"path": "/hmdb/persons/brad-pittless", "project": "intro", "branch": "draft", "scopeKey": "/hmdb"}`
 
 . *Add the following imports* to the component mappings file:

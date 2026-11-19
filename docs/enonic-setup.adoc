@@ -15,39 +15,44 @@ The Enonic CLI manages local instances of Enonic XP, known as sandboxes, and bui
 
 == Task: Create and start a sandbox
 
-. *Create a sandbox* - Run this command in your terminal to create a sandbox called `nxptutorial`:
+. *Create a sandbox* - Run this command in your terminal to create a sandbox called `+tutorial_nextjs+`. It works from any folder:
 +
 [source,shell,subs="attributes+"]
 ----
-enonic sandbox create nxptutorial -t essentials -v {xp-release} -f
+enonic sandbox create {sandbox-name} -t essentials -v {xp-release} -f
 ----
 +
 NOTE: `-f` forces the use of default values for the remaining options, and starts the sandbox.
 
 . *Verify that the sandbox is running* - Open http://localhost:8080[http://localhost:8080] in your browser. The Enonic XP Welcome page appears.
 
+Leave the sandbox running in this terminal window. To stop it, press ctrl-c. To start it again, run `+enonic sandbox start tutorial_nextjs+` from any folder.
+
+NOTE: The sandbox has its own content and applications, separate from other tutorials. All sandboxes use the same ports by default, so stop the sandbox of any other tutorial before starting this one.
+
 == Task: Create and deploy your app
 
-Leave the sandbox running in the first terminal window, and open a new terminal window for the following commands.
+Open a new terminal window in the folder where you keep your tutorial projects, for example `enonic-tutorials/`. The commands below create the app in a subfolder of its own.
 
 . *Create a new project* - Use the `Introduction` app as a starter by running this command:
 +
-[source,shell]
+[source,shell,subs="attributes+"]
 ----
-enonic create tutorial.nxp -r tutorial-intro -s nxptutorial -f
+enonic project create {app-id} -r tutorial-intro -s {sandbox-name} -d {enonic-folder} -f
 ----
 +
 This command will:
 +
 * use the GitHub repo `github.com/enonic/tutorial-intro` as a starter
-* create an app called `tutorial.nxp`
-* link it to the `nxptutorial` sandbox
+* create an app called `{app-id}`
+* link it to the `+tutorial_nextjs+` sandbox
+* place the project in a new folder called `{enonic-folder}`
 
-. *Deploy the application* - Run these commands to build and run your application. The CLI placed the project in a folder named after the last part of the app name:
+. *Deploy the application* - Run these commands to build and run your application:
 +
-[source,shell]
+[source,shell,subs="attributes+"]
 ----
-cd nxp
+cd {enonic-folder}
 enonic dev
 ----
 +
@@ -63,6 +68,8 @@ The last command builds and deploys the app to the sandbox, then watches the cod
 <============-> 94% EXECUTING [17m 31s]
 > :dev
 ----
+
+Leave `enonic dev` running in this terminal window as well. To stop it, press ctrl-c. To resume the tutorial later, start the sandbox and then run `enonic dev` from the `{enonic-folder}` folder again.
 
 == Task: Open the admin dashboard
 
@@ -103,6 +110,6 @@ NOTE: Some of the content items will have a default preview. That's okay for now
 
 == Summary
 
-You've installed the Enonic CLI, started a sandbox, deployed an app based on the Intro starter, and opened its sample content in Content Studio.
+You've installed the Enonic CLI, started the `+tutorial_nextjs+` sandbox, deployed the `{app-id}` app based on the Intro starter, and opened its sample content in Content Studio.
 
 Next, you'll <<api-primer#,query that content with the GraphQL API>>.
