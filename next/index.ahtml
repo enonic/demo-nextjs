@@ -460,7 +460,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-<strong>Just want to see the result?</strong> <a href="demo.ahtml">Run the demo</a> to try the finished application without going through the chapters.
+<strong>Just want to see the result?</strong> <a href="demo.ahtml">Run the demo</a> to try the finished application without going through the chapters, either locally or in the cloud.
 </td>
 </tr>
 </table>
@@ -481,7 +481,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="media/cloud-preview.webp" alt="Content Studio showing a live preview of the front page rendered by Next.js" width="1419">
+<img src="media/cloud-preview.webp" alt="Content Studio showing a live preview of the front page rendered by Next.js" width="1440">
 </div>
 <div class="title">Figure 1. Editors enjoy WYSIWYG editing and live preview, combined with statically generated pages</div>
 </div>
@@ -612,7 +612,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:16:25 UTC
+Last updated 2026-11-19 21:48:08 UTC
 </div>
 </div>
 </body>

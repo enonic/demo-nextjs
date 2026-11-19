@@ -792,7 +792,7 @@ Adding it to the site also lets you select a named configuration from the app co
 <p><strong>Create the front page</strong> - If you did not import content, create the front page once again using the page editor. Maybe something like this will do?</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/cloud-preview.webp" alt="Front page as seen from Content Studio" width="1419">
+<img src="media/cloud-preview.webp" alt="Front page as seen from Content Studio" width="1440">
 </div>
 </div>
 </li>
@@ -837,7 +837,7 @@ Adding it to the site also lets you select a named configuration from the app co
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:16:25 UTC
+Last updated 2026-11-19 21:48:08 UTC
 </div>
 </div>
 </body>

@@ -441,10 +441,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
+<li><a href="#local">Run the demo locally</a>
+<ul class="sectlevel2">
+<li><a href="#task_start_enonic">Task: Start Enonic</a></li>
+<li><a href="#task_run_the_application">Task: Run the application</a></li>
+<li><a href="#task_activate_preview">Task: Activate preview</a></li>
+</ul>
+</li>
+<li><a href="#cloud">Deploy the demo to the cloud</a>
+<ul class="sectlevel2">
 <li><a href="#task_set_up_enonic">Task: Set up Enonic</a></li>
 <li><a href="#task_create_a_git_repo">Task: Create a Git repo</a></li>
 <li><a href="#task_deploy_the_next_js_front_end">Task: Deploy the Next.js front-end</a></li>
-<li><a href="#task_activate_preview">Task: Activate preview</a></li>
+<li><a href="#task_activate_preview_2">Task: Activate preview</a></li>
+</ul>
+</li>
 <li><a href="#how_it_works">How it works</a></li>
 </ul>
 </div>
@@ -453,7 +464,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>On this page you will deploy the finished application from this tutorial, without going through the chapters. You get a Next.js front-end running on Vercel, an Enonic back-end with content on Enonic Cloud, and a working preview in Content Studio.</p>
+<p>On this page you will run the finished application from this tutorial, without going through the chapters. You get a Next.js front-end that renders content from Enonic, and a working preview in Content Studio.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -468,13 +479,158 @@ Want to learn how it works? Start with the <a href="enonic-setup.ahtml">first ch
 </table>
 </div>
 <div class="paragraph">
-<p>To run the demo you will need an account with GitHub, GitLab or Bitbucket. You will sign up for free Enonic and Vercel accounts along the way.</p>
+<p>There are two ways to run the demo:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#local">Run it locally</a>, against an Enonic sandbox on your own machine. This takes a few minutes and requires no accounts.</p>
+</li>
+<li>
+<p><a href="#cloud">Deploy it to the cloud</a>, with the front-end on Vercel and the back-end on Enonic Cloud.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="task_set_up_enonic"><a class="link" href="#task_set_up_enonic">Task: Set up Enonic</a></h2>
+<h2 id="local"><a class="link" href="#local">Run the demo locally</a></h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>To run the demo locally you will need the <a href="https://developer.enonic.com/start">Enonic CLI</a> and <a href="https://git-scm.com/">Git</a>, in addition to the <a href="index.ahtml#prerequisites">prerequisites of the tutorial</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="task_start_enonic"><a class="link" href="#task_start_enonic">Task: Start Enonic</a></h3>
+<div class="paragraph">
+<p>The application reads its content from a sandbox, which is a local instance of Enonic XP.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Create a sandbox</strong> - Run this command in your terminal. It works from any folder:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">enonic sandbox create demo_nextjs -t hmdb -v 8.1.3 -f</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>hmdb</code> template installs Content Studio, the Guillotine GraphQL API, the Next.XP app and the Headless Movie DB app with its sample content. The <code>-f</code> option accepts the default values for the remaining options, and starts the sandbox.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The demo uses its own sandbox and sample content, separate from the sandbox you create in the tutorial. All sandboxes use the same ports by default, so stop any other sandbox before starting this one.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p><strong>Verify that the sandbox is running</strong> - Open <a href="http://localhost:8080">http://localhost:8080</a>. The Enonic XP Welcome page appears.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Leave the sandbox running in this terminal window. To stop it, press ctrl-c. To start it again, run <code>enonic sandbox start demo_nextjs</code> from any folder.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="task_run_the_application"><a class="link" href="#task_run_the_application">Task: Run the application</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Get the code</strong> - Open a new terminal window in the folder where you keep your tutorial projects, and run this command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">git clone --branch master https://github.com/enonic/tutorial-nextjs.git</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This creates a folder called <code>tutorial-nextjs/</code>, holding the application built in this version of the tutorial.</p>
+</div>
+</li>
+<li>
+<p><strong>Install the dependencies</strong> - Enter the new folder and install:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">cd tutorial-nextjs
+
+npm install</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Start the application</strong> - Run this command from the <code>tutorial-nextjs</code> folder:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">npm run dev</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The application needs no configuration. Its <code>.env</code> file points at the sandbox on <code><a href="http://localhost:8080" class="bare">http://localhost:8080</a></code>, and at the <code>hmdb</code> project and site that the Headless Movie DB app created.</p>
+</div>
+</li>
+<li>
+<p><strong>Verify the result</strong> - Open <a href="http://localhost:3000">http://localhost:3000</a>. It shows the front page of the Headless Movie DB:</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/front-page.webp" alt="Front page showing a heading, text with links and a picture" width="1024">
+</div>
+</div>
+</li>
+<li>
+<p><strong>Browse the site</strong> - Follow the links on the front page, or go directly to <a href="http://localhost:3000/movies">the movies</a> or to <a href="http://localhost:3000/persons/lea-seydough">Léa Seydough</a>. Her page shows a biography with an image, links and a fact box.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>To stop the application, press ctrl-c in its terminal window.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="task_activate_preview"><a class="link" href="#task_activate_preview">Task: Activate preview</a></h3>
+<div class="paragraph">
+<p>The Next.XP app provides the "Next.js Preview" widget in Content Studio. It is already installed in the sandbox, but Content Studio only uses it for sites the app has been added to.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Open Content Studio</strong> - On the Welcome page at <a href="http://localhost:8080">http://localhost:8080</a>, click <strong>Log In as Guest</strong>, then select Content Studio from the <code>XP menu</code>. The <code>Headless Movie DB</code> project opens automatically.</p>
+</li>
+<li>
+<p><strong>Add the Next.XP app to the site</strong> - Select the <code>Headless Movie Database</code> site and click <code>Edit</code>. In the <code>Applications</code> field, select <code>Next.XP</code> in addition to the <code>Headless Movie DB</code> app, and click <code>Apply</code>.</p>
+<div class="paragraph">
+<p>By default, the Next.XP app expects the front-end on <code><a href="http://localhost:3000" class="bare">http://localhost:3000</a></code>, with the secret <code>mySecretKey</code>. This matches the application you started, so no further configuration is needed.</p>
+</div>
+</li>
+<li>
+<p><strong>Verify the preview</strong> - The preview now shows the front page rendered by Next.js. The same goes for any item you select in the content tree:</p>
+<div class="imageblock">
+<div class="content">
+<img src="media/cloud-preview.webp" alt="Content Studio showing the front page rendered by Next.js in the preview" width="1440">
+</div>
+</div>
+</li>
+<li>
+<p><strong>Publish the site</strong> - Click <code>Mark as ready</code>, and then <code>Publish now</code> in the Publishing Wizard. From now on, the Next.XP app notifies the front-end whenever content is published.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cloud"><a class="link" href="#cloud">Deploy the demo to the cloud</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To deploy the demo you will need an account with GitHub, GitLab or Bitbucket. You will sign up for free Enonic and Vercel accounts along the way.</p>
+</div>
+<div class="sect2">
+<h3 id="task_set_up_enonic"><a class="link" href="#task_set_up_enonic">Task: Set up Enonic</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -489,10 +645,8 @@ Want to learn how it works? Start with the <a href="enonic-setup.ahtml">first ch
 </ol>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="task_create_a_git_repo"><a class="link" href="#task_create_a_git_repo">Task: Create a Git repo</a></h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="task_create_a_git_repo"><a class="link" href="#task_create_a_git_repo">Task: Create a Git repo</a></h3>
 <div class="paragraph">
 <p>To deploy an app, Vercel (the Next.js hosting provider) needs access to a Git repo with the app code, where you have write access.</p>
 </div>
@@ -519,10 +673,8 @@ If you are using GitHub, press the <code>Fork</code> button at the top right.
 </ol>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="task_deploy_the_next_js_front_end"><a class="link" href="#task_deploy_the_next_js_front_end">Task: Deploy the Next.js front-end</a></h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="task_deploy_the_next_js_front_end"><a class="link" href="#task_deploy_the_next_js_front_end">Task: Deploy the Next.js front-end</a></h3>
 <div class="paragraph">
 <p>Vercel are the makers of Next.js, and you&#8217;ll be using their service to host the front-end.</p>
 </div>
@@ -591,7 +743,7 @@ If you are using GitHub, press the <code>Fork</code> button at the top right.
 <p><strong>Verify the deployment</strong> - After deploying, the Vercel app should render the front page:</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/front-page.png" alt="Front page showing some text, links and a picture" width="1003">
+<img src="media/front-page.webp" alt="Front page showing a heading, text with links and a picture" width="1024">
 </div>
 </div>
 <div class="paragraph">
@@ -613,15 +765,13 @@ Check the Vercel function logs if you are not getting the expected result.
 </ol>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="task_activate_preview"><a class="link" href="#task_activate_preview">Task: Activate preview</a></h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="task_activate_preview_2"><a class="link" href="#task_activate_preview_2">Task: Activate preview</a></h3>
 <div class="paragraph">
 <p>With the front-end running, it is time to enable preview in Content Studio.</p>
 </div>
 <div class="paragraph">
-<p>The Next.XP app, which provides the "Next.js Preview" widget, is already installed in the solution, so no changes are needed in Content Studio. The app only needs to know where to find the front-end server.</p>
+<p>The Next.XP app, which provides the "Next.js Preview" widget, is already installed in the solution. It needs to know where to find the front-end server, and it must be added to the site before Content Studio uses it for preview.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -660,14 +810,24 @@ This overrides the default preview configuration for all sites using the Next.XP
 </div>
 </li>
 <li>
-<p><strong>Verify the preview</strong> - Save, then launch Enonic XP Admin from the solution dashboard and open Content Studio. The preview should now show your front-end.</p>
+<p><strong>Open Content Studio</strong> - Save, then launch Enonic XP Admin from the solution dashboard and open Content Studio.</p>
+</li>
+<li>
+<p><strong>Add the Next.XP app to the site</strong> - Select the <code>Headless Movie Database</code> site and click <code>Edit</code>. In the <code>Applications</code> field, select <code>Next.XP</code> in addition to the <code>Headless Movie DB</code> app, and click <code>Apply</code>.</p>
+</li>
+<li>
+<p><strong>Verify the preview</strong> - The preview should now show your front-end:</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/cloud-preview.webp" alt="Front page as seen from Content Studio" width="1419">
+<img src="media/cloud-preview.webp" alt="Front page as seen from Content Studio" width="1440">
 </div>
 </div>
 </li>
+<li>
+<p><strong>Publish the site</strong> - Click <code>Mark as ready</code>, and then <code>Publish now</code> in the Publishing Wizard. From now on, the Next.XP app notifies the front-end whenever content is published.</p>
+</li>
 </ol>
+</div>
 </div>
 </div>
 </div>
@@ -708,7 +868,7 @@ When asked, the Next.js Preview widget does the following:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 21:16:25 UTC
+Last updated 2026-11-19 21:48:08 UTC
 </div>
 </div>
 </body>
