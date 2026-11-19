@@ -10,32 +10,9 @@ The same application is used for the Next.XP demo.
 
 ## Run the application
 
-### In the cloud
+Follow the [demo](https://developer.enonic.com/learn/nextjs/stable/demo) to run the application. It can run locally, against an Enonic sandbox created from the `Headless Movie DB` template, or in the cloud, on Vercel against an Enonic Cloud solution.
 
-Follow the [demo](https://developer.enonic.com/learn/nextjs/stable/demo) to deploy the application on Vercel, against an Enonic Cloud solution with sample content.
-
-### Locally
-
-The application needs a running Enonic back-end with the Headless Movie DB sample content. Requires Enonic XP 8.1+ with Guillotine 9 and the Next.XP app.
-
-1. Install the [Enonic CLI](https://developer.enonic.com/start)
-2. Create and start a sandbox from the `Headless Movie DB` template. It installs Content Studio, Guillotine, Next.XP and the Headless Movie DB application with its content:
-
-   ```sh
-   enonic sandbox create demo_nextjs -t hmdb -v 8.1.3 -f
-   ```
-
-   To use an existing sandbox instead, install the `Headless Movie DB` and `Next.XP` applications from Enonic Market: `XP menu` -> `Applications` -> `Install` at http://localhost:8080
-3. Fetch and run the Next.js application:
-
-```sh
-npx degit github:enonic/tutorial-nextjs tutorial-nextjs
-cd tutorial-nextjs
-npm install
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application needs a running Enonic back-end with the Headless Movie DB sample content. Requires Enonic XP 8.1+ with Guillotine 9 and the Next.XP app, added to the site.
 
 ## Configuration
 

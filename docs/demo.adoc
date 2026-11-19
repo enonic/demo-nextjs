@@ -1,20 +1,106 @@
 = Running the demo
+include::.variables.adoc[]
 :toc: right
 :imagesdir: media/
 
-On this page you will deploy the finished application from this tutorial, without going through the chapters. You get a Next.js front-end running on Vercel, an Enonic back-end with content on Enonic Cloud, and a working preview in Content Studio.
+On this page you will run the finished application from this tutorial, without going through the chapters. You get a Next.js front-end that renders content from Enonic, and a working preview in Content Studio.
 
 TIP: Want to learn how it works? Start with the <<enonic-setup#,first chapter>> of the tutorial instead.
 
-To run the demo you will need an account with GitHub, GitLab or Bitbucket. You will sign up for free Enonic and Vercel accounts along the way.
+There are two ways to run the demo:
 
-== Task: Set up Enonic
+* <<local,Run it locally>>, against an Enonic sandbox on your own machine. This takes a few minutes and requires no accounts.
+* <<cloud,Deploy it to the cloud>>, with the front-end on Vercel and the back-end on Enonic Cloud.
+
+[#local]
+== Run the demo locally
+
+To run the demo locally you will need the https://developer.enonic.com/start[Enonic CLI] and https://git-scm.com/[Git], in addition to the <<index#prerequisites,prerequisites of the tutorial>>.
+
+=== Task: Start Enonic
+
+The application reads its content from a sandbox, which is a local instance of Enonic XP.
+
+. *Create a sandbox* - Run this command in your terminal. It works from any folder:
++
+[source,shell,subs="attributes+"]
+----
+enonic sandbox create demo_nextjs -t hmdb -v {xp-release} -f
+----
++
+The `hmdb` template installs Content Studio, the Guillotine GraphQL API, the Next.XP app and the Headless Movie DB app with its sample content. The `-f` option accepts the default values for the remaining options, and starts the sandbox.
++
+NOTE: The demo uses its own sandbox and sample content, separate from the sandbox you create in the tutorial. All sandboxes use the same ports by default, so stop any other sandbox before starting this one.
+
+. *Verify that the sandbox is running* - Open http://localhost:8080[http://localhost:8080]. The Enonic XP Welcome page appears.
+
+Leave the sandbox running in this terminal window. To stop it, press ctrl-c. To start it again, run `+enonic sandbox start demo_nextjs+` from any folder.
+
+=== Task: Run the application
+
+. *Get the code* - Open a new terminal window in the folder where you keep your tutorial projects, and run this command:
++
+[source,shell]
+----
+git clone --branch master https://github.com/enonic/tutorial-nextjs.git
+----
++
+This creates a folder called `tutorial-nextjs/`, holding the application built in this version of the tutorial.
+
+. *Install the dependencies* - Enter the new folder and install:
++
+[source,shell]
+----
+cd tutorial-nextjs
+
+npm install
+----
+
+. *Start the application* - Run this command from the `tutorial-nextjs` folder:
++
+[source,shell]
+----
+npm run dev
+----
++
+The application needs no configuration. Its `.env` file points at the sandbox on `http://localhost:8080`, and at the `hmdb` project and site that the Headless Movie DB app created.
+
+. *Verify the result* - Open http://localhost:3000[http://localhost:3000]. It shows the front page of the Headless Movie DB:
++
+image::front-page.webp["Front page showing a heading, text with links and a picture",width=1024]
+
+. *Browse the site* - Follow the links on the front page, or go directly to http://localhost:3000/movies[the movies] or to http://localhost:3000/persons/lea-seydough[Léa Seydough]. Her page shows a biography with an image, links and a fact box.
+
+To stop the application, press ctrl-c in its terminal window.
+
+=== Task: Activate preview
+
+The Next.XP app provides the "Next.js Preview" widget in Content Studio. It is already installed in the sandbox, but Content Studio only uses it for sites the app has been added to.
+
+. *Open Content Studio* - On the Welcome page at http://localhost:8080[http://localhost:8080], click *Log In as Guest*, then select Content Studio from the `XP menu`. The `Headless Movie DB` project opens automatically.
+
+. *Add the Next.XP app to the site* - Select the `Headless Movie Database` site and click `Edit`. In the `Applications` field, select `Next.XP` in addition to the `Headless Movie DB` app, and click `Apply`.
++
+By default, the Next.XP app expects the front-end on `http://localhost:3000`, with the secret `mySecretKey`. This matches the application you started, so no further configuration is needed.
+
+. *Verify the preview* - The preview now shows the front page rendered by Next.js. The same goes for any item you select in the content tree:
++
+image::cloud-preview.webp[Content Studio showing the front page rendered by Next.js in the preview,width=1440]
+
+. *Publish the site* - Click `Mark as ready`, and then `Publish now` in the Publishing Wizard. From now on, the Next.XP app notifies the front-end whenever content is published.
+
+[#cloud]
+== Deploy the demo to the cloud
+
+To deploy the demo you will need an account with GitHub, GitLab or Bitbucket. You will sign up for free Enonic and Vercel accounts along the way.
+
+=== Task: Set up Enonic
 
 . *Sign up for a free Enonic account* at https://www.enonic.com/sign-up
 . *Create a new solution* - After logging in to your account, select `Solutions -> Create -> Headless Movie DB`. This installs all required Enonic apps and sets up the routes needed.
 . *Find the API URL* - From your new solution, click `Environments` and make a note of the URL to the `API` ingress. You will need it when deploying the front-end.
 
-== Task: Create a Git repo
+=== Task: Create a Git repo
 
 To deploy an app, Vercel (the Next.js hosting provider) needs access to a Git repo with the app code, where you have write access.
 
@@ -24,7 +110,7 @@ Vercel uses this access to automatically fetch and build the app based on events
 +
 NOTE: If you are using GitHub, press the `Fork` button at the top right.
 
-== Task: Deploy the Next.js front-end
+=== Task: Deploy the Next.js front-end
 
 Vercel are the makers of Next.js, and you'll be using their service to host the front-end.
 
@@ -47,17 +133,17 @@ NOTE: `+ENONIC_MAPPINGS+` uses the pattern `<locale>:<project>/<site-path>` to t
 +
 . *Verify the deployment* - After deploying, the Vercel app should render the front page:
 +
-image::front-page.png["Front page showing some text, links and a picture",width=1003]
+image::front-page.webp["Front page showing a heading, text with links and a picture",width=1024]
 +
 Make a note of the Vercel application URL, you will need it when setting up the preview.
 +
 TIP: Check the Vercel function logs if you are not getting the expected result.
 
-== Task: Activate preview
+=== Task: Activate preview
 
 With the front-end running, it is time to enable preview in Content Studio.
 
-The Next.XP app, which provides the "Next.js Preview" widget, is already installed in the solution, so no changes are needed in Content Studio. The app only needs to know where to find the front-end server.
+The Next.XP app, which provides the "Next.js Preview" widget, is already installed in the solution. It needs to know where to find the front-end server, and it must be added to the site before Content Studio uses it for preview.
 
 . *Open the Next.XP app* - In the Enonic Cloud console, go to `Applications` and select `Next.XP`.
 +
@@ -76,10 +162,16 @@ nextjs.default.secret=<yourSecret>
 image::cloud-next-app-config.png[Edit application dialog with the URL and secret in the Configuration field,width=872]
 +
 NOTE: This overrides the default preview configuration for all sites using the Next.XP app. Use a different keyword than `default` to define multiple front-ends.
+
+. *Open Content Studio* - Save, then launch Enonic XP Admin from the solution dashboard and open Content Studio.
+
+. *Add the Next.XP app to the site* - Select the `Headless Movie Database` site and click `Edit`. In the `Applications` field, select `Next.XP` in addition to the `Headless Movie DB` app, and click `Apply`.
+
+. *Verify the preview* - The preview should now show your front-end:
 +
-. *Verify the preview* - Save, then launch Enonic XP Admin from the solution dashboard and open Content Studio. The preview should now show your front-end.
-+
-image::cloud-preview.webp[Front page as seen from Content Studio,width=1419]
+image::cloud-preview.webp[Front page as seen from Content Studio,width=1440]
+
+. *Publish the site* - Click `Mark as ready`, and then `Publish now` in the Publishing Wizard. From now on, the Next.XP app notifies the front-end whenever content is published.
 
 == How it works
 

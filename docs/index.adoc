@@ -5,7 +5,7 @@ include::.variables.adoc[]
 
 This is a step-by-step tutorial on building and managing https://nextjs.org/[Next.js] sites, using Enonic as your back-end. The combined set of software and tools used in this tutorial is called Next.XP.
 
-TIP: *Just want to see the result?* <<demo#,Run the demo>> to try the finished application without going through the chapters.
+TIP: *Just want to see the result?* <<demo#,Run the demo>> to try the finished application without going through the chapters, either locally or in the cloud.
 
 == Intro
 
@@ -16,7 +16,7 @@ It offers content editors a familiar and hassle-free way of working with content
 When you are done, editors can build and preview pages like this:
 
 .Editors enjoy WYSIWYG editing and live preview, combined with statically generated pages
-image::cloud-preview.webp[Content Studio showing a live preview of the front page rendered by Next.js,width=1419]
+image::cloud-preview.webp[Content Studio showing a live preview of the front page rendered by Next.js,width=1440]
 
 You will complete the following steps:
 
