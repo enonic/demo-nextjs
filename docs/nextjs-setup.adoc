@@ -129,7 +129,7 @@ Defaults to `+ENONIC_API+`.
 Origin of the Enonic admin UI, used for CORS.
 Defaults to the origin of `+ENONIC_API+`.
 
-. *Set the app name* - The starter ships with a different value for `+ENONIC_APP_NAME+`. Change it to `{app-id}`, the name of the app you created in the <<enonic-setup#,first chapter>>. The other values should already match.
+. *Check the app name* - `+ENONIC_APP_NAME+` must match the name of the app you created in the <<enonic-setup#,first chapter>>: `{app-id}`. Update the value if you used a different name.
 +
 TIP: These configuration values can be overridden later when deploying your app to a live server.
 
