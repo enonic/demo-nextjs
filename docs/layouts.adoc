@@ -3,13 +3,15 @@
 :imagesdir: media/
 :sourcedir: ../src
 
-Layouts are essentially parts, with an extra trick up their sleeve. Regions. This means that layouts may host other components, and build rich page structures.
+In this chapter you will add a two-column layout, which lets editors place components side by side.
 
-== Task: Add layout to Enonic
+Layouts are essentially parts with an extra trick up their sleeve: regions. This means that layouts may host other components, and build rich page structures.
 
-Adding layouts is more or less identical to pages and parts. Simply follow the steps below:
+== Task: Add a layout to Enonic
 
-. Verify the Enonic app has **the `2-column` layout descriptor** at:
+Adding layouts is more or less identical to adding pages and parts.
+
+. *Check the layout descriptor* - Verify that the Enonic app has the `2-column` layout descriptor at:
 +
 .src/main/resources/cms/layouts/2-column/2-column.yaml
 [source,yaml]
@@ -23,23 +25,23 @@ regions:
   - "right"
 ----
 +
-NOTE: Just like a page, layouts may declare named regions.
-+
-When completed, as always *redeploy the Enonic app* if you had to change it (happens automatically if you started `enonic dev`).
+NOTE: Like a page, layouts may declare named regions.
+
+. *Redeploy the Enonic app* - This is only needed if you had to change it, and happens automatically if you started `enonic dev`.
 
 == Task: Add layout rendering to the front-end
 
-Moving over to the the Next.js app. Add the component that will render the layout.
+Move over to the Next.js app, and add the component that renders the layout.
 
-. **Add the front-end layout component** files
+. *Add the front-end layout component*:
 +
 .src/components/layouts/TwoColumnLayout.tsx
-[source,TypeScript]
+[source,typescript]
 ----
 include::{sourcedir}/components/layouts/TwoColumnLayout.tsx[]
 ----
 +
-And it's CSS module
+And its CSS module:
 +
 .src/components/layouts/TwoColumnLayout.module.css
 [source,css]
@@ -47,14 +49,12 @@ And it's CSS module
 include::{sourcedir}/components/layouts/TwoColumnLayout.module.css[]
 ----
 +
-NOTE: This is an example of using CSS modules. For more details visit the https://nextjs.org/docs/app/getting-started/css[Next.js style documentation]
-+
-. **Register the component** in _mappings.ts:
-+
-Add these new lines to the _mappings.ts file.
+NOTE: This is an example of using CSS modules. For more details visit the https://nextjs.org/docs/app/getting-started/css[Next.js style documentation].
+
+. *Register the component* - Add these new lines to the `+_mappings.ts+` file:
 +
 .src/components/_mappings.ts
-[source,TypeScript,options="nowrap"]
+[source,typescript,options="nowrap"]
 ----
 import TwoColumnLayout from './layouts/TwoColumnLayout';
 
@@ -65,13 +65,16 @@ ComponentRegistry.addLayout(`${APP_NAME}:2-column`, {
 });
 ----
 +
-NOTE: this specific layout does not need any additional data - hence no query or processor:
+NOTE: This specific layout does not need any additional data, hence no query or processor.
 
-After completing these steps, you should be able to add the layout to a page, and then add components inside the layout.
+. *Verify the result* - In Content Studio, add the layout to a page, and then add components inside the layout.
++
+By combining layout, part and text components, the potential of the page editor starts to show:
++
+image::layout-part-text.png[Layout combined with part and text components,width=1440]
 
-By combining layout, part and text we are starting to see the potential of the page editor:
+== Summary
 
-image:layout-part-text.png[title="Layout combined with part and text components",width=1440px]
+You've added a `2-column` layout with `left` and `right` regions, and used it to place components side by side on a page.
 
-In the next chapter we will look into <<templates#, page templates>>.
-Page templates allow us to reuse a page definition across multiple content items.
+Next, you'll <<templates#,create page templates>>, which reuse a page definition across multiple content items.

@@ -1,37 +1,41 @@
 = Setting up Next.js
+include::.variables.adoc[]
 :toc: right
 :toclevels: 3
 :imagesdir: media/
-include::.variables.adoc[]
 
-In this chapter we will create a front-end application that renders content from the Enonic CMS (the app created in the previous chapters).
+In this chapter you will create a front-end application that renders content from Enonic, using the app and site you created in the previous chapters.
 
 == Next.js at a glance
 
-link:https://nextjs.org/[**Next.js**] runs on top of link:https://nodejs.org/en/[Node.js], and provides a shrink-wrapped approach to building sites using the link:https://reactjs.org/[React framework].
+link:https://nextjs.org/[**Next.js**] runs on top of link:https://nodejs.org/en/[Node.js], and provides a shrink-wrapped approach to building sites using the link:https://react.dev/[React framework].
 Next.js supports both client-side rendering and link:https://nextjs.org/docs/pages/building-your-application/rendering[Server side rendering], as well as pre-generation of static HTML files.
 
 == Task: Create the Next.js project
 
-Create an empty folder, go inside and run the following command:
+The Next.XP starter gives you a Next.js project that is prepared for Enonic content.
 
-[source,bash,options="nowrap"]
+. *Create the project folder* - Create an empty folder and go inside it.
+
+. *Fetch the starter* - Run the following command:
++
+[source,shell,options="nowrap"]
 ----
 npx degit github:enonic/starter-nextjs
 ----
++
+`starter-nextjs` is based on link:https://nextjs.org/docs/app/getting-started[Next.js' own introduction app], so if you're familiar with that, you'll recognize the structure of the files.
++
+The starter includes some boilerplate you will customize, and an npm dependency known as the Enonic adapter (`@enonic/nextjs-adapter`) that handles the integration with Enonic.
 
-*starter-nextjs* is based on link:https://nextjs.org/docs/getting-started[Next.js' own introduction app], so if you're familiar with that, you'll recognize the structure of the files.
+. *Check the versions* - This tutorial requires the Next.XP {nextxp-version} starter, with `@enonic/nextjs-adapter` {adapter-version} and `@enonic/page-editor` {page-editor-version}. Check `package.json` before continuing: a starter using an older adapter is not compatible with the Guillotine {guillotine-version} examples in this tutorial.
 
-The template includes some boilerplate we will customize, and an npm dependency aka `The Enonic Adapter` (`@enonic/nextjs-adapter`) that facilitates and simplifies integration with Enonic.
-
-IMPORTANT: This tutorial requires the Next.XP 6 starter, with `@enonic/nextjs-adapter` 6 and `@enonic/page-editor` 2. Check `package.json` before continuing: a starter using adapter 5 is not compatible with the Guillotine 9 examples in this tutorial.
-
-=== Code overview
+== Code overview
 
 The following file structure should now exist within your new project folder:
 
 .Next project files:
-[source,files]
+[source,text]
 ----
 .env                                // <1>
 src/
@@ -67,7 +71,7 @@ src/
 
 <1> Environment variables are placed in this file
 <2> Proxy: validates Content Studio preview requests (encrypted `xp` blob) and enables draft mode through `/api/preview`, rewrites URLs without a locale prefix to the internal default-locale route and redirects `/<default locale>/...` to `/...`
-<3> Your implementation of CMS components: the component mappings (`_mappings.ts`), the common query and ready-made views (header, footer and the page editor script)
+<3> Your implementation of CMS components: the component mappings (`+_mappings.ts+`), the common query and ready-made views (header, footer and the page editor script)
 <4> Phrase files for multi-language support
 <5> Global styles for the site
 <6> Root layout required by Next.js
@@ -79,14 +83,14 @@ src/
 <12> Folder containing API routes
 
 
-== Task: Configure application
+== Task: Verify the configuration
 
-By default, the configuration should work for your setup, but verify it to be sure.
+The default configuration should work for your setup, but verify it to be sure.
 
-The following configuration values should match your environment:
-
+. *Open the `.env` file* - The following configuration values should match your environment:
++
 ..env extract:
-[source,files]
+[source,text]
 ----
 # Provide a unique value which will be used to secure the preview mode
 ENONIC_API_TOKEN=mySecretKey
@@ -109,37 +113,41 @@ ENONIC_API=http://localhost:8080/api <2>
 # Absolute URL to Enonic admin, only needed if it differs from the API origin (used for CORS)
 #ENONIC_ADMIN=http://localhost:8080 <5>
 ----
-
 <1> Mapping an XP project (intro) and site (/hmdb) to the Next.js router.
 <2> Root of the Enonic API.
-The Guillotine endpoint is `ENONIC_API` + `/` + `GUILLOTINE_API`.
+The Guillotine endpoint is `+ENONIC_API+` + `/` + `+GUILLOTINE_API+`.
 <3> Optional.
 Guillotine API location.
 Defaults to `com.enonic.app.guillotine:graphql`.
 <4> Optional.
 Base URL for images and attachments.
-Defaults to `ENONIC_API`.
+Defaults to `+ENONIC_API+`.
 <5> Optional.
 Origin of the Enonic admin UI, used for CORS.
-Defaults to the origin of `ENONIC_API`.
+Defaults to the origin of `+ENONIC_API+`.
 
+. *Update any value that differs* - In particular, `+ENONIC_APP_NAME+` must match the name of the app you created in the <<enonic-setup#,first chapter>>.
++
 TIP: These configuration values can be overridden later when deploying your app to a live server.
 
-== Task: Boot the server
+== Task: Start the server
 
-Let's fire up the Next.js server and see if things are working as planned...
+Time to start the Next.js server and see if things are working as planned.
 
-NOTE: Make sure <<enonic-setup#, Enonic XP and the Movie DB app are running on localhost:8080>> before you continue
+NOTE: Make sure <<enonic-setup#,Enonic XP and your app are running on localhost:8080>> before you continue.
 
-Start Next.js in  **dev mode** by running the following commands from within your Next.js project folder:
+. *Start Next.js in dev mode* - Run the following commands from your Next.js project folder:
++
+[source,shell]
+----
+npm install
+npm run dev
+----
 
-    npm install
-    npm run dev
-
-If Next boots without errors, point your browser to http://localhost:3000[http://localhost:3000^] to see the glorious result.
-
+. *Verify the result* - If Next.js starts without errors, point your browser to http://localhost:3000[http://localhost:3000]. The root page lists debugging details:
++
 .Application root page, showing debugging details
-[source]
+[source,text]
 ----
 Page:
 {
@@ -163,24 +171,24 @@ Common:
   }
 }
 ----
-
-NOTE: The `_id` values differ from installation to installation.
-
++
+NOTE: The `+_id+` values differ from installation to installation.
++
 [TIP]
 ====
-Running Next in `dev` mode normally works fine. Should you however experience "strange issues" - try deleting the `.next/` folder and reboot
+Running Next.js in `dev` mode normally works fine. Should you experience "strange issues", try deleting the `.next/` folder and restarting the server.
 
-For more details on booting Next, check out the link:https://nextjs.org/docs/api-reference/cli[Next.js CLI docs].
+For more details on starting Next.js, check out the link:https://nextjs.org/docs/app/api-reference/cli/next[Next.js CLI docs].
 ====
 
-== Next URL patterns
+== Next.js URL patterns
 
-The URL structure of your front-end will mirror the structure of the content in the CMS. http://localhost:3000[http://localhost:3000^] will be mounted to the site root, which in our case has the internal path `/hmdb`.
+The URL structure of your front-end mirrors the structure of the content in the CMS. http://localhost:3000[http://localhost:3000] is mounted to the site root, which in this case has the internal path `/hmdb`.
 
 Using the Movie s7ven as an example:
 
-.Result when visiting http://localhost:3000/movies/s7ven[http://localhost:3000/movies/s7ven^]
-[source]
+.Result when visiting http://localhost:3000/movies/s7ven[http://localhost:3000/movies/s7ven]
+[source,text]
 ----
 Page:
 {
@@ -232,18 +240,22 @@ Common:
 ----
 
 .S7ven as seen in Content Studio - internal path is `/hmdb/movies/s7ven`
-image:s7ven-edit.png[title="Editing item in Content Studio - the path /hmdb/movies/s7ven is highlighted",width=768px]
+image::s7ven-edit.png[Editing item in Content Studio - the path /hmdb/movies/s7ven is highlighted,width=768]
 
 == Task: Visit some more pages
 
-Give the default rendering a spin by trying out some other URLs, for example: +
+Give the default rendering a spin.
 
-* http://localhost:3000/movies[http://localhost:3000/movies^] +
-* http://localhost:3000/persons[http://localhost:3000/persons^] +
-* http://localhost:3000/persons/brad-pittless[http://localhost:3000/persons/brad-pittless^]
+. *Try some other URLs*, for example:
++
+* http://localhost:3000/movies[http://localhost:3000/movies]
+* http://localhost:3000/persons[http://localhost:3000/persons]
+* http://localhost:3000/persons/brad-pittless[http://localhost:3000/persons/brad-pittless]
 
-...etc.
+. *Verify the rendering* - Each page lists the props of the content item at that path.
 
-**That's it for the basic Next.js setup.**
+== Summary
 
-Next, we'll have a closer look at <<rendering-basics#, how to customize the rendering>>.
+You've created a Next.js project from the Next.XP starter, verified its configuration, and started it in dev mode. The front-end now lists the props of every content item in the `HMDB` site, on URLs that mirror the content structure.
+
+Next, you'll <<rendering-basics#,customize the rendering>>.

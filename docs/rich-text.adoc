@@ -1,37 +1,34 @@
 = Rich Text
+include::.variables.adoc[]
 :toc: right
 :imagesdir: media/
 :sourcedir: ../src
 
-In this chapter you'll learn how to render Rich Text content.
+In this chapter you'll render rich text content, including its links and images.
 
 == Intro
 
-Enonic boasts a https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types/htmlarea[Rich Text input type] which, unlike basic text fields, may contain more complex concepts such as tables, images, links and custom components. Each of these will typically need to be processed during rendering to provide a contextually correct URL, ideal image sizes, etc.
-
+Enonic has a {cms-docs}/{cms-docs-version}/schemas/form-items/htmlarea[rich text form item] which, unlike basic text fields, may contain more complex concepts such as tables, images, links and custom components. Each of these typically needs to be processed during rendering to provide a contextually correct URL, ideal image sizes, etc.
 
 == Sample content
 
-Luckily, the sample data set contains everything we need to get going.
-The `Bio` field for persons is a Rich Text input, and some Persons' data is even populated with relevant content, like you see below:
+The sample data set contains everything you need to get going.
+The `Bio` field for persons is a rich text form item, and some persons are even populated with relevant content, like you see below:
 
-image::rich-text-bio.png[title="Rich text bio field for Lea Seydough",width=662px]
+image::rich-text-bio.png[Rich text bio field for Lea Seydough,width=662]
 
+== Task: Render rich text
 
-== Task: Rich text rendering
+Follow these steps to implement rendering of the `Bio` field in Next.js:
 
-Follow these steps to implement rendering of the Bio field in Next.js:
-
-. *Update the Person query*
+. *Update the Person query* - To properly render rich text, you need access to additional metadata (such as links and images) within it.
 +
-To properly render Rich text, we need access to additional metadata (such as links and images) within it.
-+
-To simplify things, Next.XP provides a `richTextQuery` helper function that generates the query for us. Also, this way we don't have to repeat the query for every rich text field.
+Next.XP provides a `richTextQuery` helper function that generates the query for you. This way you don't have to repeat the query for every rich text field.
 +
 Add a new query file to your project with the following content:
 +
 .src/components/queries/getPersonWithBio.ts
-[source,Typescript]
+[source,typescript]
 ----
 include::{sourcedir}/components/queries/getPersonWithBio.ts[]
 ----
@@ -41,20 +38,18 @@ This guarantees that it is executed when querying for data, and all the macros a
 +
 NOTE: `RichTextView` rewrites media `src`, `srcset` and `href` attributes to absolute XP media URLs and content links to locale-prefixed Next.js routes, so no URL handling is needed in your views.
 +
-Guillotine 9's processed HTML contains placeholders. The adapter matches `data-link-ref` and `data-image-ref` with the structured links and images, preserving page-link query strings and fragments.
+The processed HTML from Guillotine {guillotine-version} contains placeholders. The adapter matches `data-link-ref` and `data-image-ref` with the structured links and images, preserving page-link query strings and fragments.
 Apps providing macros and image styles must be configured on the selected site or project.
 +
-For further insight, visit the https://developer.enonic.com/docs/developer-101/stable/rich-text[rich text chapter] in the Developer 101 tutorial, or have a look at the tutorial covering our standard https://developer.enonic.com/docs/react-spa[react components].
+For further insight, visit the {dev101-tutorial}/{dev101-tutorial-version}/rich-text[rich text chapter] in the Developer 101 tutorial, or have a look at the {reactspa-tutorial}[React SPA tutorial], which covers Enonic's standard React components.
 
-. *The RichTextView component*
-+
-Now that we got the data, we need to use `RichTextView` component that knows how to render it.
-All we need to do is pass value of the `bio` field from the query response to the `RichTextView` component.
+. *Add the RichTextView component* - With the data in place, use the `RichTextView` component, which knows how to render it.
+Pass the value of the `bio` field from the query response to the `RichTextView` component.
 +
 Create a new component with the following content:
 +
 .src/components/views/PersonWithBio.tsx
-[source,tsx]
+[source,typescript]
 ----
 include::{sourcedir}/components/views/PersonWithBio.tsx[]
 ----
@@ -66,14 +61,13 @@ Add styling to the new component:
 ----
 include::{sourcedir}/components/views/PersonWithBio.module.css[]
 ----
-. *Update the mapping*
+
+. *Update the mapping* - Update the mappings to use the new query and view.
 +
-Finally, we need to update the mappings to use the new query and view.
-+
-Replace the `getPerson` query with `getPersonWithBio` and `Person` view with `PersonWithBio`. It should look something like this:
+Replace the `getPerson` query with `getPersonWithBio` and the `Person` view with `PersonWithBio`. It should look something like this:
 +
 .src/components/_mappings.ts
-[source,Typescript]
+[source,typescript]
 ----
 import getPersonWithBio from './queries/getPersonWithBio';
 import PersonWithBio from './views/PersonWithBio';
@@ -83,11 +77,13 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
     view: PersonWithBio
 });
 ----
-+
-. *That's it!*
-+
-The resulting page for http://localhost:3000/persons/lea-seydough[Lea Seydough] should look like this:
-+
-image::rich-text-no-macro.png[title="Person content rendered with rich text",width=1080px]
 
-As you can see from the above screenshot, there is a missing component. The next chapter addresses this by looking into <<macros#, Macros>>.
+. *Verify the rendering* - The resulting page for http://localhost:3000/persons/lea-seydough[Lea Seydough] should look like this:
++
+image::rich-text-no-macro.png[Person content rendered with rich text,width=1080]
+
+== Summary
+
+You've added a query that uses `richTextQuery`, and a view that renders the `bio` field with `RichTextView`, including its links and images.
+
+As the screenshot shows, one component in the bio is still missing. Next, you'll fix this by <<macros#,rendering macros>>.

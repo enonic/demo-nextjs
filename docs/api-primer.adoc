@@ -1,4 +1,5 @@
 = Getting to know the GraphQL API
+include::.variables.adoc[]
 :toc: right
 :imagesdir: media/
 
@@ -6,32 +7,33 @@ In this chapter you will get a quick introduction to Enonic's GraphQL API - aka 
 
 == Intro
 
-Enonic provides a ridiculously flexible GraphQL API that dynamically reflects changes in your applications and content. Like Content Studio, the  https://developer.enonic.com/docs/guillotine/stable[Guillotine app] (and its API) was automatically downloaded and installed when you created your sandbox.
+Enonic provides a ridiculously flexible GraphQL API that dynamically reflects changes in your applications and content. Like Content Studio, the {guillotine-docs}[Guillotine app] (and its API) was automatically downloaded and installed when you created your sandbox.
 
-TIP: New to GraphQL as well? Check out the link:https://graphql.org/[GraphQL documentation]
+TIP: New to GraphQL as well? Check out the link:https://graphql.org/[GraphQL documentation].
 
-== Task: GraphQL Playground
+== Task: Open Query Playground
 
-For every content project in your sandbox, you will automatically get an API. By clicking `Query Playground` in the Content Studio menu, you should see the following:
+For every content project in your sandbox, you automatically get an API. Query Playground is a tool for browsing and testing it.
 
-image:content-studio-guillotine.png[title="Browsing the Guillotine API using Query Playground",width=1440px]
+. *Open Query Playground* - Click `Query Playground` in the Content Studio menu.
+. *Verify that the API is available* - You should see the following:
++
+image::content-studio-guillotine.png[Browsing the Guillotine API using Query Playground,width=1440]
 
 [NOTE]
 ====
-The API can also be called directly at http://localhost:8080/api/com.enonic.app.guillotine:graphql[http://localhost:8080/api/com.enonic.app.guillotine:graphql^].
+The API can also be called directly at http://localhost:8080/api/com.enonic.app.guillotine:graphql[http://localhost:8080/api/com.enonic.app.guillotine:graphql].
 Direct calls must pass the `branch` argument (`draft` or `master`) to the `guillotine()` field, e.g. `guillotine(project: "intro", branch: "master")`.
 The playground adds it for you, based on its Draft/Master toggle.
 ====
 
-== Task: Run a simple query
+== Task: Run a query
 
-Query playground lets us browse and use the API directly.
-Use the left hand field to type/paste in queries, press the "play" button to **run the query**, and the result will be presented in the right hand field.
+Query Playground lets you browse and use the API directly.
+Type or paste queries into the left-hand field, press the "play" button to run the query, and the result appears in the right-hand field.
 
-. **Query movies**:
-+
-One of the objectives in this tutorial is listing and presenting movie details.
-Run this simple query that retrieves the ID and displayName of some movies:
+. *Query movies* - One of the objectives in this tutorial is listing and presenting movie details.
+Run this query, which retrieves the ID and display name of some movies:
 +
 .Query to fetch movies from the Headless API:
 [source,graphql]
@@ -60,18 +62,17 @@ Run this simple query that retrieves the ID and displayName of some movies:
 ----
 +
 NOTE: `intro` is the name of the Content Studio project. `tutorial.nxp` refers to the name of the application you created in the previous chapter. `movie` is a specific content type within the app.
-+
-. **View the Result**
-+
-After executing the query, you should get a result in the right hand response panel.
-image:content-studio-basic-query.png[title="Running a query for movies in Query Playground",width=1440px]
 
-== Task: Query variables
+. *Verify the result* - After executing the query, the response panel on the right shows the result:
++
+image::content-studio-basic-query.png[Running a query for movies in Query Playground,width=1440]
+
+== Task: Use query variables
 
 In addition to the query itself, GraphQL also supports optional `query variables`.
-Query variables enable you to re-use the same query, but for instance fetch different content each time.
+Query variables enable you to reuse the same query, but for instance fetch different content each time.
 
-. **Add query** to the GraphQL playground:
+. *Add the query* to Query Playground:
 +
 [source,graphql]
 ----
@@ -85,43 +86,41 @@ query($path:ID!){               # <1>
   }
 }
 ----
-<1> `path` is declared (with a `$` marking it as a variable in the query). The declaration includes its type (`ID`), and a `!` marking it as a _required_ parameter).
-<2> The `path` variable here used as the value of the `key` parameter, passed to the `get` field.
-+
-. **Add query Variables**. In the bottom left of Query Playground, you will find a the `Query variables`tab. Add the following JSON to the field.
+<1> `path` is declared (with a `$` marking it as a variable in the query). The declaration includes its type (`ID`), and a `!` marking it as a _required_ parameter.
+<2> The `path` variable is used here as the value of the `key` parameter, passed to the `get` field.
+
+. *Add query variables* - In the bottom left of Query Playground, you will find the `Query variables` tab. Add the following JSON to the field:
 +
 NOTE: The `path` field in the JSON corresponds to the `$path` in the query string above:
 +
-[source,JSON]
+[source,json]
 ----
 {
     "path": "/movies/s7ven"
 }
 ----
-+
-. **Run the query** to validate that the parameter working as expected.
 
+. *Run the query* - The response contains the type, ID and display name of the movie at the given path, which shows that the variable works as expected.
 
-== Task: Type introspection
+== Task: Use type introspection
 
-The queries above only specify fields like `_id` and `displayName` for each content found. These are general fields in the CMS, available across all content types.
+The queries above only specify fields like `+_id+` and `displayName` for each content found. These are general fields in the CMS, available across all content types.
 
-Content types may also define their own link:https://developer.enonic.com/docs/xp/stable/cms/content-types[custom fields]. These are stored under the `data` field. In the headless API, deeper data and functionality belonging to a content type is accessed through **introspection**.
+Content types may also define their own {cms-docs}/{cms-docs-version}/content/content-types[custom fields]. These are stored under the `data` field. In the headless API, deeper data and functionality belonging to a content type is accessed through **introspection**.
 
 For example, you may introspect the fields that are exclusive to the `tutorial.nxp:movie` content type like this:
 
 .Content type introspection:
-[source,options="nowrap"]
+[source,text,options="nowrap"]
 ----
 ... on tutorial_nxp_Movie
 ----
+
 NOTE: The fully-qualified content type name is used, dots are replaced with underscores, and the name is capitalized `Movie`.
 
-. **Fetch a complex data set**
+. *Fetch a complex data set* - Get the content for a movie, the referenced _image_ items `media:image` and _person_ items `tutorial.nxp:person` in a single query.
 +
-Lets get content for a movie, the referenced _image_ items `media:image` and _person_ items `tutorial.nxp:person` in a single query:
-+
-Paste this query into the GraphQL Playground:
+Paste this query into Query Playground:
 +
 .A query with nested introspections
 [source,graphql]
@@ -172,22 +171,25 @@ query($path:ID!){
 ----
 +
 Notice how `imageUrl` is requested with parameters of its own?
-Type introspections can expose certain link:https://developer.enonic.com/docs/guillotine/stable/api[functions for processing data^] before returning it.
+Type introspections can expose certain {guillotine-docs}/{guillotine-docs-version}/api[functions for processing data] before returning it.
 Such URL functions return objects: combine `path` and `queryString` with your public media API base URL. They do not return a ready-made `url` field.
 In the Next.js app you will not write this selection by hand: the `imageUrlQuery()` helper from the adapter generates it with every field, and `imageUrl()` turns the result into an absolute URL to the media API.
+
+. *Keep the query variables* from the previous task:
 +
-. Keep the **query variables** from the previous step:
-+
-[source,JSON]
+[source,json]
 ----
 {
     "path": "/movies/s7ven"
 }
 ----
-+
-Run the query in the Playground. It should produce a complete set of data - which will come in handy later in this tutorial.
+
+. *Run the query* - It should produce a complete set of data, which will come in handy later in this tutorial.
 +
 All in all, this allows for fetching deep and rich content data in a single API request.
 
+== Summary
 
-In the next chapter you'll get introduced to <<sites#, the concept of sites>>.
+You've browsed the Guillotine API in Query Playground, run queries with variables, and used type introspection to fetch a movie with its images and cast in a single request.
+
+Next, you'll <<sites#,create a site and organize the content within it>>.

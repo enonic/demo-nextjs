@@ -1,4 +1,5 @@
 = Content Studio preview
+include::.variables.adoc[]
 :toc: right
 :imagesdir: media/
 
@@ -6,17 +7,13 @@ In this chapter, you'll enable Content Studio to load the preview directly from 
 
 == Task: Enable preview
 
-To enable the preview, install version 6 of the `Next.XP` app and add it to your site. The app provides a preview widget, titled "Next.js Preview", for the sites it has been added to.
+To enable the preview, install version {nextxp-version} of the `Next.XP` app and add it to your site. The app provides a preview widget, titled "Next.js Preview", for the sites it has been added to.
 
-NOTE: The Next.XP app requires Enonic XP 8.1 or later.
+NOTE: The Next.XP app requires Enonic XP {xp-version} or later.
 
-. **Install the Next.XP app**:
-+
-From `XP menu` -> `Applications` -> `Install` and search for `Next.XP`
-+
-. **Add the Next.XP app to your site**:
-+
-Edit the `HMDB` site, select `Next.XP` in the `Applications` field - in addition to your own app - and click `Apply`, just like you did in the <<sites#, Sites>> chapter.
+. *Install the Next.XP app* - Go to `XP menu` -> `Applications` -> `Install`, search for `Next.XP` and install it.
+
+. *Add the Next.XP app to your site* - Edit the `HMDB` site, select `Next.XP` in the `Applications` field - in addition to your own app - and click `Apply`, like you did in the <<sites#,Sites>> chapter.
 +
 NOTE: The preview is only available for sites the `Next.XP` app has been added to.
 +
@@ -25,17 +22,17 @@ By default Next.XP uses the following values:
 * *url*: `http://localhost:3000`
 * *secret*: `mySecretKey`
 +
-This matches your setup, so no further configuration is needed. We will get back to tuning these values in the <<static#, Static pages>>, <<i18n#, Multi language>> and <<deployment#, Deployment>> chapters.
+This matches your setup, so no further configuration is needed. You will get back to tuning these values in the <<static#,Static pages>>, <<i18n#,Multi language>> and <<deployment#,Deployment>> chapters.
 +
 NOTE: Content Studio ships with a strict Content Security Policy that blocks loading pages from third-party URLs, including `http://localhost:3000`.
 The Next.XP app automatically adds its configured Next.js origins to this policy, so no manual configuration is needed.
 The default `http://localhost:3000` origin is only allowed when XP runs in dev mode - like your sandbox.
 In production, only explicitly configured URLs are allowed.
-+
-. Select any content in the "Persons" folder: the preview pane now shows the page rendered by Next.js.
+
+. *Verify the preview* - Select any content in the "Persons" folder: the preview pane now shows the page rendered by Next.js.
 The preview toolbar's widget selector is set to `Automatic`, which picks the first preview that can render the item - choose `Next.js Preview` explicitly if another preview shows up.
 +
-image:morgan-floatman-preview.png[title="Next.js-rendered preview in Content Studio",width=1072px]
+image::morgan-floatman-preview.png[Next.js-rendered preview in Content Studio,width=1072]
 
 == How does it work?
 
@@ -48,7 +45,7 @@ When an editor selects a content item in a site the app has been added to, the w
 . Loads the resolved page in the preview pane
 
 On the Next.js side, the proxy (`src/proxy.ts`) validates the encrypted `xp` parameter on every handoff: when preview setup is needed, the request goes through `/api/preview`, which enables Next.js draft mode and redirects to the same URL without the parameter.
-Later requests carrying the parameter are redirected straight to the clean URL, as long as the payload is valid, the draft cookie belongs to the running build, and the frontend XP-session cookie matches the payload: `/api/preview` records the `BUILD_ID` defined in `next.config.js` in a second cookie, so a cookie issued by another build (dev vs prod, a redeploy), which Next would ignore, is refreshed automatically. The route also stores the XP session in an HTTP-only cookie and refreshes it on the next handoff if the session changes after an XP logout/login.
+Later requests carrying the parameter are redirected straight to the clean URL, as long as the payload is valid, the draft cookie belongs to the running build, and the frontend XP-session cookie matches the payload: `/api/preview` records the `+BUILD_ID+` defined in `next.config.js` in a second cookie, so a cookie issued by another build (dev vs prod, a redeploy), which Next would ignore, is refreshed automatically. The route also stores the XP session in an HTTP-only cookie and refreshes it on the next handoff if the session changes after an XP logout/login.
 From then on the preview runs on clean public URLs (no prefix for the default locale): the project follows from the locale in the URL and draft mode from Next's cookie, so the page renders unpublished content.
 The iframe `src` set by Content Studio carries the parameter; after the redirect, the iframe location and ordinary navigation use clean URLs.
 The proxy also routes prefix-less URLs to the internal `[locale]` segment and redirects `/en/...` to `/...`.
@@ -63,7 +60,7 @@ All you need as a frontend developer is the `PageEditorScript` client component,
 Have a look at the page component to see how it is wired up:
 
 .src/app/[locale]/[[...contentPath]]/page.tsx
-[source,TypeScript]
+[source,typescript]
 ----
 import PageEditorScript from '../../../components/views/PageEditorScript';
 
@@ -83,9 +80,13 @@ return (
 
 Since the preview widget loads pages directly from the Next.js server, links within the rendered page need to work correctly inside Content Studio's preview as well.
 
-Media fields (`imageUrl`, `mediaUrl`, `attachmentUrl`) are queried with the `*UrlQuery()` helpers and rendered with the matching `imageUrl()`, `mediaUrl()` and `attachmentUrl()` functions, passing the content metadata (e.g. `imageUrl(photo.imageUrl, meta)`). Published media uses absolute URLs to XP's media API (`ENONIC_MEDIA_CDN`, defaulting to `ENONIC_API`); draft media uses same-origin `/api/media/...` URLs.
+Media fields (`imageUrl`, `mediaUrl`, `attachmentUrl`) are queried with the `*UrlQuery()` helpers and rendered with the matching `imageUrl()`, `mediaUrl()` and `attachmentUrl()` functions, passing the content metadata (e.g. `imageUrl(photo.imageUrl, meta)`). Published media uses absolute URLs to XP's media API (`+ENONIC_MEDIA_CDN+`, defaulting to `+ENONIC_API+`); draft media uses same-origin `/api/media/...` URLs.
 Content links use `pageUrlQuery()` and `pageUrl(data, meta)`, which returns a relative URL prefixed with the current locale unless it is the default one, so links work both in standalone mode and inside the Content Studio preview.
 
 NOTE: In preview, the browser loads draft media through the Next.js `/api/media/[...path]` route, which delegates to `proxyMedia()`. The server forwards the frontend XP-session cookie to the configured media endpoint while draft mode is enabled.
 
-That completes the preview setup; moving forward, we'll look into rendering <<rich-text#, Html Area>> fields.
+== Summary
+
+You've installed the Next.XP app and added it to the site, so Content Studio now previews content with your Next.js front-end. You've also seen how the preview, live page editing and links work behind the scenes.
+
+Next, you'll <<rich-text#,render rich text fields>>.

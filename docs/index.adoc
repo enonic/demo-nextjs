@@ -1,48 +1,54 @@
 = Building a Next.js website powered by Enonic XP
+include::.variables.adoc[]
 :toc: right
 :imagesdir: media/
-include::.variables.adoc[]
 
-This is a step-by-step tutorial on building and managing Next.js sites, using Enonic as your backend. The combined set of software and tools used in this tutorial is simply called Next.XP. You may alternatively <<demo#,skip the tutorial and try out a demo of Next.XP>> instead.
+This is a step-by-step tutorial on building and managing https://nextjs.org/[Next.js] sites, using Enonic as your back-end. The combined set of software and tools used in this tutorial is called Next.XP.
 
-[NOTE]
-====
-*Requirements*: We recommend that you complete the https://developer.enonic.com/docs/intro/stable[introduction to Enonic] before embarking on this tutorial. Experience with link:https://nextjs.org/[Next.js] is nice, but not required.  
-====
+TIP: *Just want to see the result?* <<demo#,Run the demo>> to try the finished application without going through the chapters.
 
 == Intro
 
 Next.XP is an opinionated out-of-the-box integration between Enonic XP and Next.js - ideal for building and maintaining websites.
- 
+
 It offers content editors a familiar and hassle-free way of working with content, using structured content, component based landing pages, and extensive control over the site's URL structure.
 
-image:cloud-preview.png[title="Editors enjoy WYSIWYG editing and live preview, combined with statically generated pages",width=1419px]
+When you are done, editors can build and preview pages like this:
 
+.Editors enjoy WYSIWYG editing and live preview, combined with statically generated pages
+image::cloud-preview.png[Content Studio showing a live preview of the front page rendered by Next.js,width=1419]
 
 You will complete the following steps:
 
-* Set up the Enonic SDK and sample content
-* Get familiar with the GraphQL API
-* Learn about the site concept in Enonic
-* Create a Next.js app from a template
-* Activate live preview in Enonic
-* Render content based on type
-* Build landing pages using components
-* Create page templates
-* Static Site Generation SSG
-* Deploy to live servers
-* How to handle multi-language sites
+* <<enonic-setup#,Set up Enonic>> with sample content
+* <<api-primer#,Get familiar with the GraphQL API>>
+* <<sites#,Create a site>> and learn about the site concept in Enonic
+* <<nextjs-setup#,Create a Next.js app>> from a starter
+* <<rendering-basics#,Render content>> based on its type
+* <<preview#,Activate live preview>> in Content Studio
+* Render <<rich-text#,rich text>> and <<macros#,macros>>
+* Build landing pages using <<pages#,pages>>, <<parts#,parts>> and <<layouts#,layouts>>
+* <<templates#,Create page templates>>
+* <<static#,Generate static pages>>, and update them when content is published
+* <<i18n#,Handle multi-language sites>>
+* <<deployment#,Deploy to live servers>>
 
+[#prerequisites]
 == Prerequisites
+
+Experience with Next.js is nice, but not required. If Enonic is new to you, complete the {intro-tutorial}[introduction to Enonic] before starting this tutorial.
 
 To follow this tutorial you will need:
 
-* The https://developer.enonic.com/start[Enonic CLI]
-* link:https://nodejs.org/[Node.js] {node-minimum} or newer, with npm {npm-minimum} or newer
-* link:https://git-scm.com/[Git], and a GitHub account for the <<deployment#,live deployment>> chapter
+* https://nodejs.org/[Node.js] {node-minimum} or newer, with npm {npm-minimum} or newer
+* https://git-scm.com/[Git], and a GitHub account for the <<deployment#,live deployment>> chapter
 * Your favorite code editor
 
-This version of the tutorial is based on NextXP {nextxp-version}, consisting of:
+You will install the Enonic CLI in the first chapter.
+
+== Tested versions
+
+This version of the tutorial is based on Next.XP {nextxp-version}, and was produced and tested with the following stack:
 
 [%header,cols="2,1"]
 |===
@@ -55,7 +61,6 @@ This version of the tutorial is based on NextXP {nextxp-version}, consisting of:
 | React | {react-version}
 |===
 
-TIP: Using an older setup?
-Select the matching tutorial version from the version menu on this page.
+Using an older setup? Select the matching tutorial version from the version menu on this page.
 
-Get started by <<enonic-setup#, setting up the Enonic development environment>>.
+Get started by <<enonic-setup#,setting up Enonic>>.

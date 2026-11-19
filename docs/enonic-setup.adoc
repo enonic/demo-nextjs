@@ -1,97 +1,108 @@
 = Setting up Enonic
+include::.variables.adoc[]
 :toc: right
 :imagesdir: media/
 :experimental:
 
-In this chapter you will create a local Enonic developer environment, create and deploy an Enonic app.
+In this chapter you will create a local Enonic development environment, then create and deploy an Enonic app with sample content.
 
 == Task: Install the Enonic CLI
 
-https://developer.enonic.com/start[*Install the Enonic CLI*] (follow link for instructions).
+The Enonic CLI manages local instances of Enonic XP, known as sandboxes, and builds and deploys your apps.
+
+. *Install the CLI* - Follow the https://developer.enonic.com/start[installation instructions] for your operating system.
+. *Verify the installation* - Run `enonic -v` in your terminal. It prints the installed CLI version.
 
 == Task: Create and start a sandbox
 
-. Create a sandbox called `nxptutorial` by running this command in your terminal:
+. *Create a sandbox* - Run this command in your terminal to create a sandbox called `nxptutorial`:
 +
-  enonic sandbox create nxptutorial -t essentials -v 8.1.1 -f
+[source,shell,subs="attributes+"]
+----
+enonic sandbox create nxptutorial -t essentials -v {xp-release} -f
+----
 +
-NOTE: `-f` forces the use of default values for remaining options
+NOTE: `-f` forces the use of default values for the remaining options, and starts the sandbox.
+
+. *Verify that the sandbox is running* - Open http://localhost:8080[http://localhost:8080] in your browser. The Enonic XP Welcome page appears.
 
 == Task: Create and deploy your app
 
-IMPORTANT: Leave the sandbox running in the first terminal window, and open a new terminal window for the following commands.
+Leave the sandbox running in the first terminal window, and open a new terminal window for the following commands.
 
-. *Create a new project* using the `Introduction` app as a starter, by running the following command in your terminal:
+. *Create a new project* - Use the `Introduction` app as a starter by running this command:
 +
- enonic create tutorial.nxp -r tutorial-intro -s nxptutorial -f
+[source,shell]
+----
+enonic create tutorial.nxp -r tutorial-intro -s nxptutorial -f
+----
 +
 This command will:
-
-* use the GitHub repo `github.com/enonic/tutorial-intro` as a starter
-* to create an app called `tutorial.nxp`
-* and link it to the `nxptutorial` sandbox
-
-. *Deploy the application*
 +
-To build and run your application, execute these commands (the CLI placed the project in a folder named after the last part of the app name):
+* use the GitHub repo `github.com/enonic/tutorial-intro` as a starter
+* create an app called `tutorial.nxp`
+* link it to the `nxptutorial` sandbox
 
-  cd nxp
-  enonic dev
+. *Deploy the application* - Run these commands to build and run your application. The CLI placed the project in a folder named after the last part of the app name:
++
+[source,shell]
+----
+cd nxp
+enonic dev
+----
++
+The last command builds and deploys the app to the sandbox, then watches the code for changes and rebuilds as you work on it.
 
-The last command will build and deploy the app to the sandbox, and then start watching for changes in the code to automatically rebuild as you work on it.
+. *Verify the deployment* - In `dev` mode the CLI keeps watching for changes, so the build process never exits. This is expected behavior. When your terminal shows output like the following, the app has been built and deployed:
++
+[source,text]
+----
+[server] CLI Watching for changes in "."
+[server] CLI Ignoring changes in "**/{.git,node_modules}/**" | "build/resources/main"
+[browserSync] [Browsersync] Reloading Browsers... (buffered 9 events)
+<============-> 94% EXECUTING [17m 31s]
+> :dev
+----
 
-[IMPORTANT]
-====
-In `dev` mode CLI will constantly watch for changes in the code, so the build process will never exit, which is expected behaviour.
-When you see the following output in your terminal then your app has been successfully built/deployed, and you can proceed to the next step:
+== Task: Open the admin dashboard
 
-    [server] CLI Watching for changes in "."
-    [server] CLI Ignoring changes in "**/{.git,node_modules}/**" | "build/resources/main"
-    [browserSync] [Browsersync] Reloading Browsers... (buffered 9 events)
-    <============-> 94% EXECUTING [17m 31s]
-    > :dev
-====
+The sandbox has a web interface for managing applications and content.
 
-== Task: Open Admin dashboard
-
-Let's have a look at the sandbox' web interface. Open http://localhost:8080[http://localhost:8080^] in your browser (or just click the link).
-
-You should now see the Welcome page:
-
+. *Open the Welcome page* - Go to http://localhost:8080[http://localhost:8080] in your browser.
++
 .Welcome page
-image::xp-boot.png[The XP boot page, 1085w]
+image::xp-boot.png[The XP boot page,width=1085]
++
+The Welcome page provides an overview of the sandbox, including installed applications and {xp-docs}/{xp-docs-version}/config[standard configuration files]. `Intro` should be in the list, together with the other applications that were installed when you created the sandbox.
 
-The Welcome page provides an overview of the sandbox, including installed application and https://developer.enonic.com/docs/xp/stable/deployment/config[standard configuration files^].
-
-NOTE: `Intro` should be in the list, together with other applications that were automatically installed when you created the sandbox.
-
-Click btn:[Log In as Guest] to open the XP admin dashboard. You should now see the following:
-
+. *Log in* - Click btn:[Log In as Guest] to open the XP admin dashboard.
++
 .The XP admin dashboard
-image::xp-dashboard.png[The XP admin dashboard, 1085w]
-
-You are now on the admin dashboard.
-The center menu (aka `XP menu`) enables navigation between admin tools.
-Admin tools may be injected as extensions via applications.
-
-NOTE: If things don't look exactly the same, don't worry. In every new version of XP the background picture gets updated. Also, admin dashboard is automatically localized - based on your browsers preferred language.
+image::xp-dashboard.png[The XP admin dashboard,width=1085]
++
+The center menu, known as the `XP menu`, lets you navigate between admin tools.
+Applications can add admin tools as extensions.
++
+NOTE: If things don't look exactly the same, don't worry. In every new version of XP the background picture gets updated. Also, the admin dashboard is automatically localized, based on your browser's preferred language.
 
 == Task: Open Content Studio
 
-https://market.enonic.com/vendors/enonic/content-studio[Content Studio^] is the editorial interface used to create and manage content. It was pre-installed from https://market.enonic.com[Enonic Market^] as a part of the `Essentials` template when you started the sandbox, and can now be accessed from the XP menu.
+https://market.enonic.com/vendors/enonic/content-studio[Content Studio] is the editorial interface used to create and manage content. It was pre-installed from https://market.enonic.com[Enonic Market] as a part of the `Essentials` template when you started the sandbox, and can be accessed from the XP menu.
 
-Before continuing, verify that `Guillotine` is version 9 or later in `XP menu` -> `Applications`. If the Essentials template installed version 8, update it to version 9 using `Install` before running the queries in the next chapter.
-
-*Click btn:[Content Studio]* in the XP menu to launch it.
-
-The first time your application was deployed to the sandbox, it automatically created a content project called `Intro Project` (id `intro`) and populated it with content. Since this is the only available project at the moment, Content Studio will automatically open it, revealing the list of sample content items.
-
+. *Launch Content Studio* - Click btn:[Content Studio] in the XP menu.
++
+The first time your application was deployed to the sandbox, it automatically created a content project called `Intro Project` (id `intro`) and populated it with content. Since this is the only available project at the moment, Content Studio opens it automatically.
++
 TIP: The current project is shown at the top of Content Studio.
 
-image:content-studio-moviedb.png[title="Movie DB in Content Studio", width=1440px]
-
+. *Verify the sample content* - Content Studio lists the sample content items:
++
+image::content-studio-moviedb.png[Movie DB in Content Studio,width=1440]
++
 NOTE: Some of the content items will have a default preview. That's okay for now - you'll customize the preview later.
 
-*Congrats on setting up the Enonic development environment*
+== Summary
 
-With the Enonic environment up and running, lets have a look at <<api-primer#, the GraphQL API>>.
+You've installed the Enonic CLI, started a sandbox, deployed an app based on the Intro starter, and opened its sample content in Content Studio.
+
+Next, you'll <<api-primer#,query that content with the GraphQL API>>.

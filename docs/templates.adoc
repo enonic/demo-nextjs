@@ -5,11 +5,11 @@
 
 Thus far, page rendering has been based on mappings, or editorially composing one page at a time. In this chapter you'll learn how to make page templates - and reuse them across multiple content items.
 
-== Task: Movie details part
+== Task: Add a movie details part
 
-To complete this section, we'll need one final part for listing movie details. The content type and content for movies already exists in Enonic, so lets get to work.
+To complete this chapter, you'll need one final part for presenting movie details. The content type and content for movies already exist in Enonic.
 
-. Verify the Enonic app has **the `movie-details` part descriptor** - same procedure as before...
+. *Check the part descriptor* - Verify that the Enonic app has the `movie-details` part descriptor, same procedure as before:
 +
 .src/main/resources/cms/parts/movie-details/movie-details.yaml
 [source,yaml]
@@ -19,20 +19,21 @@ title: "Movie Details"
 description: "Show details of a movie"
 form: [ ]
 ----
-+
-. **Redeploy** the Enonic app if you made any changes (happens automatically if you started `enonic dev`).
-+
-. **Add the Movie query and view** in Next.
+
+. *Redeploy the Enonic app* - This is only needed if you made any changes, and happens automatically if you started `enonic dev`.
+
+. *Add the Movie query and view* in Next.js:
 +
 .src/components/parts/MovieDetails.tsx
-[source,JavaScript]
+[source,typescript]
 ----
 include::{sourcedir}/components/parts/MovieDetails.tsx[]
 ----
-. **Update the component mappings**:
+
+. *Update the component mappings*:
 +
 .src/components/_mappings.ts
-[source,javascript,options="nowrap"]
+[source,typescript,options="nowrap"]
 ----
 import MovieDetails, {getMovie} from './parts/MovieDetails';
 
@@ -43,33 +44,39 @@ ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
 });
 
 ----
++
+The part is now available in Content Studio. You'll put it to use in the next task.
 
-== Task: Create template
+== Task: Create a template
 
-With the new component registered, let's put it to use.
+With the new component registered, put it to use.
 
-. In Content Studio, select and **edit your favorite movie** (or choose "No time to deflate" if you have no favorites).
-+
-. **Activate the context panel** by pressing its icon in the top right screen corner, select `Page` in the widget dropdown, then `Main` in the Template dropdown, and **add the `Movie Details` part** to the page (drag `Part` from the `Insert` tab into the region and pick it in the part dropdown).
-+
-image:movie-details.png[title="No time to deflate, configured with movie-details part",width=1440px]
-+
-We now have a single movie nicely presented, but it would be cumbersome to manually configure each movie like this - page templates to the rescue.
-+
-. In the `Page` tab of the form on the left, **select the page (root) component** named `Main`.
-+
-image:movie-page.png[title="With page component selected, save as template appears in right hand panel",width=1440px]
-+
-. Right click it and select **Save as Template** from the context menu.
-+
-This will create a new page template content item, and open it in a new tab for editing.
-+
-. **Give your template a better name**, such as "Movie details" - the change is saved automatically. The template already supports the `Movie` content type.
-+
-image:movie-template.png[title="Content item of type template, configure to support movie items",width=1440px]
-+
-. Try visiting other movie items to **verify they now automatically render**.
-+
-**PS!** Don't forget to publish the changes and the new page template (both the movie and the template are `Mark as ready` -> `Publish now`).
+. *Edit your favorite movie* - In Content Studio, select and edit your favorite movie (or choose "No time to deflate" if you have no favorites).
 
-With templates sorted out, let's dive into  <<static#, production mode and page revalidation>>.
+. *Add the part to the page* - Open the context panel by pressing its icon in the top right screen corner, select `Page` in the widget dropdown, then `Main` in the Template dropdown. Add the `Movie Details` part to the page: drag `Part` from the `Insert` tab into the region and pick it in the part dropdown.
++
+image::movie-details.png["No time to deflate, configured with movie-details part",width=1440]
++
+You now have a single movie nicely presented, but it would be cumbersome to configure each movie like this manually. Page templates to the rescue.
+
+. *Select the page component* - In the `Page` tab of the form on the left, select the page (root) component named `Main`.
++
+image::movie-page.png["With page component selected, save as template appears in right hand panel",width=1440]
+
+. *Save as template* - Right-click the component and select `Save as Template` from the context menu.
++
+This creates a new page template content item, and opens it in a new tab for editing.
+
+. *Give your template a better name*, such as "Movie details". The change is saved automatically. The template already supports the `Movie` content type.
++
+image::movie-template.png["Content item of type template, configure to support movie items",width=1440]
+
+. *Publish the changes* - Publish both the movie and the new page template (`Mark as ready` -> `Publish now` for each).
+
+. *Verify the result* - Visit other movie items. They now render automatically, using the template.
+
+== Summary
+
+You've added a `MovieDetails` part and saved a page as a template, so every movie is rendered with the same page definition.
+
+Next, you'll <<static#,run Next.js in production mode and revalidate pages when content is published>>.
