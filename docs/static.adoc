@@ -3,11 +3,11 @@
 :imagesdir: media/
 :sourcedir: ../src/app/[locale]/[[...contentPath]]
 
-In this chapter you will learn about NextJS' static site generation capabilities, and how Enonic triggers re-generation of pages when publishing.
+In this chapter you will learn about the static site generation capabilities of Next.js, and how Enonic triggers regeneration of pages when content is published.
 
 == Introduction
 
-Your NextJS front-end strives to use Static Site Generation (SSG) when possible which basically means you get lightning fast pages, but adds an additional compilation build step.
+Your Next.js front-end uses Static Site Generation (SSG) when possible. This gives you fast pages, but adds a build step.
 
 For more information visit the https://nextjs.org/docs/app/building-your-application/rendering[Next.js rendering documentation].
 
@@ -15,57 +15,63 @@ For more information visit the https://nextjs.org/docs/app/building-your-applica
 
 So far, you have been running Next.js in dev mode.
 
-By starting Next.js in `prod` mode, the application is automatically optimized, and in our case, pages get pre-rendered statically before the server starts.
+By starting Next.js in `prod` mode, the application is automatically optimized, and in this case, pages get pre-rendered statically before the server starts.
 
-TIP: Remember to stop your existing Next.js dev instance before you continue.
+. *Stop the dev server* - Stop your existing Next.js dev instance before you continue.
 
-. **Start Next.js in prod mode**:
+. *Start Next.js in prod mode*:
 +
-    npm run prod
+[source,shell]
+----
+npm run prod
+----
 +
-This will take a while longer as when compared to dev mode.
+This takes longer than starting dev mode, since the application is built first.
 
-. **Verify** by pointing your *incognito window* to http://localhost:3000[http://localhost:3000^], you should now see the published items, just like in dev mode.
-Only this time, they will be much faster. **Sweet!**
+. *Verify the result* - Point your *incognito window* to http://localhost:3000[http://localhost:3000]. You should see the published items, like in dev mode.
+Only this time, they load much faster.
 
-NOTE: Since prod mode now runs on the default port 3000 (same as dev mode), Content Studio preview should continue to work without any configuration changes.
-Just remember to stop your dev server before starting prod mode.
+NOTE: Since prod mode runs on the default port 3000 (same as dev mode), Content Studio preview continues to work without any configuration changes.
 The draft cookie issued by the dev server belongs to another build, so the proxy sends the first preview request through `/api/preview` again and draft mode is re-enabled for the prod build.
 
 == Task: Test page invalidation
-With all pages now being cached as files, Next.js must be instructed to re-generate the pages when a change is published.
 
-. **Verify that the `Next.XP` app is added to your site, and that the site is published**. You added the app in the <<preview#, Preview>> chapter, and published the site in the <<pages#, Pages>> chapter.
-This will ensure that the revalidation hook is triggered when you publish content.
-+
-. *Edit your front-page, and publish the changes*.
-This will trigger a revalidation hook, which is built into the Next.XP app.
+With all pages now being cached as files, Next.js must be instructed to regenerate the pages when a change is published.
 
-The page should now get updated at http://localhost:3000[http://localhost:3000^] - more or less instantly.🎉
+. *Check the site* - Verify that the `Next.XP` app is added to your site, and that the site is published. You added the app in the <<preview#,Preview>> chapter, and published the site in the <<pages#,Pages>> chapter.
+This ensures that the revalidation hook is triggered when you publish content.
+
+. *Edit your front page, and publish the changes* - This triggers a revalidation hook, which is built into the Next.XP app.
+
+. *Verify the update* - The page at http://localhost:3000[http://localhost:3000] is updated more or less instantly.
 
 === What happened?
 
 In addition to handling previews, the Next.XP app automatically triggers revalidation of all pages when it detects the publishing event in the site it is added to.
 The `/api/revalidate` route resolves the locale from the publishing project, so a specific path is revalidated as its locale-prefixed page; without a path everything is revalidated.
 
-NOTE: You should also be able to tell from the Next.js log that the revalidation was triggered.
+NOTE: The Next.js log also shows that the revalidation was triggered.
 
 == A look at the code
 
 Static Site Generation is controlled within the content page handler.
 
-And the function we are interested the most is:
+The most interesting function is:
 
-* `generateStaticParams()` - This function will be used by Next.js at build time to create a list of pages to compile before the server starts.
+* `generateStaticParams()` - Next.js uses this function at build time to create a list of pages to compile before the server starts.
 
-Below, we explain the details of the code:
+Here is the full page handler:
 
 .src/app/[locale]/[[...contentPath]]/page.tsx
-[source,TypeScript,options="nowrap"]
+[source,typescript,options="nowrap"]
 ----
 include::{sourcedir}/page.tsx[]
 ----
 
-As you can see, Next.XP provides methods to create static pages, but the best part is that it chooses the best rendering and caching scheme based on what your code is doing !
+As you can see, Next.XP provides methods to create static pages, and Next.js chooses the rendering and caching scheme based on what your code is doing.
 
-With prod mode and revalidation sorted out, let's see how to add <<i18n#, multi-language>> support.
+== Summary
+
+You've run the front-end in prod mode with statically generated pages, and seen the Next.XP app revalidate them when content is published.
+
+Next, you'll <<i18n#,add multi-language support>>.

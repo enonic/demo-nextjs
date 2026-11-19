@@ -1,43 +1,68 @@
-# NextJS ♡ Enonic : Front-end part of the Enonic/Next.js headless CMS demo
+# Tutorial Next.js powered by Enonic
 
-This repo is based on https://github.com/enonic/nextjs-enonic-template and represents the end-result of completing the Next.xp tutorial: https://developer.enonic.com/docs/next.xp
+This tutorial is published on [Enonic's Developer Portal](https://developer.enonic.com/learn/nextjs)
 
-## Running demo in the cloud
-Follow the TLDR; instructions listed on the front-page of the tutorial referenced above.
+## About
 
-## Running demo locally
-1. Launch local Enonic SDK sandbox (https://developer.enonic.com/start)
-2. Launch Enonic XP admin from http://localhost:8080
-4. From XP menu - Applications - Install the "Next.XP" app from Enonic Market (back-end part of demo)
-4. Configure and run the Next.js app "nextxp-demo" (front-end part of demo)
+This project is based on the [Next.XP starter](https://github.com/enonic/starter-nextjs) and contains a working version of the Next.js application, representing the end result of the tutorial, as well as the tutorial documentation in `docs/`.
 
-```bash
-npx degit git@github.com:enonic/nextxp-demo.git
-npm install
-npm run dev
+The same application is used for the Next.XP demo.
+
+## Run the application
+
+Follow the [demo](https://developer.enonic.com/learn/nextjs/stable/demo) to run the application. It can run locally, against an Enonic sandbox created from the `Headless Movie DB` template, or in the cloud, on Vercel against an Enonic Cloud solution.
+
+The application needs a running Enonic back-end with the Headless Movie DB sample content. Requires Enonic XP 8.1+ with Guillotine 9 and the Next.XP app, added to the site.
+
+## Configuration
+
+The application is configured through environment variables in `.env`. The committed values target the demo back-end: the Headless Movie DB application (`com.enonic.app.hmdb`) with the project `hmdb` and a site at `/hmdb`, on `http://localhost:8080`.
+
+| Variable | Description |
+|----------|-------------|
+| `ENONIC_APP_NAME` | Name of the Enonic application that holds the content types and components |
+| `ENONIC_API` | Absolute URL to the Enonic XP API root |
+| `ENONIC_API_TOKEN` | Shared secret used to secure preview and revalidation requests |
+| `ENONIC_MAPPINGS` | Maps locales to content projects and sites: `<locale>:<project>/<site>`, comma-separated |
+| `GUILLOTINE_API` | Optional. Guillotine API descriptor, appended to `ENONIC_API` |
+| `ENONIC_MEDIA_CDN` | Optional. Base URL for media, if it differs from `ENONIC_API` |
+| `ENONIC_ADMIN` | Optional. Origin of Enonic admin, if it differs from the API origin |
+
+To run against the back-end built in the tutorial, set `ENONIC_APP_NAME=com.example.tutorial.nextjs` and `ENONIC_MAPPINGS=en:intro/hmdb`. Put values that should not be committed in `.env.local`.
+
+## Commands
+
+```sh
+npm run dev    # Start the application in development mode
+npm run prod   # Build and start the application in production mode
+npm run lint   # Run ESLint (also runs before every build)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Releasing a new version
 
-## Releasing new version
-
-### Prepare demo repo
+### Prepare this repo
 
 1. Create new features in a branch
-2. Test and verify the app
-3. Update docs if needed
-4. Create pull-request to master on github
-5. Tag master using `git tag v3.2.0` after pull-request is merged
+2. Test and verify the application
+3. Update the docs if needed
+4. Create a pull request to `master` on GitHub
+5. Tag `master`, for example `git tag v6.0.0`, after the pull request is merged
 
-### Update template repo
+### Update the starter repo
 
-6. Move all relevant changes to a feature branch in the template repo
+6. Move all relevant changes to a feature branch in [starter-nextjs](https://github.com/enonic/starter-nextjs)
 7. Test and verify the changes
-8. Create pull-request to master on github
-9. Tag master branch using `git tag v3.2.0` after pull-request is merged
+8. Create a pull request to `master` on GitHub
+9. Tag `master`, for example `git tag v6.0.0`, after the pull request is merged
 
 ### Final step: Release
 
-10. Merge changes to master for both repositories
-11. Verify that setting up new next app is working according to tutorial
-12. Verify that the TLDR; is working
+10. Merge the changes to `master` for both repositories
+11. Verify that setting up a new Next.js application works according to the tutorial
+12. Verify that the demo works
+
+## Learn more
+
+You can learn more in the [Next.js documentation](https://nextjs.org/docs).
+
+For the integration with Enonic, see [`@enonic/nextjs-adapter`](https://www.npmjs.com/package/@enonic/nextjs-adapter).

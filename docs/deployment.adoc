@@ -1,102 +1,101 @@
 = Deploying to production
+include::.variables.adoc[]
 :toc: right
 :imagesdir: media/
 
-In this chapter you will launch cloud instances of both Enonic and Next - link them together, and see the glorious result.
+In this chapter you will launch cloud instances of both Enonic and Next.js, link them together, and see the glorious result.
 
 == Introduction
-To complete this chapter, you'll be using Enonic to host the XP side of things, and Vercel for the front-end - Vercel are the makers of Next.js.
+
+To complete this chapter, you'll be using Enonic to host the XP side of things, and Vercel for the front-end. Vercel are the makers of Next.js.
 
 NOTE: Both Enonic and Next.js are open source software projects and can be deployed more or less anywhere. Have a look at the https://developer.enonic.com/docs/hosting[Enonic platform hosting page] for more details.
 
 == Task: Sign up to Enonic
 
-Create an account to get a free developer instance of Enonic XP
+Create an account to get a free developer instance of Enonic XP.
 
 . *Sign up* for a https://enonic.com/sign-up[free developer account].
-. *Create a new solution using the `CMS essentials` template*. This will install applications like `Content Studio` and `Guillotine` automatically.
-
-When the new solution has started, launch `Enonic XP Admin` to verify that everything is up and running.
-
+. *Create a new solution using the `CMS essentials` template* - This installs applications like `Content Studio` and `Guillotine` automatically.
+. *Verify the solution* - When the new solution has started, launch `Enonic XP Admin` to verify that everything is up and running.
 
 == Task: Install your app
 
-. **Connect Enonic CLI to the cloud** by running this command, and follow the instructions:
+. *Connect the Enonic CLI to the cloud* - Run this command, and follow the instructions:
 +
-[source,bash,{subs}]
+[source,shell]
 ----
 enonic cloud login
 ----
+
+. *Install your Enonic app* - Run this command from the `{enonic-folder}` folder:
 +
-. **Install your enonic app** directly from the app folder by running this command:
-+
-[source,bash,{subs}]
+[source,shell]
 ----
 enonic cloud app install
 ----
-+
-. **Verify that the app was installed** from `Solution` -> `Applications` in the Enonic Console.
-. From XP Admin, **open Content Studio** to verify that your app automatically initialized the `Intro` project and imported content on the server, just like on your local machine.
-. Just like <<sites#, you did it locally>> , **create a new site** called `Hmdb` and move all imported content there.
-. Lastly, remember to create a localized version of the site <<i18n#, as you did before>>.
 
-== Task: Expose API via route
+. *Verify that the app was installed* from `Solution` -> `Applications` in the Enonic Console.
+. *Open Content Studio* - From XP Admin, open Content Studio to verify that your app automatically initialized the `Intro` project and imported content on the server, like on your local machine.
+. *Create a new site* called `Hmdb` and move all imported content there, like <<sites#,you did locally>>.
+. *Create a localized version* of the site, <<i18n#,as you did before>>.
+
+== Task: Expose the API via a route
 
 The purpose of routes is to expose APIs and other endpoints in Enonic XP, like the `:8080/api` API root, to the internet.
 
-. **Create a new ingress called "API"** from `Solution` -> `Ingresses`.
+. *Create a new ingress called "API"* from `Solution` -> `Ingresses`.
 +
 Use the following settings:
 +
 Target path:: `/api`
 Public path:: `/api`
 ID provider:: -empty-
-+
-. **Make a note of the route URL** - you will find it in the route details.
 
+. *Make a note of the route URL* - You will find it in the route details.
++
 NOTE: The URL should look something like this: `https://account-solution-environment.enonic.net/api`.
 
 == Task: Add your front-end to Git
 
-Vercel (which will be hosting your front-end) will need write access to a Git repo with your code.
+Vercel, which will host your front-end, needs write access to a Git repo with your code.
 
-. **Create a new Git repo** - Vercel supports Github, Gitlab and Bitbucket.
+. *Create a new Git repo* - Vercel supports GitHub, GitLab and Bitbucket.
+. *Commit and push* your Next.js app files to the new repo.
+
+== Task: Deploy the Next.js app
+
+You are now ready to deploy the front-end application.
+
+. *Sign up to Vercel* at https://vercel.com/
+. *Create a new project* called `enonic-tutorial` and connect it to the repo you created in the previous task.
+. *Add the following environment variables* to the project (name: value):
 +
-. **Commit and push** your Next.js app files to the new repo.
+* `+ENONIC_APP_NAME+`: <enonic app name (`{app-id}` in this tutorial)>
+* `+ENONIC_API+`: <route URL from the previous task, ending with /api>
+* `+ENONIC_ADMIN+`: <enonic admin URL> (optional, only if admin is on a different domain than the API)
+* `+ENONIC_MEDIA_CDN+`: <media URL> (optional, only if images and attachments are served from a different domain than the API)
+* `+ENONIC_API_TOKEN+`: <yourSecret>
+* `+ENONIC_MAPPINGS+`: en:intro/hmdb,no:intro-no/hmdb
 
-
-== Task: Deploy Next app
-You are now ready to deploy the the front-end application.
-
-. Sign up to Vercel: https://vercel.com/
-. Create a new project `enonic-tutorial` and connect it to the repo you created in the previous step.
-. **Add the following environment variables** to the project (name: value):
+. *Verify the result* - The front page of your app should now display a 404, as you haven't published any content yet.
 +
-* ENONIC_APP_NAME: <enonic app name (`tutorial.nxp` in this guide)>
-* ENONIC_API: <route URL from the previous task, ending with /api>
-* ENONIC_ADMIN: <enonic admin URL> (optional, only if admin is on a different domain than the API)
-* ENONIC_MEDIA_CDN: <media URL> (optional, only if images and attachments are served from a different domain than the API)
-* ENONIC_API_TOKEN: <yourSecret>
-* ENONIC_MAPPINGS: en:intro/hmdb,no:intro-no/hmdb
-
-. **Verify the result**.
-The front-page of your app should now display a 404 - as you haven't published any content yet.
+NOTE: Make a note of the URL to the Vercel app, you will need it later.
 +
-NOTE: Make a note of the URL to the Vercel app, you will need it later
-+
-image:404.png[title="Front page rendering before a site has been added to it",width=768px]
+image::404.png[Front page rendering before a site has been added to it,width=768]
 +
 TIP: Check the Vercel function logs if you are not getting the expected result.
 
 == Task: Link Content Studio to Vercel
+
 With the front-end running, you can link it to Content Studio to activate the preview, and start building pages once again.
 
 TIP: To save time, you may export content from your local machine and import it to the server using the https://market.enonic.com/vendors/glenn-ricaud/data-toolbox[Data Toolbox app].
 
-. **Install the `Next.XP` app** `Solution` -> `Applications` -> `Install` -> Search for `Next.XP`, select it and click install
-. **Add configuration**.
+. *Install the `Next.XP` app* - Go to `Solution` -> `Applications` -> `Install`, search for `Next.XP`, select it and click install.
+. *Add configuration*:
 +
-image:console-configure-app.png[title="Configure the Next.XP application in the solution console",width=769px]
+image::console-configure-app.png[Configure the Next.XP application in the solution console,width=769]
 +
 .Add the following lines to the app config field to override the default values:
 [source,properties]
@@ -110,32 +109,34 @@ TIP: Remember, you can also create named configurations if needed.
 NOTE: The app automatically adds the configured front-end origins to Content Studio's Content Security Policy, so the preview from your Vercel URL works without any Content Studio configuration.
 Unlike your local sandbox, a production server allows only explicitly configured URLs - the `http://localhost:3000` default applies to dev mode only, so this configuration step is required.
 +
-NOTE: If you imported content from your local environment, the following two steps can be skipped
+NOTE: If you imported content from your local environment, the following step can be skipped.
 +
 NOTE: The preview widget and the revalidation hook only work for sites the Next.XP app has been added to.
 Adding it to the site also lets you select a named configuration from the app config file.
-+
-. **Add the Next.XP app to the site**, in addition to your own app.
-. **Save and verify** that the configuration is working by testing the Content Studio preview.
+
+. *Add the Next.XP app to the site*, in addition to your own app.
+. *Save and verify* that the configuration is working by testing the Content Studio preview.
 
 == Task: Publish a page
 
 It's time to test that everything is working.
 
-. If you did not import content, **create the front-page** (once again) by using the page editor. Maybe something like this will do?
+. *Create the front page* - If you did not import content, create the front page once again using the page editor. Maybe something like this will do?
 +
-image:cloud-preview.png[title="Front page as seen from Content Studio", width=1419px]
-. **Go live** by publishing the new page, and verify that your live site gets updated. Voila!
+image::cloud-preview.webp[Front page as seen from Content Studio,width=1440]
+
+. *Go live* - Publish the new page, and verify that your live site gets updated:
 +
-image:live.png[title="Content rendered on the live server", width=1033px]
+image::live.png[Content rendered on the live server,width=1033]
 
-== Summary, and whats Next?
+== Summary
 
-🎉 Congratulations 🥳 - You've reached the end of this tutorial - we hope you enjoyed it!
+You did it! 🎉 You've built a Next.js site that renders content from Enonic, with pages composed by editors, live preview in Content Studio, static generation and multiple languages - and deployed it to Enonic Cloud and Vercel. That completes the tutorial.
 
-There are other aspects of Enonic and Next.js that will never be covered by this tutorial - to learn more about Enonic check out the following resources:
+== Further reading
 
-* https://developer.enonic.com[Enonic Developer portal]
-* https://developer.enonic.com/docs/developer-101/stable[Enonic Developer 101]
+None of this is required, but here are some suggestions for where to go from here:
 
+* The https://developer.enonic.com[Enonic Developer Portal] has documentation for the entire platform.
+* The {dev101-tutorial}[Developer 101 tutorial] teaches you how to build your own content model in Enonic.
 

@@ -6,6 +6,13 @@
 // Next.XP release documented by this tutorial (follows the adapter major)
 :nextxp-version: 6
 
+// Tutorial resource names, based on the slug `nextjs`.
+// The sandbox name contains an underscore: in prose, write it literally inside a `+...+` passthrough.
+:sandbox-name: tutorial_nextjs
+:app-id: com.example.tutorial.nextjs
+:enonic-folder: tutorial-nextjs-enonic
+:frontend-folder: tutorial-nextjs-frontend
+
 // Enonic stack
 :xp-version: 8.1
 :guillotine-version: 9
@@ -23,8 +30,19 @@
 :npm-minimum: 10.9.2
 
 
-// Frequently referenced docs
-:xp-docs: https://developer.enonic.com/docs/xp/stable
-:guillotine-docs: https://developer.enonic.com/docs/guillotine/stable
+// Frequently referenced docs: unversioned base URLs, with the version label kept separately for deep links
+:xp-docs: https://developer.enonic.com/docs/platform
+:xp-docs-version: stable
+:guillotine-docs: https://developer.enonic.com/docs/guillotine
+:guillotine-docs-version: stable
 :cms-docs: https://developer.enonic.com/docs/cms
+:cms-docs-version: stable
+:cs-docs: https://developer.enonic.com/docs/content-studio
+:cs-docs-version: stable
 :next-docs: https://nextjs.org/docs
+
+// Other tutorials
+:intro-tutorial: https://developer.enonic.com/learn/intro
+:dev101-tutorial: https://developer.enonic.com/learn/developer-101
+:dev101-tutorial-version: stable
+:reactspa-tutorial: https://developer.enonic.com/learn/react-spa

@@ -3,30 +3,26 @@
 :imagesdir: media/
 :sourcedir: ../src
 
-In this chapter you'll learn how to render Macros, which are custom components within rich text.
+In this chapter you'll render macros, which are custom components within rich text.
 
 == Intro
 
-Occasionally, you may require rich components, even within your rich text. This is enabled via a component type called Macros. Macros follow the same pattern as we have seen for other components
+Occasionally, you may require rich components, even within your rich text. This is enabled via a component type called macros. Macros follow the same pattern as you have seen for other components.
 
 == FactBox macro
 
 In your Enonic project, a `FactBox` macro schema is pre-defined.
-It is located in `src/main/resources/cms/macros/factbox/factbox.yaml`
-If you take a closer look at the Léa Seydough bio, you can see how the [factbox] macro is used.
+It is located in `src/main/resources/cms/macros/factbox/factbox.yaml`.
+If you take a closer look at the Léa Seydough bio, you can see how the `factbox` macro is used.
 
+=== Task: Create the FactBox component
 
+Create a React component that renders the `factbox` macro.
 
-=== Task: Factbox component
-
-Let's create a React component that will render the `factbox` macro.
-
-. *Create the FactBox component*
-+
-This React component will automatically be invoked by the `RichTextView` used in the previous chapter, should it encounter a corresponding macro in the text.
+. *Create the FactBox component* - This React component is automatically invoked by the `RichTextView` used in the previous chapter, should it encounter a corresponding macro in the text.
 +
 .src/components/macros/FactBox.tsx
-[source,jsx]
+[source,typescript]
 ----
 include::{sourcedir}/components/macros/FactBox.tsx[]
 ----
@@ -38,11 +34,11 @@ Style it by adding a CSS module as well:
 ----
 include::{sourcedir}/components/macros/FactBox.module.css[]
 ----
-+
-. *Register the factbox macro*, just like all other components
+
+. *Register the factbox macro*, like all other components:
 +
 .src/components/_mappings.ts
-[source,jsx]
+[source,typescript]
 ----
 ...
 import FactBox from './macros/FactBox';
@@ -55,14 +51,18 @@ ComponentRegistry.addMacro(`${APP_NAME}:factbox`, {
 +
 NOTE: Macros do not support the regular queries, but you may use `configQuery`. This specifically operates on the form values for the component, and the result will automatically be available in the React component's `config` prop.
 +
-TIP: You do not need to ask for the macro body, as this implicitly passed to the Macro component.
+TIP: You do not need to ask for the macro body, as it is implicitly passed to the macro component.
 +
-IMPORTANT: Macros must be registered before the adapter prepares the outgoing query. Register the macro in `_mappings.ts` so it is available when requests are handled.
+IMPORTANT: Macros must be registered before the adapter prepares the outgoing query. Register the macro in `+_mappings.ts+` so it is available when requests are handled.
 +
-. *Sweet!*
-+
-You should now see http://localhost:3000/persons/lea-seydough[Lea Seydough] updated with the `FactBox` macro:
+NOTE: The sample content also uses a `filmography` macro, for instance in the bio of Keanu Reefs. This tutorial does not implement it, so those pages show a notice about the missing macro. Register a component for it in the same way if you want to render it.
 
-image::rich-text-result.png[title="Person content rendered with rich text and macro",width=1142px]
+. *Verify the rendering* - The page for http://localhost:3000/persons/lea-seydough[Lea Seydough] now shows the `FactBox` macro:
++
+image::rich-text-result.webp[Person content rendered with rich text and macro,width=1080]
 
-In the next chapter we'll make it possible to <<pages#, create landing pages editorially>>.
+== Summary
+
+You've created a `FactBox` component and registered it as a macro, so `RichTextView` now renders fact boxes inside rich text.
+
+Next, you'll <<pages#,enable editors to compose landing pages>>.

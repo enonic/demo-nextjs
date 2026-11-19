@@ -1,16 +1,19 @@
 = Parts
+include::.variables.adoc[]
 :toc: right
 :imagesdir: media/
 :sourcedir: ../src
 
-Enonic provides a highly customizable component type called link:https://developer.enonic.com/docs/xp/stable/cms/pages/parts[parts^] and you actually have already created one called `Paragraph` in the previous chapter!
-Similar to page components, parts must be defined in both Enonic and Next.js in order to fully work.
+In this chapter you will add configurable parts to your pages: a list of child items and, optionally, a heading.
 
+Enonic provides a highly customizable component type called {cms-docs}/{cms-docs-version}/pages/parts[parts]. You have already created one, called `Paragraph`, in the previous chapter.
+Like page components, parts must be defined in both Enonic and Next.js to fully work.
 
-== Task: Add part to Enonic
-We'll start off by adding a simple component that lists child items in the tree structure.
+== Task: Add a part to Enonic
 
-. Verify Enonic app (not the Next.js frontend) has **the `child-list` part descriptor** at:
+Start by adding a component that lists child items in the tree structure.
+
+. *Check the part descriptor* - Verify that the Enonic app (not the Next.js front-end) has the `child-list` part descriptor at:
 +
 .src/main/resources/cms/parts/child-list/child-list.yaml
 [source,yaml]
@@ -34,38 +37,34 @@ form:
 ----
 +
 NOTE: This component also contains a form, similar to content types.
-This means editors can configure it - sorting the items Ascending or Descending.
-+
-**Build and redeploy your Enonic app** once more if it didn't have it to make the new part available in Content Studio (happens automatically if you started `enonic dev`).
-+
-. **Add parts to the page**
-+
-Back in Content Studio, edit the `/hmdb/persons` folder item.
+This means editors can configure it, sorting the items in ascending or descending order.
+
+. *Redeploy your Enonic app* - This is only needed if you had to add the descriptor, and happens automatically if you started `enonic dev`. It makes the new part available in Content Studio.
+
+. *Add the part to a page* - Back in Content Studio, edit the `/hmdb/persons` folder item.
 Open the Context Panel (`Show Context Panel` in the top right corner), select `Page` in the widget dropdown and choose `Main` in the Template dropdown to turn the folder into a page.
 Drag `Part` from the `Insert` tab into the region, then select `Child list` in the part dropdown of the `Inspect` tab.
+
+. *Verify the result* - The part appears without any changes to the front-end. This is because the Enonic adapter contains fallback part rendering, as long as Next.js is running in dev mode.
 +
-TIP: The part will appear without making any changes to the front-end, this is because the Enonic Adapter contains fallback part rendering, as long as Next.js is running in DEV mode.
-+
-image:missing-component.png[title="Next.js dev mode renderes nice feedback when components are missing",width=1440px]
+image::missing-component.png[Next.js dev mode renders helpful feedback when components are missing,width=1440]
 
 == Task: Configure part rendering in Next.js
 
-Heading over to the front-end, you must register a new component that supports rendering of this part.
+Over in the front-end, register a new component that supports rendering of this part.
 
-. **Add the part implementation to the Next.js app**
+. *Add the part implementation to the Next.js app*:
 +
 .src/components/parts/ChildList.tsx
-[source,JavaScript]
+[source,typescript]
 ----
 include::{sourcedir}/components/parts/ChildList.tsx[]
 ----
-+
-. Then, **register the components** in _mappings.ts:
-+
-Update _mappings.ts with the following new lines:
+
+. *Register the component* - Update `+_mappings.ts+` with the following new lines:
 +
 .src/components/_mappings.ts
-[source,TypeScript,options="nowrap"]
+[source,typescript,options="nowrap"]
 ----
 import ChildList, {childListProcessor, getChildList} from './parts/ChildList';
 
@@ -77,23 +76,27 @@ ComponentRegistry.addPart(`${APP_NAME}:child-list`, {
 });
 ----
 +
-As you may have noticed this component has a query, a view and a processor. Processors are optional JavaScript functions that can do whatever you need it to. For instance fetch data from another source than the CMS, or post-process the query response before it is passed to the view etc.
+As you may have noticed, this component has a query, a view and a processor. Processors are optional JavaScript functions that can do whatever you need them to, for instance fetch data from another source than the CMS, or post-process the query response before it is passed to the view.
 +
-The Enonic adapter will execute the query, pass the result via the processor, and then to the view which renders the component.
+The Enonic adapter executes the query, passes the result via the processor, and then to the view which renders the component.
 +
-NOTE: Like macros, all page components support `configQuery`. Here though, if `configQuery` is omitted, the `config` prop will fallback to the raw form values via `configAsJson`.
+NOTE: Like macros, all page components support `configQuery`. Here though, if `configQuery` is omitted, the `config` prop falls back to the raw form values via `configAsJson`.
+
+. *Verify the rendering* - Content Studio now shows the part with a list of persons:
 +
-image:child-list-rendered.png[title="Part rendered with list of persons as seen from Content Studio",width=1440px]
-+ 
+image::child-list-rendered.png[Part rendered with list of persons as seen from Content Studio,width=1440]
++
 Try customizing the part configuration and see what happens.
 
-== Optional Task: The heading part
+. *Publish the page* - Click `Mark as ready`, and then `Publish now` in the Publishing Wizard, like you did for the front page. The list of persons is now available on http://localhost:3000/persons[http://localhost:3000/persons] as well.
 
-For more components to play with, you may add another part:
+== Task: Add a heading part (optional)
 
-. Verify Enonic app (not the Next.js frontend) contains **the Heading part descriptor**:
+For more components to play with, you may add another part. This task is optional.
+
+. *Check the part descriptor* - Verify that the Enonic app (not the Next.js front-end) contains the `heading` part descriptor.
 +
-This part definition includes a form, with an link:https://developer.enonic.com/docs/xp/stable/cms/schemas/input-types[input field] called `heading`.This makes it possible for editors to override the heading (aka displayName) coming from the content item.
+This part definition includes a form, with an {cms-docs}/{cms-docs-version}/schemas/form-items[form item] called `heading`. This makes it possible for editors to override the heading (the display name) coming from the content item.
 +
 .src/main/resources/cms/parts/heading/heading.yaml
 [source,yaml]
@@ -102,24 +105,28 @@ kind: "Part"
 title: "Heading"
 description: "Demo heading"
 form:
-- type: "TextLine"
-  name: "heading"
-  label: "Override heading"
+  - type: "TextLine"
+    name: "heading"
+    label: "Override heading"
+    occurrences:
+      min: 0
+      max: 1
 ----
-+
-**Redeploy** the Enonic app if it didn't have it and add the part to your page (happens automatically if you started `enonic dev`).
-+
-. **Add the heading component in Next.js**.
+
+. *Redeploy the Enonic app* - This is only needed if you had to add the descriptor, and happens automatically if you started `enonic dev`.
+
+. *Add the heading component in Next.js*:
 +
 .src/components/parts/Heading.tsx
-[source,JavaScript]
+[source,typescript]
 ----
 include::{sourcedir}/components/parts/Heading.tsx[]
 ----
-Add the following lines to _mappings.ts:
+
+. *Register the part* - Add the following lines to `+_mappings.ts+`:
 +
 .src/components/_mappings.ts
-[source,javascript,options="nowrap"]
+[source,typescript,options="nowrap"]
 ----
 import Heading from './parts/Heading';
 
@@ -128,7 +135,11 @@ ComponentRegistry.addPart(`${APP_NAME}:heading`, {
     view: Heading
 });
 ----
-+
-You should now have three configurable parts to play with.
 
-In the next chapter you will make page composition even more interesting, with the introduction of <<layouts#, layouts>>. 
+. *Verify the rendering* - Add the `Heading` part to your page in Content Studio. You now have three configurable parts to play with.
+
+== Summary
+
+You've registered a `ChildList` part with a query, a processor and a view, and seen how editors add and configure parts in Content Studio.
+
+Next, you'll make page composition even more interesting, with the introduction of <<layouts#,layouts>>.

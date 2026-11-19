@@ -2,63 +2,60 @@
 :toc: right
 :imagesdir: media/
 
-In this chapter, you'll build a tree structure of your content, with a site item at the root + learn about a handy trick for the GraphQL API.
+In this chapter, you'll build a tree structure of your content with a site item at the root, and learn a handy trick for the GraphQL API.
 
 == Introduction
 
 Next.XP is built to provide complete control over a website, including landing pages and the URL structure. For this use-case, Content Studio's tree structure will come in handy.
 
-== Task: Creating the site
+== Task: Create the site
 
 Next.XP needs a root content item. This item will act as the front-page of your site.
 
 TIP: Before you continue, clear all selections in the Content Studio list view (this way the site content will be placed on the project root).
 
-. **Create a new item** by clicking `New` in Content Studio toolbar, then select the `Site` content type. This will open the content editor in a new tab.
-. **Give the site a name** by filling in a display name for the site, "HMDB" (short for Headless Movie DB) will do fine. 
+. *Create a new item* - Click `New` in the Content Studio toolbar, then select the `Site` content type. This opens the content editor in a new tab.
+. *Give the site a name* - Fill in a display name for the site. "HMDB" (short for Headless Movie DB) will do fine.
 +
-NOTE: If you choose a different name, make sure the site path name (seen below the Display name) is set to `hmdb` - as this will be used throughout the tutorial.
-. **Add your app** to the site - by selecting it in the `Applications` form field and clicking `Apply`.
-+
-NOTE: Sites acts as scopes in the content structure. By adding an app to the site, you effectively allow editors to create content based on the app within this scope.
-+
-image:content-studio-create-site.png[title="Give the site a name, and add the Movie DB app", width=1024px]
-+
-When completed, your form should look something like this, and you can now press `Save` in the toolbar.
-+
-NOTE: This will leave the item in `In progress` state, which is ok for now.
+NOTE: If you choose a different name, make sure the site path name (seen below the Display name) is set to `hmdb`, as this is used throughout the tutorial.
 
-== Add content
-
-To quickly get some content and structure within the site, let's move the Movie DB content into the site.
-Return back to the Content Studio tab, and follow these steps:
-
-. **Select the folders** in the list, and click `Move` from the toolbar. 
-. **Selecting the `HMDB` site** as the target and click `Move` once more.
+. *Add your app* to the site - Select it in the `Applications` form field, where it is listed as `Intro`, and click `Apply`.
 +
-image:content-studio-move.png[title="Move the folder into the site", width=1024px]
+NOTE: Sites act as scopes in the content structure. By adding an app to the site, you effectively allow editors to create content based on the app within this scope.
 +
-. Wrap up by **publishing the changes**. Select the site (root item) in the tree structure, and click `Mark as ready` in the top right. This marks the item as ready and opens the Publishing Wizard.
+Your form should now look something like this:
 +
-image:content-studio-mark-as-ready.png[title="Mark as ready", width=1024px]
+image::content-studio-create-site.png["The site form with the display name HMDB and the Intro app added",width=1280]
 +
-. To **publish the entire new tree structure** toggle `Include child items`, click `Apply` in the wizard header, then click `Publish now`.
+NOTE: Applying the change saves the site automatically. This leaves the item in the `In progress` state, which is OK for now.
+
+== Task: Move content into the site
+
+To quickly get some content and structure within the site, move the Movie DB content into it.
+Return to the Content Studio tab, and follow these steps:
+
+. *Select the folders* in the list, and click `Move` in the toolbar.
+. *Select the `HMDB` site* as the target and click `Move` once more.
 +
-image:content-studio-publish.png[title="Publish entire tree structure", width=1024px]
+image::content-studio-move.png[Move the folder into the site,width=1280]
 
-Sweet, you should now have a site with content and a basic tree structure. 
+. *Mark the site as ready* - Select the site (root item) in the tree structure, and click `Mark as ready` in the top right. This marks the item as ready and opens the Publishing Wizard.
++
+image::content-studio-mark-as-ready.png[Mark as ready,width=1280]
+
+. *Publish the entire tree structure* - Toggle `Include child items`, which lists the child items in the wizard, then click `Publish now`.
++
+image::content-studio-publish.png[Publish entire tree structure,width=1280]
+
+. *Verify the result* - The content tree now shows the folders beneath the `HMDB` site, and all items have the status `Online`.
 
 
-
-
-== Task: Site contextual queries
+== Task: Run queries in the site context
 
 In GraphQL queries, you may use a so-called "site context".
-This is achieved by selecting your site with the `scopeKey` parameter of the guillotine query.
+This is achieved by selecting your site with the `scopeKey` parameter of the `guillotine` field.
 
-. Specify `scopeKey` parameter
-+
-Back in Query Playground, add the `scopeKey` parameter to your previous query, and set it to the path of your site:
+. *Specify the `scopeKey` parameter* - Back in Query Playground, add the `scopeKey` parameter to your previous query, and set it to the path of your site:
 +
 [source,graphql]
 ----
@@ -74,17 +71,20 @@ NOTE: `scopeKey` can be either a path or a content ID. A benefit of using the si
 Without `scopeKey`, URLs are project-relative and `getSite` returns `null`.
 Scope selects the context for URLs, macros and image styles; it does not restrict searches to a subtree.
 Add explicit path conditions to DSL queries when needed. Page URLs for content outside the selected scope produce a field error.
+
+. *Run a query with the site context* - One of the new features you get from the site context is the `${site}` placeholder, which can be used in paths. Update your query variables as follows, and run the movie query from the previous chapter once more:
 +
-. Run a query with the site context
-+
-One of the new features you get from the site context is the `${site}` placeholder, which can be used in paths. Update your Query Variables as follows, and run the movie query from the previous chapter once more: 
-[source,JSON]
+[source,json]
 ----
 {
     "path": "${site}/movies/s7ven"
 }
 ----
 
-NOTE: Here, `${site}` will resolve to the path of the site and expand - in this case the full path will be expanded to `/hmdb/movies/s7ven`.
+. *Verify the result* - The response contains the same movie as before. Here, `${site}` resolves to the path of the site, so the full path expands to `/hmdb/movies/s7ven`.
 
-Coming up - get your <<nextjs-setup#, your Next.js developer environment>> up and running.
+== Summary
+
+You've created the `HMDB` site, moved the sample content into it and published the tree. You've also used `scopeKey` and the `${site}` placeholder to run queries in the context of the site.
+
+Next, you'll <<nextjs-setup#,set up your Next.js development environment>>.
