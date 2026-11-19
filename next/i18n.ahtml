@@ -483,7 +483,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><strong>Open the project settings</strong> - In Content Studio, click the <code>Settings</code> cog icon on the left-hand side of the grid. You will be presented with the currently available projects:</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/content-studio-settings.png" alt="Project list" width="1024">
+<img src="media/content-studio-settings.png" alt="Project list" width="1280">
 </div>
 </div>
 </li>
@@ -492,7 +492,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 This opens the project wizard with <code>Intro Project</code> preselected as the parent project, so the new project becomes a layer.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/content-studio-create-layer.png" alt="Layered project type" width="1024">
+<img src="media/content-studio-create-layer.png" alt="Layered project type" width="1280">
 </div>
 </div>
 <div class="paragraph">
@@ -528,12 +528,12 @@ This opens the project wizard with <code>Intro Project</code> preselected as the
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="media/content-studio-filmdb.png" alt="Film DB project" width="1024">
+<img src="media/content-studio-filmdb.png" alt="Film DB project" width="1280">
 </div>
 </div>
 </li>
 <li>
-<p><strong>Publish the project</strong> - Select the <code>HMDB</code> site, click <code>Publish</code> in the toolbar, toggle <code>Include child items</code>, click <code>Apply</code> and then <code>Publish now</code>.</p>
+<p><strong>Publish the project</strong> - Select the <code>HMDB</code> site, click <code>Publish</code> in the toolbar, toggle <code>Include child items</code> and then click <code>Publish now</code>. If the wizard reports items that are in progress, click <code>Mark as ready</code> first.</p>
 </li>
 </ol>
 </div>
@@ -660,7 +660,7 @@ You may need to restart/rebuild your Next.js server for the changes to be picked
 <p><strong>Translate the site content</strong> - Select the site and click <code>Edit</code>. The editor opens with a <code>Localize</code> button in place of <code>Save</code>: click it to create a local copy in the layer (the item switches from <code>Not localised</code> to <code>Localised</code> and gets the layer&#8217;s language). You may now show off your skills while translating the page to Norwegian.</p>
 </li>
 <li>
-<p><strong>Publish the entire site</strong> - Once finished, click <code>Mark as ready</code> and proceed to publish the entire site structure.</p>
+<p><strong>Publish the translation</strong> - Once finished, click <code>Mark as ready</code>, and then <code>Publish now</code> in the Publishing Wizard.</p>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -668,14 +668,7 @@ You may need to restart/rebuild your Next.js server for the changes to be picked
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-<div class="paragraph">
-<p><strong>Publish the entire tree</strong> by selecting the tree icon in the publishing wizard.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="media/content-studio-mark-as-ready.png" alt="Click tree icon to include all children" width="819">
-</div>
-</div>
+If the wizard lists unpublished child items, toggle <code>Include child items</code> to publish them as well.
 </td>
 </tr>
 </table>
@@ -744,7 +737,7 @@ Every configured URL is automatically allowed in Content Studio&#8217;s Content 
 <p><strong>Assign the configuration to your site</strong> by clicking the pencil icon next to the <code>Next.XP</code> app name in the site form, and selecting it from the list of named configurations:</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/content-studio-configure-nextxp.png" alt="Selecting a named configuration for the Next.XP app in the site form" width="771">
+<img src="media/content-studio-configure-nextxp.png" alt="Selecting a named configuration for the Next.XP app in the site form" width="1280">
 </div>
 </div>
 </li>
@@ -879,7 +872,7 @@ export default function ServerSideComponent() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 12:37:02 UTC
+Last updated 2026-11-19 20:36:43 UTC
 </div>
 </div>
 </body>

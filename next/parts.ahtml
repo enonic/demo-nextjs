@@ -664,6 +664,9 @@ Like macros, all page components support <code>configQuery</code>. Here though, 
 <p>Try customizing the part configuration and see what happens.</p>
 </div>
 </li>
+<li>
+<p><strong>Publish the page</strong> - Click <code>Mark as ready</code>, and then <code>Publish now</code> in the Publishing Wizard, like you did for the front page. The list of persons is now available on <a href="http://localhost:3000/persons">http://localhost:3000/persons</a> as well.</p>
+</li>
 </ol>
 </div>
 </div>
@@ -688,9 +691,12 @@ Like macros, all page components support <code>configQuery</code>. Here though, 
 title: "Heading"
 description: "Demo heading"
 form:
-- type: "TextLine"
-  name: "heading"
-  label: "Override heading"</code></pre>
+  - type: "TextLine"
+    name: "heading"
+    label: "Override heading"
+    occurrences:
+      min: 0
+      max: 1</code></pre>
 </div>
 </div>
 </li>
@@ -756,7 +762,7 @@ ComponentRegistry.addPart(`${APP_NAME}:heading`, {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 12:37:02 UTC
+Last updated 2026-11-19 20:36:43 UTC
 </div>
 </div>
 </body>

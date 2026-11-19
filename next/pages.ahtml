@@ -483,9 +483,12 @@ ComponentRegistry.addContentType(CATCH_ALL, {
 </div>
 </li>
 <li>
+<p><strong>Restart the Next.js dev server</strong> - Stop it with ctrl-c and run <code>npm run dev</code> again. Mappings that are removed are not unregistered by hot reloading.</p>
+</li>
+<li>
 <p><strong>Verify that pages no longer render the JSON body</strong> by visiting your site on <code><a href="http://localhost:3000" class="bare">http://localhost:3000</a></code>.</p>
 <div class="paragraph">
-<p>The same now applies to Content Studio.</p>
+<p>Content without a mapping, such as the front page and the movies, now responds with "404 page not found", while persons are rendered as before. The same applies to the preview in Content Studio.</p>
 </div>
 </li>
 </ol>
@@ -749,7 +752,7 @@ ComponentRegistry.addPart(`${APP_NAME}:paragraph`, {
 Use the <a href="https://developer.enonic.com/docs/content-studio/stable/editor/rich-text-editor">rich text editor</a> to write and format text, as well as insert images or macros, and click <code>Apply</code>.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/paragraph-component.png" alt="Next.js-rendered paragraph part with an image" width="1440">
+<img src="media/paragraph-component.png" alt="Next.js-rendered paragraph part on the front page in Content Studio" width="1440">
 </div>
 </div>
 </li>
@@ -777,7 +780,7 @@ This is because preview mode is off in an incognito window, and only published c
 <p><strong>Publish the page</strong> - Click <code>Mark as ready</code>, and then <code>Publish now</code> in the Publishing Wizard.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/publish.png" alt="Publishing wizard" width="810">
+<img src="media/publish.png" alt="Publishing wizard" width="1440">
 </div>
 </div>
 </li>
@@ -802,7 +805,7 @@ This is because preview mode is off in an incognito window, and only published c
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 12:37:02 UTC
+Last updated 2026-11-19 20:36:43 UTC
 </div>
 </div>
 </body>

@@ -599,13 +599,13 @@ This specific layout does not need any additional data, hence no query or proces
 </div>
 </li>
 <li>
-<p><strong>Verify the result</strong> - In Content Studio, add the layout to a page, and then add components inside the layout.</p>
+<p><strong>Verify the result</strong> - In Content Studio, add the layout to a page: drag <code>Layout</code> from the <code>Insert</code> tab into the region and select <code>2 columns</code> in the <code>Inspect</code> tab. Then add parts inside the <code>left</code> and <code>right</code> regions of the layout.</p>
 <div class="paragraph">
-<p>By combining layout, part and text components, the potential of the page editor starts to show:</p>
+<p>By combining layouts and parts, the potential of the page editor starts to show:</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="media/layout-part-text.png" alt="Layout combined with part and text components" width="1440">
+<img src="media/layout-part-text.png" alt="Front page with a paragraph above a two-column layout holding a child list and a paragraph" width="1440">
 </div>
 </div>
 </li>
@@ -627,7 +627,7 @@ This specific layout does not need any additional data, hence no query or proces
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 12:37:02 UTC
+Last updated 2026-11-19 20:36:43 UTC
 </div>
 </div>
 </body>

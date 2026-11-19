@@ -584,7 +584,7 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 <p><strong>Verify the result</strong> - Visit a person item, like <a href="http://localhost:3000/persons/morgan-floatman">http://localhost:3000/persons/morgan-floatman</a>. The view now lists the data props from your query.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/morgan-floatman-props.png" alt="Page showing data props for Morgan Floatman content item" width="767">
+<img src="media/morgan-floatman-props.png" alt="Page showing data props for Morgan Floatman content item" width="1024">
 </div>
 </div>
 </li>
@@ -686,7 +686,7 @@ ComponentRegistry.addContentType(`${APP_NAME}:person`, {
 <p><strong>Verify the result</strong> - The page reloads automatically once the changes have been saved:</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/morgan-floatman-render.png" alt="Person rendering with query and view" width="768">
+<img src="media/morgan-floatman-render.png" alt="Person rendering with query and view" width="1024">
 </div>
 </div>
 </li>
@@ -769,7 +769,7 @@ import Footer from '../../../components/views/Footer';</code></pre>
 <p><strong>Verify the result</strong> - Morgan Floatman&#8217;s page should now look like this:</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/morgan-floatman-header-footer.png" alt="Rendering with header and footer" width="768">
+<img src="media/morgan-floatman-header-footer.png" alt="Rendering with header and footer" width="1024">
 </div>
 </div>
 </li>
@@ -825,7 +825,7 @@ If you do not need any common props, remove the common query from the mappings t
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 12:37:02 UTC
+Last updated 2026-11-19 20:36:43 UTC
 </div>
 </div>
 </body>

@@ -715,7 +715,7 @@ ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
 <p><strong>Select the page component</strong> - In the <code>Page</code> tab of the form on the left, select the page (root) component named <code>Main</code>.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/movie-page.png" alt="With page component selected, save as template appears in right hand panel" width="1440">
+<img src="media/movie-page.png" alt="The Main page component selected in the Page tab of a movie" width="1440">
 </div>
 </div>
 </li>
@@ -726,7 +726,7 @@ ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
 </div>
 </li>
 <li>
-<p><strong>Give your template a better name</strong>, such as "Movie details". The change is saved automatically. The template already supports the <code>Movie</code> content type.</p>
+<p><strong>Give your template a better name</strong>, such as "Movie details", and click <code>Save</code>. The template already supports the <code>Movie</code> content type.</p>
 <div class="imageblock">
 <div class="content">
 <img src="media/movie-template.png" alt="Content item of type template, configure to support movie items" width="1440">
@@ -757,7 +757,7 @@ ComponentRegistry.addPart(`${APP_NAME}:movie-details`, {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 12:37:02 UTC
+Last updated 2026-11-19 20:36:43 UTC
 </div>
 </div>
 </body>

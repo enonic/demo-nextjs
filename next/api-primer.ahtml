@@ -493,7 +493,7 @@ New to GraphQL as well? Check out the <a href="https://graphql.org/">GraphQL doc
 <p><strong>Verify that the API is available</strong> - You should see the following:</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/content-studio-guillotine.png" alt="Browsing the Guillotine API using Query Playground" width="1440">
+<img src="media/content-studio-guillotine.png" alt="Browsing the Guillotine API using Query Playground" width="1280">
 </div>
 </div>
 </li>
@@ -544,9 +544,9 @@ Run this query, which retrieves the ID and display name of some movies:</p>
             }
           }
           sort: {
-          	field:"displayName"
-          	direction:ASC
-        	}
+            field:"displayName"
+            direction:ASC
+          }
         ) {
             id: _id
             displayName
@@ -572,7 +572,7 @@ Run this query, which retrieves the ID and display name of some movies:</p>
 <p><strong>Verify the result</strong> - After executing the query, the response panel on the right shows the result:</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/content-studio-basic-query.png" alt="Running a query for movies in Query Playground" width="1440">
+<img src="media/content-studio-basic-query.png" alt="Running a query for movies in Query Playground" width="1280">
 </div>
 </div>
 </li>
@@ -618,7 +618,7 @@ Query variables enable you to reuse the same query, but for instance fetch diffe
 </div>
 </li>
 <li>
-<p><strong>Add query variables</strong> - In the bottom left of Query Playground, you will find the <code>Query variables</code> tab. Add the following JSON to the field:</p>
+<p><strong>Add query variables</strong> - In the bottom left of Query Playground, you will find the <code>Variables</code> tab. Add the following JSON to the field:</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -772,7 +772,7 @@ In the Next.js app you will not write this selection by hand: the <code>imageUrl
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 12:37:02 UTC
+Last updated 2026-11-19 20:36:43 UTC
 </div>
 </div>
 </body>

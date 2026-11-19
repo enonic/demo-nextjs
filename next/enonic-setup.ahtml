@@ -574,12 +574,14 @@ enonic dev</code></pre>
 <p><strong>Verify the deployment</strong> - In <code>dev</code> mode the CLI keeps watching for changes, so the build process never exits. This is expected behavior. When your terminal shows output like the following, the app has been built and deployed:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-text" data-lang="text">[server] CLI Watching for changes in "."
-[server] CLI Ignoring changes in "**/{.git,node_modules}/**" | "build/resources/main"
-[browserSync] [Browsersync] Reloading Browsers... (buffered 9 events)
-&lt;============-&gt; 94% EXECUTING [17m 31s]
-&gt; :dev</code></pre>
+<pre class="highlight"><code class="language-text" data-lang="text">&gt; Task :deploy
+Deploying 'nextjs.jar' to '.../.enonic/sandboxes/tutorial_nextjs/home/deploy'
+BUILD SUCCESSFUL in 1m 16s
+Waiting for changes to input files...</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>On its first deployment, the app creates the <code>Intro Project</code> content project and publishes its sample content.</p>
 </div>
 </li>
 </ol>
@@ -601,7 +603,7 @@ enonic dev</code></pre>
 <p><strong>Open the Welcome page</strong> - Go to <a href="http://localhost:8080">http://localhost:8080</a> in your browser.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/xp-boot.png" alt="The XP boot page" width="1085">
+<img src="media/xp-boot.png" alt="The XP boot page" width="1280">
 </div>
 <div class="title">Figure 1. Welcome page</div>
 </div>
@@ -613,7 +615,7 @@ enonic dev</code></pre>
 <p><strong>Log in</strong> - Click <b class="button">Log In as Guest</b> to open the XP admin dashboard.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/xp-dashboard.png" alt="The XP admin dashboard" width="1085">
+<img src="media/xp-dashboard.png" alt="The XP admin dashboard" width="1280">
 </div>
 <div class="title">Figure 2. The XP admin dashboard</div>
 </div>
@@ -668,7 +670,7 @@ The current project is shown at the top of Content Studio.
 <p><strong>Verify the sample content</strong> - Content Studio lists the sample content items:</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/content-studio-moviedb.png" alt="Movie DB in Content Studio" width="1440">
+<img src="media/content-studio-moviedb.png" alt="Movie DB in Content Studio" width="1280">
 </div>
 </div>
 <div class="admonitionblock note">
@@ -702,7 +704,7 @@ Some of the content items will have a default preview. That&#8217;s okay for now
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 12:37:02 UTC
+Last updated 2026-11-19 20:36:43 UTC
 </div>
 </div>
 </body>

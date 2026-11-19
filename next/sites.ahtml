@@ -504,7 +504,7 @@ If you choose a different name, make sure the site path name (seen below the Dis
 </div>
 </li>
 <li>
-<p><strong>Add your app</strong> to the site - Select it in the <code>Applications</code> form field and click <code>Apply</code>.</p>
+<p><strong>Add your app</strong> to the site - Select it in the <code>Applications</code> form field, where it is listed as <code>Intro</code>, and click <code>Apply</code>.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -522,12 +522,9 @@ Sites act as scopes in the content structure. By adding an app to the site, you 
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="media/content-studio-create-site.png" alt="Give the site a name, and add the Movie DB app" width="1024">
+<img src="media/content-studio-create-site.png" alt="The site form with the display name HMDB and the Intro app added" width="1280">
 </div>
 </div>
-</li>
-<li>
-<p><strong>Save the site</strong> - Click <code>Save</code> in the toolbar.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -535,7 +532,7 @@ Sites act as scopes in the content structure. By adding an app to the site, you 
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This leaves the item in the <code>In progress</code> state, which is OK for now.
+Applying the change saves the site automatically. This leaves the item in the <code>In progress</code> state, which is OK for now.
 </td>
 </tr>
 </table>
@@ -561,7 +558,7 @@ Return to the Content Studio tab, and follow these steps:</p>
 <p><strong>Select the <code>HMDB</code> site</strong> as the target and click <code>Move</code> once more.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/content-studio-move.png" alt="Move the folder into the site" width="1024">
+<img src="media/content-studio-move.png" alt="Move the folder into the site" width="1280">
 </div>
 </div>
 </li>
@@ -569,20 +566,20 @@ Return to the Content Studio tab, and follow these steps:</p>
 <p><strong>Mark the site as ready</strong> - Select the site (root item) in the tree structure, and click <code>Mark as ready</code> in the top right. This marks the item as ready and opens the Publishing Wizard.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/content-studio-mark-as-ready.png" alt="Mark as ready" width="1024">
+<img src="media/content-studio-mark-as-ready.png" alt="Mark as ready" width="1280">
 </div>
 </div>
 </li>
 <li>
-<p><strong>Publish the entire tree structure</strong> - Toggle <code>Include child items</code>, click <code>Apply</code> in the wizard header, then click <code>Publish now</code>.</p>
+<p><strong>Publish the entire tree structure</strong> - Toggle <code>Include child items</code>, which lists the child items in the wizard, then click <code>Publish now</code>.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/content-studio-publish.png" alt="Publish entire tree structure" width="1024">
+<img src="media/content-studio-publish.png" alt="Publish entire tree structure" width="1280">
 </div>
 </div>
 </li>
 <li>
-<p><strong>Verify the result</strong> - The content tree now shows the folders beneath the <code>HMDB</code> site, and the items are published.</p>
+<p><strong>Verify the result</strong> - The content tree now shows the folders beneath the <code>HMDB</code> site, and all items have the status <code>Online</code>.</p>
 </li>
 </ol>
 </div>
@@ -657,7 +654,7 @@ Add explicit path conditions to DSL queries when needed. Page URLs for content o
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 12:37:02 UTC
+Last updated 2026-11-19 20:36:43 UTC
 </div>
 </div>
 </body>

@@ -531,7 +531,7 @@ In production, only explicitly configured URLs are allowed.
 The preview toolbar&#8217;s widget selector is set to <code>Automatic</code>, which picks the first preview that can render the item - choose <code>Next.js Preview</code> explicitly if another preview shows up.</p>
 <div class="imageblock">
 <div class="content">
-<img src="media/morgan-floatman-preview.png" alt="Next.js-rendered preview in Content Studio" width="1072">
+<img src="media/morgan-floatman-preview.png" alt="Next.js-rendered preview of a person in Content Studio" width="1280">
 </div>
 </div>
 </li>
@@ -642,7 +642,7 @@ In preview, the browser loads draft media through the Next.js <code>/api/media/[
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 12:37:02 UTC
+Last updated 2026-11-19 20:36:43 UTC
 </div>
 </div>
 </body>

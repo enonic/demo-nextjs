@@ -536,6 +536,9 @@ src/
         api/                        <i class="conum" data-value="12"></i><b>(12)</b>
             mappings/
                 route.ts
+            media/
+                [...path]/
+                    route.ts
             preview/
                 route.ts
             revalidate/
@@ -664,7 +667,7 @@ Defaults to the origin of <code>ENONIC_API</code>.</td>
 </div>
 </li>
 <li>
-<p><strong>Update any value that differs</strong> - In particular, <code>ENONIC_APP_NAME</code> must match the name of the app you created in the <a href="enonic-setup.ahtml">first chapter</a>: <code>com.example.tutorial.nextjs</code>.</p>
+<p><strong>Set the app name</strong> - The starter ships with a different value for <code>ENONIC_APP_NAME</code>. Change it to <code>com.example.tutorial.nextjs</code>, the name of the app you created in the <a href="enonic-setup.ahtml">first chapter</a>. The other values should already match.</p>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -804,21 +807,18 @@ Common:
       "cast": [
         {
           "actor": "6414dc62-a3a1-4772-961f-06cb85b1bbb7",
-          "character": "Somerset"
+          "character": "Sumerset"
         },
         {
           "actor": "3a7b833f-3c37-4d55-88ae-cea21c556c68",
-          "character": "Mills"
+          "character": "Mylar"
         }
       ],
       "website": null,
       "release": "1995-09-22",
-      "subtitle": "Chilling thriller with a plot beyond belief",
-      "abstract": "Two detectives, a rookie and a veteran, hunt a serial killer who uses the seven deadly sins as his motives.",
-      "photos": [
-        "6ca58af1-6810-4fae-b51b-f70e01fc4c17",
-        "5cb115db-eb1c-4314-8376-2cb711dea5bd"
-      ]
+      "subtitle": "What's in the box?",
+      "abstract": "Two balloon-headed detectives hunt a serial killer who is using the seven deadly sins to deflate his victims one balloon at a time. The desert finale is famously breathless.",
+      "photos": "6ca58af1-6810-4fae-b51b-f70e01fc4c17"
     },
     "xAsJson": {
       "com-example-tutorial-nextjs": {
@@ -839,7 +839,7 @@ Common:
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="media/s7ven-edit.png" alt="Editing item in Content Studio - the path /hmdb/movies/s7ven is highlighted" width="768">
+<img src="media/s7ven-edit.png" alt="Editing item in Content Studio - the path /hmdb/movies/s7ven is highlighted" width="1280">
 </div>
 <div class="title">Figure 1. S7ven as seen in Content Studio - internal path is <code>/hmdb/movies/s7ven</code></div>
 </div>
@@ -858,7 +858,7 @@ Common:
 <div class="ulist">
 <ul>
 <li>
-<p><a href="http://localhost:3000/movies">http://localhost:3000/movies</a></p>
+<p><a href="http://localhost:3000/movies/pump-fiction">http://localhost:3000/movies/pump-fiction</a></p>
 </li>
 <li>
 <p><a href="http://localhost:3000/persons">http://localhost:3000/persons</a></p>
@@ -871,6 +871,18 @@ Common:
 </li>
 <li>
 <p><strong>Verify the rendering</strong> - Each page lists the props of the content item at that path.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Some sample content, such as the <code>Movies</code> folder, already has a page defined. These items show a "Missing component" message until you register the page components later in the tutorial.
+</td>
+</tr>
+</table>
+</div>
 </li>
 </ol>
 </div>
@@ -890,7 +902,7 @@ Common:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-19 12:37:02 UTC
+Last updated 2026-11-19 20:36:43 UTC
 </div>
 </div>
 </body>
