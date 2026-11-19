@@ -123,7 +123,7 @@ It's time to test that everything is working.
 
 . *Create the front page* - If you did not import content, create the front page once again using the page editor. Maybe something like this will do?
 +
-image::cloud-preview.png[Front page as seen from Content Studio,width=1419]
+image::cloud-preview.webp[Front page as seen from Content Studio,width=1419]
 
 . *Go live* - Publish the new page, and verify that your live site gets updated:
 +

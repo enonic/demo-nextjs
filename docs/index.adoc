@@ -16,7 +16,7 @@ It offers content editors a familiar and hassle-free way of working with content
 When you are done, editors can build and preview pages like this:
 
 .Editors enjoy WYSIWYG editing and live preview, combined with statically generated pages
-image::cloud-preview.png[Content Studio showing a live preview of the front page rendered by Next.js,width=1419]
+image::cloud-preview.webp[Content Studio showing a live preview of the front page rendered by Next.js,width=1419]
 
 You will complete the following steps:
 

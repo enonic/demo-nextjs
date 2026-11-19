@@ -55,13 +55,13 @@ With the new component registered, put it to use.
 
 . *Add the part to the page* - Open the context panel by pressing its icon in the top right screen corner, select `Page` in the widget dropdown, then `Main` in the Template dropdown. Add the `Movie Details` part to the page: drag `Part` from the `Insert` tab into the region and pick it in the part dropdown.
 +
-image::movie-details.png["No time to deflate, configured with movie-details part",width=1440]
+image::movie-details.webp["No time to deflate, configured with movie-details part",width=1440]
 +
 You now have a single movie nicely presented, but it would be cumbersome to configure each movie like this manually. Page templates to the rescue.
 
 . *Select the page component* - In the `Page` tab of the form on the left, select the page (root) component named `Main`.
 +
-image::movie-page.png["The Main page component selected in the Page tab of a movie",width=1440]
+image::movie-page.webp["The Main page component selected in the Page tab of a movie",width=1440]
 
 . *Save as template* - Right-click the component and select `Save as Template` from the context menu.
 +

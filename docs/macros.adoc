@@ -59,7 +59,7 @@ NOTE: The sample content also uses a `filmography` macro, for instance in the bi
 
 . *Verify the rendering* - The page for http://localhost:3000/persons/lea-seydough[Lea Seydough] now shows the `FactBox` macro:
 +
-image::rich-text-result.png[Person content rendered with rich text and macro,width=1080]
+image::rich-text-result.webp[Person content rendered with rich text and macro,width=1080]
 
 == Summary
 

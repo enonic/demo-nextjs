@@ -79,7 +79,7 @@ NOTE: This overrides the default preview configuration for all sites using the N
 +
 . *Verify the preview* - Save, then launch Enonic XP Admin from the solution dashboard and open Content Studio. The preview should now show your front-end.
 +
-image::cloud-preview.png[Front page as seen from Content Studio,width=1419]
+image::cloud-preview.webp[Front page as seen from Content Studio,width=1419]
 
 == How it works
 

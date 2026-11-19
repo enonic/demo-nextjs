@@ -86,7 +86,7 @@ The Welcome page provides an overview of the sandbox, including installed applic
 . *Log in* - Click btn:[Log In as Guest] to open the XP admin dashboard.
 +
 .The XP admin dashboard
-image::xp-dashboard.png[The XP admin dashboard,width=1280]
+image::xp-dashboard.webp[The XP admin dashboard,width=1280]
 +
 The center menu, known as the `XP menu`, lets you navigate between admin tools.
 Applications can add admin tools as extensions.
